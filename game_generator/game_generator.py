@@ -2,6 +2,7 @@
 
 import argparse
 import fileinput
+import random
 
 # Parameters:
 # Difficulty: 'easy', 'medium', 'hard', or 'insane'
@@ -36,6 +37,32 @@ import fileinput
 #   - canadian-words.80
 #   - canadian-words.95
 
+# Number of words in each dictionary set:
+# easy:    49,762
+# medium:  80,541
+# hard:   135,539
+# insane: 501,002
+
+# Number of possible 'words' that could be formed from a set of letters:
+# 6 letters:          1,956
+# 7 letters:         13,699
+# 8 letters:        109,600
+# 9 letters:        986,409
+# 10 letters:     9,864,100
+# 11 letters:   108,505,111
+# 12 letters: 1,302,061,344
+
+# There are two ways to find all the valid dictionary words that
+# can be generated from a set of scrambled letters: 1) generate all possible
+# combinations of a subset of letters and check if that combination of
+# letters is in the dictionary, or 2) iterate over the dictioray and see
+# if each word can be generated using the letters from the scrambled set.
+# From the numbers above, we can see that the number of possible combinations
+# of letters grows very fast with increasing size of the set of letters (O(n!)),
+# whereas the dictionary is limited to 501,002 words maximum (O(501,002) = O(1)).
+# Thus, we take the second approach, becasue it takes O(1) time no matter what
+# the size of the set of scrambled letters.
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
         "difficulty", 
@@ -67,32 +94,117 @@ dicts['hard'] = [dd+"english-words.55", dd+"english-words.60", dd+"english-words
 dicts['insane'] = [dd+"english-words.80", dd+"english-words.95",
         dd+"canadian-words.80", dd+"canadian-words.95"] + dicts['hard']
 
-class LetterCounter:
-    letter_counts = {'A':0, 'B':0, 'C':0, 'D':0, 'E':0, 'F':0, 'G':0, 'H':0, 'I':0,
-    'J':0, 'K':0, 'L':0, 'M':0, 'O':0, 'P':0, 'Q':0, 'R':0, 'S':0, 'T':0, 'U':0,
-    'V':0, 'W':0, 'X':0, 'Y':0, 'Z':0}
-    total_letters = 0
-    
-    def count_word(self, word):
-        for c in word.upper():
-            try:
-                self.letter_counts[c] += 1
-                self.total_letters += 1
-            except KeyError:
-                pass
+#class LetterCounter:
+#    letter_counts = {'A':0, 'B':0, 'C':0, 'D':0, 'E':0, 'F':0, 'G':0, 'H':0, 'I':0,
+#    'J':0, 'K':0, 'L':0, 'M':0, 'N':0, 'O':0, 'P':0, 'Q':0, 'R':0, 'S':0, 'T':0, 'U':0,
+#    'V':0, 'W':0, 'X':0, 'Y':0, 'Z':0}
+#    total_letters = 0
+#    
+#    def count_word(self, word):
+#        for c in word.upper():
+#            try:
+#                self.letter_counts[c] += 1
+#                self.total_letters += 1
+#            except KeyError:
+#                pass
 
-    def letter_frequency(self):
-        letter_frequencies = {}
-        for k, v in self.letter_counts.items():
-            letter_frequencies[k] = v / self.total_letters
-        return letter_frequencies
+#    def letter_frequency(self):
+#        letter_frequencies = {}
+#        for k, v in self.letter_counts.items():
+#            letter_frequencies[k] = v / self.total_letters
+#        return letter_frequencies
 
-lc = LetterCounter()
+#lc = LetterCounter()
+#with fileinput.input(files=dicts[args.difficulty],openhook=fileinput.hook_encoded("iso-8859-1")) as f:
+#    for line in f:
+#        lc.count_word(line)
+
+#print(lc.letter_counts)
+#letter_frequency = lc.letter_frequency()
+#cumulative_frequency = 0.0
+#for k in sorted(lc.letter_frequency().keys()):
+#    cumulative_frequency += letter_frequency[k]
+#    print("'{}': {},".format(k, cumulative_frequency))
+
+# Cumulative frequency of each letter in 'easy' dictionaries
+letter_frequencies = [
+('A', 0.07121085473733121),
+('B', 0.0886732846287687),
+('C', 0.12884066132482141),
+('D', 0.1681822658481337),
+('E', 0.28295197137323136),
+('F', 0.29740424704477103),
+('G', 0.3291699600750519),
+('H', 0.3502511408029941),
+('I', 0.43492688002060653),
+('J', 0.4367501445732628),
+('K', 0.44577303134146323),
+('L', 0.4940870166896891),
+('M', 0.5199283825724194),
+('N', 0.5912680274651321),
+('O', 0.6494331970514632),
+('P', 0.6783453242860356),
+('Q', 0.6802519236451151),
+('R', 0.7523340059041449),
+('S', 0.8587273007351142),
+('T', 0.9292841035068803),
+('U', 0.9613730545741971),
+('V', 0.9718025318629371),
+('W', 0.9809643099751765),
+('X', 0.9835451636771358),
+('Y', 0.9970251999404032),
+('Z', 1.0),
+]
+
+def generate_scramble(num):
+    seq = ""
+    for i in range(num):
+        x = random.uniform(0, 1)
+        for k, v in letter_frequencies:
+            if x < v:
+                seq += k
+                break
+    return seq
+
+def make_letter_count(scramble):
+    lc = {}
+    for l in scramble:
+        try:
+            lc[l] += 1
+        except KeyError:
+            lc[l] = 1
+    return lc
+
+def can_make_word(letter_count, word):
+    letter_count = letter_count.copy()
+    for l in word:
+        try:
+            letter_count[l] -= 1
+            if letter_count[l] < 0:
+                return False
+        except KeyError:
+            return False
+    return True
+
+words = []
 with fileinput.input(files=dicts[args.difficulty],openhook=fileinput.hook_encoded("iso-8859-1")) as f:
     for line in f:
-        lc.count_word(line)
-        
-print(lc.letter_counts)
-letter_frequency = lc.letter_frequency()
-for k in sorted(lc.letter_frequency().keys()):
-    print("'{}': {},".format(k, letter_frequency[k]))
+        word = line.strip().upper()
+        if len(word) > 2:
+            words.append(word)
+
+for i in range(args.num):
+    while True:
+        scramble = generate_scramble(args.size)
+        print(scramble, '', end='')
+        letter_count = make_letter_count(scramble)
+        soln = []
+        for word in words:
+            if can_make_word(letter_count, word):
+                soln.append(word)
+        if len(soln) < 4:
+            continue
+        print(' '.join(sorted(soln)))
+        break
+
+
