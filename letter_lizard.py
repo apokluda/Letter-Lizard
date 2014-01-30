@@ -21,6 +21,7 @@ clock = pygame.time.Clock()
 done = False
 
 puzzle_letters = ['a', 'b', 'g', 'e', 'c', 'r', 'l', 's']
+puzzle_letters_displayed = puzzle_letters[:]
 solutions = ['bag', 'bear', 'sear', 'lag', 'car']
 square_width = 50
 left_margin = 20
@@ -65,7 +66,9 @@ while done == False:
 				random.shuffle(puzzle_letters)
 			elif (event.key in range(256)):
 				letter = chr(event.key)
-				letters_guessed.append(letter)
+				if (letter in puzzle_letters):
+					letters_guessed.append(letter)
+					
 				num_letters_pressed += 1
 			
 	# ALL EVENT PROCESSING SHOULD GO ABOVE THIS COMMENT
