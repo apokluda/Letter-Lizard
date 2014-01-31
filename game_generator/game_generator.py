@@ -37,12 +37,14 @@ import random
 #   - canadian-words.80
 #   - canadian-words.95
 
+# Algorithm Analysis:
+#
 # Number of words in each dictionary set:
 # easy:    49,762
 # medium:  80,541
 # hard:   135,539
 # insane: 501,002
-
+#
 # Number of possible 'words' that could be formed from a set of letters:
 # 6 letters:          1,956
 # 7 letters:         13,699
@@ -51,7 +53,7 @@ import random
 # 10 letters:     9,864,100
 # 11 letters:   108,505,111
 # 12 letters: 1,302,061,344
-
+#
 # There are two ways to find all the valid dictionary words that
 # can be generated from a set of scrambled letters: 1) generate all possible
 # combinations of a subset of letters and check if that combination of
@@ -63,37 +65,19 @@ import random
 # Thus, we take the second approach, becasue it takes O(1) time no matter what
 # the size of the set of scrambled letters.
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-        "difficulty", 
-        type=str,
-        choices=["easy", "medium", "hard", "insane"],
-        default="easy",
-        nargs="?",
-        help="level of difficulty")
-parser.add_argument(
-        "-s", "--size",
-        type=int,
-        default=6,
-        help="the number of scrambled letters in the game")
-parser.add_argument(
-        "-n", "--num",
-        type=int,
-        default=1,
-        help="the number of games to generate")
-args = parser.parse_args()
-
-dd = "scowl-7.1/final/"
-
-dicts = {'easy': [dd+"english-words.10", dd+"english-words.20", dd+"english-words.35",
-        dd+"canadian-words.10", dd+"canadian-words.20", dd+"canadian-words.35"]}
-dicts['medium'] = [dd+"english-words.40", dd+"english-words.50", 
-        dd+"canadian-words.40", dd+"canadian-words.50"] + dicts['easy']
-dicts['hard'] = [dd+"english-words.55", dd+"english-words.60", dd+"english-words.70",
-        dd+"canadian-words.55", dd+"canadian-words.60", dd+"canadian-words.70"] + dicts['medium']
-dicts['insane'] = [dd+"english-words.80", dd+"english-words.95",
-        dd+"canadian-words.80", dd+"canadian-words.95"] + dicts['hard']
-
+# Counting the Frequency of each Letter:
+#
+# When generating the set of scrambled letters, we choose the letters with a 
+# probabliliy equal to the frequency that they appear in the dictionaries.
+# For example, about 7% of the letters in the dictionary are A's, so when
+# generating the scrambled letters, we choose A with 7% probability. The following
+# code calculates the cumulative frequency of each letter in the dictionary
+# which is used in the algorithm that picks the scrambled letters. Rather than
+# run it everytime (since the frequencies don't change), it has been commented
+# out and the result has been hard coded. [As a side note: the letter frequency
+# is almost identical across each dictionary set, i.e. 'easy,' 'medium', 'hard'
+# 'insane'.]
+#
 #class LetterCounter:
 #    letter_counts = {'A':0, 'B':0, 'C':0, 'D':0, 'E':0, 'F':0, 'G':0, 'H':0, 'I':0,
 #    'J':0, 'K':0, 'L':0, 'M':0, 'N':0, 'O':0, 'P':0, 'Q':0, 'R':0, 'S':0, 'T':0, 'U':0,
@@ -107,18 +91,18 @@ dicts['insane'] = [dd+"english-words.80", dd+"english-words.95",
 #                self.total_letters += 1
 #            except KeyError:
 #                pass
-
+#
 #    def letter_frequency(self):
 #        letter_frequencies = {}
 #        for k, v in self.letter_counts.items():
 #            letter_frequencies[k] = v / self.total_letters
 #        return letter_frequencies
-
+#
 #lc = LetterCounter()
 #with fileinput.input(files=dicts[args.difficulty],openhook=fileinput.hook_encoded("iso-8859-1")) as f:
 #    for line in f:
 #        lc.count_word(line)
-
+#
 #print(lc.letter_counts)
 #letter_frequency = lc.letter_frequency()
 #cumulative_frequency = 0.0
@@ -156,7 +140,19 @@ letter_frequencies = [
 ('Z', 1.0),
 ]
 
+dd = "scowl-7.1/final/"
+
+dicts = {'easy': [dd+"english-words.10", dd+"english-words.20", dd+"english-words.35",
+        dd+"canadian-words.10", dd+"canadian-words.20", dd+"canadian-words.35"]}
+dicts['medium'] = [dd+"english-words.40", dd+"english-words.50", 
+        dd+"canadian-words.40", dd+"canadian-words.50"] + dicts['easy']
+dicts['hard'] = [dd+"english-words.55", dd+"english-words.60", dd+"english-words.70",
+        dd+"canadian-words.55", dd+"canadian-words.60", dd+"canadian-words.70"] + dicts['medium']
+dicts['insane'] = [dd+"english-words.80", dd+"english-words.95",
+        dd+"canadian-words.80", dd+"canadian-words.95"] + dicts['hard']
+
 def generate_scramble(num):
+    """Generate a set of scrambled letters."""
     seq = ""
     for i in range(num):
         x = random.uniform(0, 1)
@@ -166,9 +162,10 @@ def generate_scramble(num):
                 break
     return seq
 
-def make_letter_count(scramble):
+def make_letter_count(s):
+    """Create a hash table maping each letter to the number of times that it occurs in the string s"""
     lc = {}
-    for l in scramble:
+    for l in s:
         try:
             lc[l] += 1
         except KeyError:
@@ -176,6 +173,7 @@ def make_letter_count(scramble):
     return lc
 
 def can_make_word(letter_count, word):
+    """Determine if word can be formed from the letters in the letter_count map"""
     letter_count = letter_count.copy()
     for l in word:
         try:
@@ -185,6 +183,33 @@ def can_make_word(letter_count, word):
         except KeyError:
             return False
     return True
+
+def generate_game(difficulty, size=6, num=1):
+    return ("test", ["abc", "def", "ghi"])
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+            "difficulty", 
+            type=str,
+            choices=["easy", "medium", "hard", "insane"],
+            default="easy",
+            nargs="?",
+            help="level of difficulty")
+    parser.add_argument(
+            "-s", "--size",
+            type=int,
+            default=6,
+            help="the number of scrambled letters in the game")
+    parser.add_argument(
+            "-n", "--num",
+            type=int,
+            default=1,
+            help="the number of games to generate")
+    args = parser.parse_args()
+#    for i in range(args.num):
+#        scramble, words = generate_game(args.difficulty, args.size, args.num)
+#        print(scramble, *words)
 
 words = []
 with fileinput.input(files=dicts[args.difficulty],openhook=fileinput.hook_encoded("iso-8859-1")) as f:
@@ -206,5 +231,6 @@ for i in range(args.num):
             continue
         print(' '.join(sorted(soln)))
         break
+
 
 
