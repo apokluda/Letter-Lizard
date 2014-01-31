@@ -4,12 +4,17 @@ import pygame
 import random
 from pygame.locals import *
 import pygbutton
-
+import sys
+from pygame import time
 class Letter:
 	def __Letter__(self, letter):
 		pass
 		
-
+class Enum(set):
+    def __getattr__(self, name):
+        if name in self:
+            return name
+        raise AttributeError
 
 if not pygame.font: print 'Warning, fonts disabled'
 if not pygame.mixer: print 'Warning, sound disabled'
@@ -39,11 +44,12 @@ status_label_left = left_margin
 status_label_top = int(0.7 * game_height)
 puzzle_letter_font_size = int(0.03*game_width)
 guessed_letter_font_size = int(0.02*game_width)
-
+button_size = (100, 50)
 buttons_top = int(0.8 * game_height)
 buttons_left = left_margin
-
-
+button_padding = 20
+countdown_left = int(0.75 * game_width)
+countdown_top = int(0.12 * game_height) 
 
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Letter Lizard")
@@ -74,23 +80,41 @@ words_guessed_correct = []
 current_score = 0
 game_status = ''
 
-button_size = (50, 50)
+GAME_STATES = Enum(['PLAYING', 'GAME_OVER', 'SPLASH_SCREEN'])
+game_state = GAME_STATES.PLAYING
+
 
 all_buttons = []
-button_main_menu = pygbutton.PygButton((button_size[0], button_size[1], buttons_left, buttons_top, 'Main Menu'))
+button_main_menu = pygbutton.PygButton((buttons_left, buttons_top, button_size[0], button_size[1]), 'Main Menu')
+button_exit = pygbutton.PygButton((buttons_left + button_padding + button_size[0], buttons_top, button_size[0], button_size[1]), 'Exit')
 all_buttons.append(button_main_menu)
+all_buttons.append(button_exit)
 
+mode = 'play'
 
+def exit():
+	pygame.quit()
+	sys.exit()
+
+time_allowed_s = 10
+time_remaining_s = time_allowed_s
+
+start_time_ms = time.get_ticks()
 while done == False:
 
 	# ALL EVENT PROCESSING SHOULD GO BELOW THIS COMMENT
 	for event in pygame.event.get(): # User did something
-		if event.type == pygame.QUIT: # If user clicked close
+		if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE): # If user clicked close
 			done = True # Flag that we are done so we exit this loop
 			# User pressed down on a key
-		
+		elif 'click' in button_main_menu.handleEvent(event):
+			print "hello"
+		#	pass
+		elif 'click' in button_exit.handleEvent(event):
+			exit()
+			print "exit"
 		elif event.type == pygame.KEYDOWN:
-			if (event.key == pygame.K_RETURN):
+			if (event.key == pygame.K_RETURN and game_state == GAME_STATES.PLAYING):
 				guessed_word = ''.join(letters_guessed)
 				if ( guessed_word in solutions):
 					if (guessed_word not in words_guessed_correct):
@@ -117,15 +141,28 @@ while done == False:
 					letters_guessed.append(letter)
 					puzzle_letters_displayed[puzzle_letters_displayed.index(letter)] = ''
 					num_letters_pressed += 1
-			elif 'click' in button_main_menu.handleEvent(event):
 				#windowBgColor = WHITE
 			
 	# ALL EVENT PROCESSING SHOULD GO ABOVE THIS COMMENT
 
 
 	# ALL GAME LOGIC SHOULD GO BELOW THIS COMMENT
-
-
+	if (game_state == GAME_STATES.PLAYING):
+		elapsed_time_ms = time.get_ticks() - start_time_ms
+		elapsed_time_s = elapsed_time_ms / 1000
+		time_remaining_s = time_allowed_s - elapsed_time_s
+		time_remaining_str = '' 
+		mins = time_remaining_s/60
+		secs = time_remaining_s % 60
+		if (mins < 10): time_remaining_str += '0'
+		time_remaining_str += str(mins)
+		time_remaining_str += ':'
+		if (secs < 10): time_remaining_str += '0'
+		time_remaining_str += str(secs)
+		if (time_remaining_s == 0):
+			game_status = "TIME IS UP"
+			game_state = GAME_STATES.GAME_OVER
+	
 	# ALL GAME LOGIC SHOULD GO ABOVE THIS COMMENT 
 			
 	
@@ -139,7 +176,13 @@ while done == False:
 	screen.blit(your_score_label, (correct_words_left, top_margin))
 	
 	status_label = puzzle_letter_font.render(game_status, 1, black)
-	screen.blit(status_label, (status_label_left, status_label_top))
+	#screen.blit(status_label, (status_label_left, status_label_top))
+	
+	countdown_label = puzzle_letter_font.render(str(time_remaining_str), 1, black)
+	screen.blit(countdown_label, (countdown_left, countdown_top))
+	
+	for b in all_buttons:
+		b.draw(screen)
 	
 	for i in range(len(letters_guessed)):
 		letter = letters_guessed[i]
