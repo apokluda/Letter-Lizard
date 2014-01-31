@@ -1,3 +1,5 @@
+print "cool"
+
 #!/usr/bin/env python
 # Import a library of functions called 'pygame'
 import pygame
@@ -20,7 +22,7 @@ clock = pygame.time.Clock()
 #Loop until the user clicks the close button.
 done = False
 
-puzzle_letters = ['a', 'b', 'g', 'e', 'c', 'r', 'l', 's']
+puzzle_letters = ['a', 'b', 'g', 'e', 'c', 'r', 'l', 's', 'g']
 puzzle_letters_displayed = puzzle_letters[:]
 solutions = ['bag', 'bear', 'sear', 'lag', 'car']
 square_width = 50
@@ -42,6 +44,13 @@ letters_guessed = []
 
 words_guessed_correct = []
 
+class Letter:
+	def __Letter__(self, letter):
+		pass
+		
+
+
+
 while done == False:
 
 	# ALL EVENT PROCESSING SHOULD GO BELOW THIS COMMENT
@@ -61,15 +70,17 @@ while done == False:
 				#print "hello"
 			elif (event.key == pygame.K_BACKSPACE):
 				if (len(letters_guessed) >= 1):
+					letter_to_delete = letters_guessed[len(letters_guessed) - 1]
 					del letters_guessed[len(letters_guessed) - 1]
+					puzzle_letters_displayed[puzzle_letters_displayed.index('')] = letter_to_delete
 			elif (event.key == pygame.K_SPACE):
-				random.shuffle(puzzle_letters)
+				random.shuffle(puzzle_letters_displayed)
 			elif (event.key in range(256)):
 				letter = chr(event.key)
-				if (letter in puzzle_letters):
+				if (letter in puzzle_letters_displayed):
 					letters_guessed.append(letter)
-					
-				num_letters_pressed += 1
+					puzzle_letters_displayed[puzzle_letters_displayed.index(letter)] = ''
+					num_letters_pressed += 1
 			
 	# ALL EVENT PROCESSING SHOULD GO ABOVE THIS COMMENT
 
@@ -94,12 +105,13 @@ while done == False:
 		pygame.draw.rect(screen, black, (x, y ,square_width,square_width), 1)
 		screen.blit(letter_label, (x + square_width/4, y + square_width/5))
 	
-	for i in range(len(puzzle_letters)):
-		letter = puzzle_letters[i]
+	for i in range(len(puzzle_letters_displayed)):
+		letter = puzzle_letters_displayed[i]
 		x = left_margin + i * square_width + i * spacing
 		y = 20
 		letter_label = puzzle_letter_font.render(letter, 1, black)
-		pygame.draw.rect(screen, black, (x, y ,square_width,square_width), 1)
+		if (letter != ''):
+			pygame.draw.rect(screen, black, (x, y ,square_width,square_width), 1)
 		screen.blit(letter_label, (x + square_width/4, y + square_width/5))
 		
 	for i in range(len(words_guessed_correct)):
