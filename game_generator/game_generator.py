@@ -185,7 +185,21 @@ def can_make_word(letter_count, word):
     return True
 
 def generate_game(difficulty, size=6, num=1):
-    return ("test", ["abc", "def", "ghi"])
+    words = []
+    with fileinput.input(files=dicts[difficulty],openhook=fileinput.hook_encoded("iso-8859-1")) as f:
+        for line in f:
+            word = line.strip().upper()
+            if len(word) > 2:
+                words.append(word)
+    while True:
+        scramble = generate_scramble(size)
+        letter_count = make_letter_count(scramble)
+        soln = []
+        for word in words:
+            if can_make_word(letter_count, word):
+                soln.append(word)
+        if len(soln) > 3:
+            return (scramble, soln)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -207,30 +221,7 @@ if __name__ == "__main__":
             default=1,
             help="the number of games to generate")
     args = parser.parse_args()
-#    for i in range(args.num):
-#        scramble, words = generate_game(args.difficulty, args.size, args.num)
-#        print(scramble, *words)
-
-words = []
-with fileinput.input(files=dicts[args.difficulty],openhook=fileinput.hook_encoded("iso-8859-1")) as f:
-    for line in f:
-        word = line.strip().upper()
-        if len(word) > 2:
-            words.append(word)
-
-for i in range(args.num):
-    while True:
-        scramble = generate_scramble(args.size)
-        print(scramble, '', end='')
-        letter_count = make_letter_count(scramble)
-        soln = []
-        for word in words:
-            if can_make_word(letter_count, word):
-                soln.append(word)
-        if len(soln) < 4:
-            continue
-        print(' '.join(sorted(soln)))
-        break
-
-
+    for i in range(args.num):
+        scramble, words = generate_game(args.difficulty, args.size)
+        print(scramble, *words)
 
