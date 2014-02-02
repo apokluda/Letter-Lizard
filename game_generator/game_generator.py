@@ -1,5 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
+from __future__ import print_function
+from __future__ import with_statement
 import argparse
 import fileinput
 import random
@@ -186,11 +188,10 @@ def can_make_word(letter_count, word):
 
 def generate_game(difficulty, size=6, num=1):
     words = []
-    with fileinput.input(files=dicts[difficulty],openhook=fileinput.hook_encoded("iso-8859-1")) as f:
-        for line in f:
-            word = line.strip().upper()
-            if len(word) > 2:
-                words.append(word)
+    for line in fileinput.input(files=dicts[difficulty],openhook=fileinput.hook_encoded("iso-8859-1")):
+        word = line.strip().upper()
+        if len(word) > 2:
+            words.append(word)
     while True:
         scramble = generate_scramble(size)
         letter_count = make_letter_count(scramble)
