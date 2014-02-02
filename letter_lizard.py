@@ -6,6 +6,8 @@ from pygame.locals import *
 import pygbutton
 import sys
 from pygame import time
+import game_generator.game_generator as gg
+
 class Letter:
 	def __Letter__(self, letter):
 		pass
@@ -61,10 +63,12 @@ done = False
 
 
 #hard code in a sample game
-puzzle_letters = ['a', 'b', 'g', 'e', 'c', 'r', 'l', 's', 'g']
+scramble, solutions = gg.generate_game('easy', 9)
+puzzle_letters = [l for l in scramble]
+#puzzle_letters = ['a', 'b', 'g', 'e', 'c', 'r', 'l', 's', 'g']
 puzzle_letters_displayed = puzzle_letters[:] #make a copy of the array
-solutions = ['bag', 'bear', 'sear', 'lag', 'car']
-
+#solutions = ['bag', 'bear', 'sear', 'lag', 'car']
+print solutions
 
 puzzle_letter_font = pygame.font.SysFont("Arial", puzzle_letter_font_size, bold=True)
 guessed_letter_font = pygame.font.SysFont("Arial", guessed_letter_font_size, bold=True)
@@ -96,7 +100,7 @@ def exit():
 	pygame.quit()
 	sys.exit()
 
-time_allowed_s = 10
+time_allowed_s = 120
 time_remaining_s = time_allowed_s
 
 start_time_ms = time.get_ticks()
@@ -136,7 +140,7 @@ while done == False:
 			elif (event.key == pygame.K_SPACE):
 				random.shuffle(puzzle_letters_displayed)
 			elif (event.key in range(256)):
-				letter = chr(event.key)
+				letter = chr(event.key).upper()
 				if (letter in puzzle_letters_displayed):
 					letters_guessed.append(letter)
 					puzzle_letters_displayed[puzzle_letters_displayed.index(letter)] = ''
