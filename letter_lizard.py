@@ -46,12 +46,15 @@ status_label_left = left_margin
 status_label_top = int(0.7 * game_height)
 puzzle_letter_font_size = int(0.03*game_width)
 guessed_letter_font_size = int(0.02*game_width)
+font_size = int(0.02*game_width)
 button_size = (100, 50)
 buttons_top = int(0.8 * game_height)
 buttons_left = left_margin
 button_padding = 20
 countdown_left = int(0.75 * game_width)
 countdown_top = int(0.12 * game_height) 
+notification_left = int(0.5 * game_width)
+notification_top = int(0.8* game_height)
 
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Letter Lizard")
@@ -72,6 +75,8 @@ print solutions
 
 puzzle_letter_font = pygame.font.SysFont("Arial", puzzle_letter_font_size, bold=True)
 guessed_letter_font = pygame.font.SysFont("Arial", guessed_letter_font_size, bold=True)
+
+default_font = pygame.font.SysFont("Arial", font_size, bold=True)
 
 letter_pressed = ''
 num_letters_pressed = 0
@@ -94,6 +99,9 @@ button_exit = pygbutton.PygButton((buttons_left + button_padding + button_size[0
 all_buttons.append(button_main_menu)
 all_buttons.append(button_exit)
 
+#wrong_label = default_font.render()
+
+
 mode = 'play'
 
 def exit():
@@ -104,6 +112,8 @@ time_allowed_s = 120
 time_remaining_s = time_allowed_s
 
 start_time_ms = time.get_ticks()
+
+notification = ""
 while done == False:
 
 	# ALL EVENT PROCESSING SHOULD GO BELOW THIS COMMENT
@@ -180,10 +190,12 @@ while done == False:
 	screen.blit(your_score_label, (correct_words_left, top_margin))
 	
 	status_label = puzzle_letter_font.render(game_status, 1, black)
-	#screen.blit(status_label, (status_label_left, status_label_top))
+	screen.blit(status_label, (status_label_left, status_label_top))
 	
 	countdown_label = puzzle_letter_font.render(str(time_remaining_str), 1, black)
 	screen.blit(countdown_label, (countdown_left, countdown_top))
+	
+	#notification_text = font.render()
 	
 	for b in all_buttons:
 		b.draw(screen)
