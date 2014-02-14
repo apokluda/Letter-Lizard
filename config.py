@@ -37,3 +37,5 @@ title = "Letter Lizard"
 
 puzzle_letter_font = pygame.font.SysFont("Arial", puzzle_letter_font_size, bold=True)
 guessed_letter_font = pygame.font.SysFont("Arial", guessed_letter_font_size, bold=True)
+
+time_allowed_s = 120
