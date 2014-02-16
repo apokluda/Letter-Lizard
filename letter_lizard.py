@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # Import a library of functions called 'pygame'
-
-import pygbutton
-import sys
 from config import *
 from game import *
 
