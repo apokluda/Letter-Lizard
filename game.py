@@ -71,10 +71,30 @@ class Game:
         if (letter in self.puzzle_letters_displayed):
             self.letters_guessed.append(letter)
             self.puzzle_letters_displayed[self.puzzle_letters_displayed.index(letter)] = ''
+
+#     def __draw_solved_words_region(self):
+#         words_to_write = []
+#         for length in sorted(self.length_counts.keys()):
+#             count = self.length_counts[length]
+#             for word in self.words_guessed_correct_by_length[length]:
+#                 words_to_write.append(word)
+#             for j in range(count - len(self.words_guessed_correct_by_length[length])):
+#                 hyphens = '- ' * length
+#                 words_to_write.append(hyphens)
+#         for i in range(len(words_to_write)):
+#             word = words_to_write[i]
+#             label = default_font.render(word, 1, black)
+#             column = i / solved_words_column_length
+#             row = i % solved_words_column_length
+#             left = solved_words_region_left +  column * ( solved_words_column_width + solved_words_column_padding)
+#             top = solved_words_region_top + row * (solved_words_height + solved_words_column_padding)
+#             screen.blit(label, (left, top))
+            #if (i % solved_words_column_length == 0)
+                
     
     def draw(self, screen):
         your_score_label = puzzle_letter_font.render("Your score: " + str(self.current_score), 1, black)
-        screen.blit(your_score_label, (correct_words_left, top_margin))
+        #screen.blit(your_score_label, (correct_words_left, top_margin))
         
         status_label = puzzle_letter_font.render(self.message, 1, black)
         screen.blit(status_label, (status_label_left, status_label_top))
@@ -96,35 +116,31 @@ class Game:
             if (letter != ''):
                 pygame.draw.rect(screen, black, (x, y ,square_width,square_width), 1)
             screen.blit(letter_label, (x + square_width/4, y + square_width/5))
-            
+        
+        
+        words_to_write = []
+        for length in sorted(self.length_counts.keys()):
+            count = self.length_counts[length]
+            for word in self.words_guessed_correct_by_length[length]:
+                words_to_write.append(word)
+            for j in range(count - len(self.words_guessed_correct_by_length[length])):
+                hyphens = '- ' * length
+                words_to_write.append(hyphens)
+        #print words_to_write
+        for i in range(len(words_to_write)):
+            word = words_to_write[i]
+            label = default_font.render(word, 10, black)
+            column = i / solved_words_column_length
+            row = i % solved_words_column_length
+            left = solved_words_region_left +  column * ( solved_words_column_width + solved_words_column_padding)
+            top = solved_words_region_top + row * (solved_words_height + solved_words_column_padding)
+            screen.blit(label, (left, top))
 #         for i in range(len(self.words_guessed_correct)):
 #             word = self.words_guessed_correct[i]
 #             word_label = puzzle_letter_font.render(word, 1, black)
 #             #pygame.draw.rect(screen, black, (correct_words_left, correct_words_top ,square_width,square_width), 1)
 #             screen.blit(word_label, (correct_words_left, correct_words_top + i*square_width))
-#
-        i = 0
-        for length in sorted(self.length_counts.keys()):
-            count = self.length_counts[length]
-            for word in self.words_guessed_correct_by_length[length]:
-                word_label = default_font.render(word, 1, black)
-                screen.blit(word_label, (correct_words_left, correct_words_top + i*square_width))
-                i += 1
-            for j in range(count - len(self.words_guessed_correct_by_length[length])):
-                hyphens = '- ' * length
-                word_label = default_font.render(hyphens, 1, black)
-                cw_top = correct_words_top1
-                cw_left = correct_words_left1
-                if (cw_top + 10 > game_height):
-                    cw_left = correct_words_left2
-                    cw_top = correct_words_top2
-                    i = 0
-                left = correct_words_left1
-                top = correct_words_top1 + i*square_width
 
-                screen.blit(word_label, (correct_words_left, correct_words_top + i*square_width))
-                i += 1
-                
 def main():
     game = Game()
     print sorted(game.solutions, key = lambda w : len(w))
