@@ -1,0 +1,9 @@
+some comments on the first presentation:
+  - title: Letter Lizard
+  - good presentation of project scope, very nicely illustrated using GUI mockups
+  - reasonable choice of implementation languages (with some good motivation for the choices)
+  - presentation slides did not cover some of the software engineering aspects of
+  the project such as the division of work. This was addressed during the
+  discussions that followed the presentation
+  - useful discussion of possible extensions of the system
+87 points

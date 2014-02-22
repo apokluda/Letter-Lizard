@@ -1,0 +1,50 @@
+Review of Group 4 Project Design Document: "Letter Lizard"
+
+The proposed system is an interactive game called "letter lizard", in
+which users are presented a set of letters from which they have to
+form as many words as possible. These words are then verified against
+a dictionary for correctness. A number of parameters can be chosen
+to select varying degrees of difficulty, such as the number of rounds
+the amount of time per round, and the difficulty of the selected words
+(based on usage frequency). Two different options are presented
+for checking the correctness of entered words, and a complexity 
+analysis is given for each approach.
+
+The team has selected Python, Ruby, and JavaScript as implementation
+languages and some thought has been given to game engine frameworks
+that can be used---PyGame will be used for the Python implementation,
+and a number of options are being explored for the other languages.
+
+The team aims to come up with a consistent design, to facilitate comparisons
+of the different implementations. The division of work is presented with
+a primary and a secondary developer being assigned for each language.
+
+The proposed system is well-explained and nicely illustrated using
+mockup screenshots. 
+
+I think it makes sense to aim for a consistent design at a high-level
+(e.g., by using a similar class structure). However, when it comes to
+lower-level implementation details, I think it is fine to have some
+divergence between the different implementations in cases where that
+enables you to use a key language feature. For example, you may encounter
+situations where Python's set comprehensions are highly applicable
+but where you would have to use a nested loop in the JavaScript implementation.
+In such a case, I would go with the solution that seems the most natural
+in each case, and explain and contrast the differences in your final presentation
+and report.
+
+One minor criticism on this writeup is the complexity analysis. In general,
+it is customary to use notation such as O(1) instead of O(50,002) for
+constant-time algorithms, and to use exponential functions instead of
+a factorial function. Overall, I think the approach you selected seems
+fine---this is just a quibble with the exposition of the complexity analysis.
+
+In addition, the proposal could have provided a bit more detail on the 
+plan for testing the system, and whether testing infrastructure can be
+shared between the different implementations.
+
+Overall, a nice and clear proposal. I look forward to seeing the implementations
+and hopefully a live demo!
+
+86 points
+
