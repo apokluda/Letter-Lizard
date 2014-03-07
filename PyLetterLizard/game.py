@@ -1,5 +1,5 @@
 import random
-import game_generator.game_generator as gg
+import game_generator as gg
 from config import *
 
 class Game:
