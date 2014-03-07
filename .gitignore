@@ -1,2 +1,6 @@
 *.pyc
 *~
+LetterLizardJS/.project
+LetterLizardJS/.settings
+PyLetterLizard/.project
+PyLetterLizard/.pydevproject
