@@ -143,7 +143,7 @@ letter_frequencies = [
 ('Z', 1.0),
 ]
 
-dd = os.path.dirname(os.path.realpath(__file__)) + "/scowl-7.1/final/"
+dd = os.path.dirname(os.path.realpath(__file__)) + "/../scowl-7.1/final/"
 
 dicts = {'easy': [dd+"english-words.10", dd+"english-words.20", dd+"english-words.35",
         dd+"canadian-words.10", dd+"canadian-words.20", dd+"canadian-words.35"]}
