@@ -92,6 +92,8 @@ var sprites = {};
 function loadComplete(event) {
 	stage.removeAllChildren();		// clear the loading message
 	
+	var cx = stage.canvas.offsetLeft;
+	var cy = stage.canvas.offsetTop;
 	var cw = stage.canvas.width;	// The width of the canvas
 	var ch = stage.canvas.height;	// The height of the canvas
 	var lx = cw * 0.70;				// The x-coord of the start of the word list
@@ -104,6 +106,23 @@ function loadComplete(event) {
 	var bmp = new createjs.Bitmap(queue.getResult("lizard"));
 	bmp.setTransform(0, ch - bmp.image.height*0.8, 0.8, 0.8);
 	stage.addChild(bmp);
+	
+	var bMainMenu = document.getElementById("btn:mainMenu");
+	bMainMenu.style.left = (cx + 250) + "px";
+	bMainMenu.style.top = (cy + 500) + "px";
+	bMainMenu.style.display = "inline";
+	
+	var bHint = document.getElementById("btn:hint");
+	bHint.style.width = bMainMenu.offsetWidth + "px";
+	bHint.style.left = (cx + 260 + bMainMenu.offsetWidth) + "px";
+	bHint.style.top = (cy + 500) + "px";
+	bHint.style.display = "inline";
+	
+	var bShuffle = document.getElementById("btn:shuffle");
+	bShuffle.style.width = bMainMenu.offsetWidth + "px";
+	bShuffle.style.left = (cx + 270 + 2*bMainMenu.offsetWidth) + "px";
+	bShuffle.style.top = (cy + 500) + "px";
+	bShuffle.style.display = "inline";
 	
 	var g = new createjs.Graphics();
 	g.beginFill("#000000").rect(0, 15, 3, ch - 30);

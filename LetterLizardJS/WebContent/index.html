@@ -12,12 +12,22 @@
 	margin-right: auto;
 	display: block;
 }
+.gameButton {
+	position: absolute;
+	display: none;
+	font-size: large;
+}
 </style>
 </head>
 <body onload="init()">
+	<div>
 	<canvas id="llcanvas" width="1024" height="576">
         Sorry! Your browser does not support the Canvas element.<br>
         Please update your browser so that you can enjoy the <em>Letter Lizard</em> game.
     </canvas>
+    <input type="button" value="Main Menu" id="btn:mainMenu" class="gameButton">
+    <input type="button" value="Hint" id="btn:hint" class="gameButton">
+    <input type="button" value="Shuffle" id="btn:shuffle" class="gameButton">
+    </div>
 </body>
 </html>
