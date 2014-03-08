@@ -25,6 +25,7 @@
 		ball.y = 200;
 
 		createjs.Tween.get(ball, {loop : true}).to({x : 450}, 3000).to({x : 50}, 3000);
+		createjs.Ticker.setFPS(30);
 		createjs.Ticker.addEventListener("tick", tick);
 
 		stage.addChild(ball);
