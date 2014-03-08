@@ -83,6 +83,7 @@ function init() {
 	);
 	queue.addEventListener("complete", loadComplete);
 	queue.loadManifest([{id:"title", src:"assets/letter_lizard.png"},
+	                    {id:"lizard", src:"assets/lizard.png"},
 	                    {id:"letters", src:"assets/letters.png"}]);
 }
 
@@ -98,6 +99,10 @@ function loadComplete(event) {
 	var bmp = new createjs.Bitmap(queue.getResult("title"));
 	bmp.x = (cw - lx) / 2;
 	bmp.y = 0;
+	stage.addChild(bmp);
+	
+	var bmp = new createjs.Bitmap(queue.getResult("lizard"));
+	bmp.setTransform(0, ch - bmp.image.height*0.8, 0.8, 0.8);
 	stage.addChild(bmp);
 	
 	var g = new createjs.Graphics();
