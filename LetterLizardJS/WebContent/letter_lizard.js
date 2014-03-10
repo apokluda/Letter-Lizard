@@ -17,11 +17,17 @@ Tile.prototype = {
 	}
 };
 
-function Scramble(letters) {
+function Scramble(letters, x, y, w) {
 	this.letters = letters;
 	
 	// Create a tile for each letter in the scramble and place them
 	// in their proper position in the row
+	var g = new createjs.Graphics();
+	g.beginStroke("#000000").drawRoundRect(0, 0, w, 70, 5);
+	var s = new createjs.Shape(g);
+	s.x = x;
+	s.y = y;
+	stage.addChild(s);
 }
 
 Scramble.prototype = {
@@ -92,8 +98,6 @@ var sprites = {};
 function loadComplete(event) {
 	stage.removeAllChildren();		// clear the loading message
 	
-	var cx = stage.canvas.offsetLeft;
-	var cy = stage.canvas.offsetTop;
 	var cw = stage.canvas.width;	// The width of the canvas
 	var ch = stage.canvas.height;	// The height of the canvas
 	var lx = cw * 0.70;				// The x-coord of the start of the word list
@@ -106,6 +110,49 @@ function loadComplete(event) {
 	var bmp = new createjs.Bitmap(queue.getResult("lizard"));
 	bmp.setTransform(0, ch - bmp.image.height*0.8, 0.8, 0.8);
 	stage.addChild(bmp);
+	
+	var g = new createjs.Graphics();
+	g.beginFill("#000000").rect(0, 15, 3, ch - 30);
+	var divider = new createjs.Shape(g);
+	divider.x = lx;
+	divider.y = 0;
+	stage.addChild(divider);
+	
+	var spriteSheet = new createjs.SpriteSheet({
+		images: [queue.getResult("letters")],
+		frames: [[0, 160, 42, 50, 0]]
+	});
+	spriteA = new createjs.Sprite(spriteSheet, 0);
+	spriteA.setTransform(2, 2);
+	var container = new createjs.Container();
+	
+	var g = new createjs.Graphics();
+	g.beginStroke("#000000").beginFill("#FFFFFF").drawRoundRect(0, 0, 50, 50, 5);
+	var s = new createjs.Shape(g);
+	container.addChild(s);
+	container.addChild(spriteA);
+	
+	container.x = 60;
+	container.y = 150;
+	
+	sprites.A = container;
+	
+	var scramble = new Scramble("A", 50, 140, lx - 100);
+	
+	createjs.Ticker.setFPS(30);
+	createjs.Ticker.addEventListener("tick", tick);
+	
+	stage.addChild(container);
+	
+	placeDOMElements();
+	
+	document.onkeydown = handleKeyDown;
+	window.onresize = placeDOMElements;
+}
+
+function placeDOMElements() {
+	var cx = stage.canvas.offsetLeft;
+	var cy = stage.canvas.offsetTop;
 	
 	var bMainMenu = document.getElementById("btn:mainMenu");
 	bMainMenu.style.left = (cx + 250) + "px";
@@ -123,40 +170,6 @@ function loadComplete(event) {
 	bShuffle.style.left = (cx + 270 + 2*bMainMenu.offsetWidth) + "px";
 	bShuffle.style.top = (cy + 500) + "px";
 	bShuffle.style.display = "inline";
-	
-	var g = new createjs.Graphics();
-	g.beginFill("#000000").rect(0, 15, 3, ch - 30);
-	var divider = new createjs.Shape(g);
-	divider.x = lx;
-	divider.y = 0;
-	stage.addChild(divider);
-	
-	var spriteSheet = new createjs.SpriteSheet({
-		images: [queue.getResult("letters")],
-		frames: [[0, 160, 42, 50, 0]]
-	});
-	spriteA = new createjs.Sprite(spriteSheet, 0);
-	spriteA.setTransform(2, 2);
-	var container = new createjs.Container();
-	container.addChild(spriteA);
-	
-	var g = new createjs.Graphics();
-	g.beginStroke("#000000").drawRoundRect(0, 0, 50, 50, 5);
-	var s = new createjs.Shape(g);
-	container.addChild(s);
-	
-	container.x = 100;
-	container.y = 100;
-	
-	sprites.A = container;
-	createjs.Tween.get(container).to({x:500}, 1000);
-	
-	createjs.Ticker.setFPS(30);
-	createjs.Ticker.addEventListener("tick", tick);
-	
-	stage.addChild(container);
-	
-	document.onkeydown = handleKeyDown;
 }
 
 function tick(event) {
