@@ -98,14 +98,15 @@ class Game:
         
         status_label = puzzle_letter_font.render(self.message, 1, black)
         screen.blit(status_label, (status_label_left, status_label_top))
-
-        
+        score_label = default_font.render("Score: " + str(self.current_score), 1, black)
+        screen.blit(score_label, (score_left, score_top))
         for i in range(len(self.letters_guessed)):
             letter = self.letters_guessed[i]
             x = letters_guessed_left + i * square_width + i * spacing
             y = letters_guessed_top
             letter_label = guessed_letter_font.render(letter, 1, black)
-            pygame.draw.rect(screen, black, (x, y ,square_width,square_width), 1)
+            pygame.draw.rect(screen, white, (x, y ,square_width,square_width), 0)
+            pygame.draw.rect(screen, black, (x, y ,square_width,square_width), 3)
             screen.blit(letter_label, (x + square_width/4, y + square_width/5))
         
         for i in range(len(self.puzzle_letters_displayed)):
@@ -114,7 +115,8 @@ class Game:
             y = puzzle_letters_top
             letter_label = puzzle_letter_font.render(letter, 1, black)
             if (letter != ''):
-                pygame.draw.rect(screen, black, (x, y ,square_width,square_width), 1)
+                pygame.draw.rect(screen, white, (x, y ,square_width,square_width), 0)
+                pygame.draw.rect(screen, black, (x, y ,square_width,square_width), 3)
             screen.blit(letter_label, (x + square_width/4, y + square_width/5))
         
         
