@@ -93,21 +93,24 @@ Tile.prototype = {
 	placeAt: function(x, y) {
 		this.container.x = x;
 		this.container.y = y;
+		this.saved.x = x;
+		this.saved.y = y;
 	},
 	
-	moveTo: function(x, y) {
+	moveTo: function(x, y, save) {
 		// Moves the tile to the specified x and y coordinates.
 		// This function is called by the Scramble and Builder classes
+		//console.log("tile moved to " + x + ", " + y);
 		createjs.Tween.get(this.container).to({x:x, y:y}, 500);
-	},
-	
-	saveLocation: function() {
-		this.saved.x = this.container.x;
-		this.saved.y = this.container.y;
+		if (save) {
+			this.saved.x = x;
+			this.saved.y = y;
+		}
 	},
 	
 	reset: function() {
-		moveToXY(this.saved.x, this.saved.y);
+		//console.log("resetting tile");
+		this.moveTo(this.saved.x, this.saved.y);
 	},
 };
 
@@ -134,7 +137,6 @@ function Scramble(letters, x, y, w) {
 		var letter = letters.charAt(i);
 		var tile = tileFactory(letter);
 		tile.placeAt(this.x + 10 + 60 * i, this.y + 10);
-		tile.saveLocation();
 		tile.scramblePos = i;
 		stage.addChild(tile.container);
 		this.tiles[i] = tile;
@@ -155,7 +157,6 @@ Scramble.prototype = {
 			if (this.tiles[i] && this.tiles[i].letter == letter) {
 				var tile = this.tiles[i];
 				this.tiles[i] = undefined;
-				console.log("Builder took tile " + i);
 				return tile;
 			}
 		}
@@ -166,6 +167,7 @@ Scramble.prototype = {
 		// in the scramble
 		this.tiles[tile.scramblePos] = tile;
 		tile.reset();
+		//console.log("reset tile");
 	},
 
 	shuffle: function() {
@@ -176,7 +178,7 @@ Scramble.prototype = {
 				mytiles.push(i);
 			}
 		}
-		console.log(mytiles);
+		//console.log(mytiles);
 		mytiles = shuffle(mytiles);
 		
 		var tilescpy = this.tiles.slice(0);
@@ -184,10 +186,8 @@ Scramble.prototype = {
 		for (var i = 0, j = 0; i < this.tiles.length; ++i) {
 			// Move tile at position j to position i
 			if (this.tiles[i]) {
-				console.log("Moving tile " + mytiles[j] + " to " + i);
 				var tile = tilescpy[mytiles[j++]];
-				tile.moveTo(this.x + 10 + 60 * i, this.y + 10);
-				tile.saveLocation();
+				tile.moveTo(this.x + 10 + 60 * i, this.y + 10, true);
 				tile.scramblePos = i;
 				this.tiles[i] = tile;
 			}
@@ -199,7 +199,7 @@ function Builder(scramble, x, y, w) {
 	this.scramble = scramble;
 	this.x = x;
 	this.y = y;
-	this.word = "";
+	this.tiles = [];
 	
 	var g = new createjs.Graphics();
 	g.beginFill("#000000").rect(0, 0, w, 2);
@@ -214,14 +214,26 @@ Builder.prototype = {
 		// Moves the tile
 		var tile = scramble.getTile(letter);
 		if (tile) {
-			var i = this.word.length;
+			var i = this.tiles.length;
 			tile.moveTo(this.x + 10 + i * 60, this.y + 10);
-			this.word += tile.letter;
+			this.tiles.push(tile);
 		}
 	},
 
 	getWord: function() {
 		// Return the word formed by the tiles placed in the Builder
+		var word = "";
+		for (var i = 0; i < this.tiles.length; ++i) {
+			word += this.tiles[i].letter;
+		}
+		return word;
+	},
+	
+	returnTile: function() {
+		var tile = this.tiles.pop();
+		if (tile) {
+			this.scramble.returnTile(tile);
+		}
 	},
 	
 	reset: function() {
@@ -319,7 +331,7 @@ function placeDOMElements() {
 
 function tick(event) {
 	stage.update();
-	console.log("updated stage");
+	//console.log("updated stage");
 }
 
 function handleKeyDown(e) {
@@ -327,10 +339,15 @@ function handleKeyDown(e) {
 	if (!e) { e = window.event; }
 	if (e.keyCode >= 65 && e.keyCode <= 90) {
 		builder.takeTile(String.fromCharCode(e.keyCode));
+		return;
 	}
 	switch (e.keyCode)
 	{
+	case 8: // backspace
+		builder.returnTile();
+		break;
 	case 32: // spacebar
 		scramble.shuffle();
+		break;
 	}
 }
