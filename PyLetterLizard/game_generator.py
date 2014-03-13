@@ -203,6 +203,18 @@ def generate_game(difficulty, size=6, num=1):
         if len(soln) > 3:
             return (scramble, soln)
 
+def compare_words(word1, word2):
+    if (len(word1) < len(word2)):
+        return -1
+    elif (len(word1) > len(word2)):
+        return 1
+    elif word1 < word2:
+        return -1
+    elif word1 > word2:
+        return 1
+    else:
+        return 0
+
 class OutputFormatter:
     def beginOutput(self):
         pass
@@ -262,6 +274,5 @@ if __name__ == "__main__":
     formatter.beginOutput()
     for i in range(args.num):
         scramble, words = generate_game(args.difficulty, args.size)
-        formatter.output(scramble, words)
+        formatter.output(scramble, sorted(words, cmp=compare_words))
     formatter.endOutput()
-
