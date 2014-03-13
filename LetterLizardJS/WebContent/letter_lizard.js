@@ -4,6 +4,19 @@
 //var queue;
 //var scramble;
 
+games = [
+{letters: 'RSIPIV', words: ['RIP', 'RIPS', 'SIR', 'IRIS', 'PIS', 'SIP']},
+{letters: 'RTGOSO', words: ['GOT', 'ROOT', 'SORT', 'TOO', 'ROOTS', 'ROT', 'GOO', 'ROOST', 'ROTS', 'SOOT', 'TORSO']},
+{letters: 'CESALT', words: ['ACT', 'ACTS', 'ATE', 'CASE', 'CAT', 'EAST', 'EAT', 'EATS', 'LAST', 'LATE', 'LEAST', 'LET', 'LETS', 'SALE', 'SAT', 'SCALE', 'SET', 'STEAL', 'TEA', 'ACE', 'CAST', 'CASTLE', 'CATS', 'LEST', 'SALT', 'SEA', 'SEAL', 'SEAT', 'SECT', 'STALE', 'TALE', 'TALES', 'ACES', 'ALE', 'ALES', 'CASTE', 'CLEAT', 'CLEATS', 'LACE', 'LACES', 'SAC', 'SLAT', 'SLATE', 'TALC', 'TEAS']},
+{letters: 'SRDOTA', words: ['ART', 'ROAD', 'SAD', 'SAT', 'SORT', 'ARTS', 'DOT', 'DOTS', 'OAR', 'RAT', 'RATS', 'ROADS', 'ROD', 'ROT', 'SOD', 'STAR', 'TOAD', 'ADO', 'ADS', 'DART', 'DARTS', 'DOS', 'OARS', 'ROAST', 'RODS', 'ROTS', 'SOAR', 'SODA', 'SORTA', 'TAR', 'TARS', 'TOADS', 'TROD']},
+{letters: 'OGIHAR', words: ['AGO', 'AIR', 'HAIR', 'HOG', 'OAR', 'RAG', 'HAG', 'RIG']},
+{letters: 'NAINNO', words: ['ION', 'ANON', 'INN', 'NON']},
+{letters: 'SOOMNO', words: ['SON', 'SOON', 'MOON', 'MOONS', 'MOO', 'MOOS']},
+{letters: 'UPTEEI', words: ['PUT', 'TIE', 'PET', 'PIE', 'PIT', 'TIP', 'TEE']},
+{letters: 'UQRSOE', words: ['OUR', 'OURS', 'SURE', 'USE', 'USER', 'ROSE', 'SORE', 'SUE', 'ORE', 'ORES', 'ROE', 'ROES', 'ROUSE', 'RUE', 'RUES', 'RUSE', 'SOUR']},
+{letters: 'ESASSD', words: ['SAD', 'SEA', 'ADS', 'ASSES', 'SADES', 'SEAS']},
+];
+
 // REPORT: using closure to encapsulate private data
 function getTileFactory(scramble) {
 	
@@ -241,6 +254,12 @@ Builder.prototype = {
 	}
 };
 
+function Game() {
+	var i = parseInt(Math.random() * games.length);
+	this.letters = games[i].letters;
+	this.words = games[i].words;
+}
+
 function init() {
 	stage = new createjs.Stage("llcanvas");
 	
@@ -289,7 +308,8 @@ function loadComplete(event) {
 	divider.y = 15;
 	stage.addChild(divider);
 	
-	scramble = new Scramble("ABCDEF", 50, 140, lx - 100);
+	game = new Game();
+	scramble = new Scramble(game.letters, 50, 140, lx - 100);
 	builder = new Builder(scramble, 50, 240, lx - 100);
 	
 	createjs.Ticker.setFPS(30);
