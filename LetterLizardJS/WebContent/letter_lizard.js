@@ -1,6 +1,8 @@
-var stage;
-var queue;
-var tiles = {};
+// REPORT: when assigned to in the functions below without the var keyword
+// these become properties of the global object
+//var stage;
+//var queue;
+//var scramble;
 
 // REPORT: using closure to encapsulate private data
 function getTileFactory(scramble) {
@@ -84,6 +86,7 @@ function getTileFactory(scramble) {
 
 function Tile(letter) {
 	this.letter = letter;
+	this.saved = {};
 }
 
 Tile.prototype = {
@@ -111,7 +114,9 @@ Tile.prototype = {
 // REPORT: Object oriented design using prototypes
 function Scramble(letters, x, y, w) {
 	this.letters = letters;
-	this.tiles = {};
+	// We store the tiles in an array instead of a dictionary becasue
+	// there may be duplicate letters
+	this.tiles = [];
 	this.x = x;
 	this.y = y;
 	
@@ -129,24 +134,50 @@ function Scramble(letters, x, y, w) {
 		var letter = letters.charAt(i);
 		var tile = tileFactory(letter);
 		tile.placeAt(this.x + 10 + 60 * i, this.y + 10);
+		tile.saveLocation();
+		tile.scramblePos = i;
 		stage.addChild(tile.container);
-		this.tiles[letter] = tile;
+		this.tiles[i] = tile;
 	}
 }
 
+// An implementation of the Fisher-Yates shuffle
+//+ Jonas Raoni Soares Silva
+//@ http://jsfromhell.com/array/shuffle [v1.0]
+shuffle = function(o){ //v1.0
+	for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+	return o;
+};
+
 Scramble.prototype = {
-	getTile: function(keyCode) {
+	getTile: function(letter) {
 		// Get the first tile that contains the letter for keyCode
 		// if it exists has has not been given to the Builder
+		for (var i = 0; i < this.tiles.length; ++i) {
+			if (this.tiles[i] && this.tiles[i].letter == letter) {
+				var tile = this.tiles[i];
+				this.tiles[i] = undefined;
+				return tile;
+			}
+		}
 	},
 	
 	returnTile: function(tile) {
 		// Causes the tile to be returned to its original position
 		// in the scramble
+		this.tiles[tile.scramblePos] = tile;
+		tile.reset();
 	},
 
-	scramble: function() {
+	shuffle: function() {
 		// Changes the order of the letters
+		this.tiles = shuffle(this.tiles);
+		for (var i = 0; i < this.tiles.length; ++i) {
+			var tile = this.tiles[i];
+			tile.moveTo(this.x + 10 + 60 * i, this.y + 10);
+			tile.saveLocation();
+			tile.scramblePos = i;
+		}
 	}
 };
 
@@ -222,13 +253,17 @@ function loadComplete(event) {
 	divider.y = 0;
 	stage.addChild(divider);
 	
-	var scramble = new Scramble("ABCDEF", 50, 140, lx - 100);
+	scramble = new Scramble("ABCDEF", 50, 140, lx - 100);
 	
 	createjs.Ticker.setFPS(30);
 	createjs.Ticker.addEventListener("tick", tick);
 	
 	placeDOMElements();
 	
+	var bShuffle = document.getElementById("btn:shuffle");
+	bShuffle.onclick = function() {
+		scramble.shuffle();
+	}
 	document.onkeydown = handleKeyDown;
 	window.onresize = placeDOMElements;
 }
@@ -265,23 +300,8 @@ function handleKeyDown(e) {
 	if (!e) { e = window.event; }
 	switch (e.keyCode)
 	{
-	case 83:
-		createjs.Tween.get(tiles.S.container).to({x:60, y:250}, 500);
-		break;
-	case 67:
-		createjs.Tween.get(tiles.C.container).to({x:120, y:250}, 500);
-		break;
-	case 82:
-		createjs.Tween.get(tiles.R.container).to({x:180, y:250}, 500);
-		break;
-	case 73:
-		createjs.Tween.get(tiles.I.container).to({x:240, y:250}, 500);
-		break;
-	case 80:
-		createjs.Tween.get(tiles.P.container).to({x:300, y:250}, 500);
-		break;
-	case 84:
-		createjs.Tween.get(tiles.T.container).to({x:360, y:250}, 500);
-		break;
+	case 65: // A
+	case 32: // spacebar
+		scramble.shuffle();
 	}
 }
