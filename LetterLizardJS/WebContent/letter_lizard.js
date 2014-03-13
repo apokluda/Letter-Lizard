@@ -250,7 +250,9 @@ Builder.prototype = {
 	},
 	
 	reset: function() {
-		// for tile in tiles, tile.reset();
+		while (this.tiles.length) {
+			this.returnTile();
+		}
 	}
 };
 
@@ -259,6 +261,13 @@ function Game() {
 	this.letters = games[i].letters;
 	this.words = games[i].words;
 }
+
+Game.prototype = {
+	checkWord: function() {
+		var word = builder.getWord();
+		builder.reset();
+	}
+};
 
 function init() {
 	stage = new createjs.Stage("llcanvas");
@@ -365,6 +374,9 @@ function handleKeyDown(e) {
 	{
 	case 8: // backspace
 		builder.returnTile();
+		break;
+	case 13: // enter
+		game.checkWord();
 		break;
 	case 32: // spacebar
 		scramble.shuffle();
