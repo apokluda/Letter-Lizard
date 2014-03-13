@@ -114,7 +114,7 @@ Tile.prototype = {
 // REPORT: Object oriented design using prototypes
 function Scramble(letters, x, y, w) {
 	this.letters = letters;
-	// We store the tiles in an array instead of a dictionary becasue
+	// We store the tiles in an array instead of a dictionary because
 	// there may be duplicate letters
 	this.tiles = [];
 	this.x = x;
@@ -141,12 +141,10 @@ function Scramble(letters, x, y, w) {
 	}
 }
 
-// An implementation of the Fisher-Yates shuffle
-//+ Jonas Raoni Soares Silva
-//@ http://jsfromhell.com/array/shuffle [v1.0]
-shuffle = function(o){ //v1.0
-	for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-	return o;
+// An implementation of the Fisher-Yates shuffle from http://jsfromhell.com/array/shuffle
+shuffle = function(v){
+    for(var j, x, i = v.length; i; j = parseInt(Math.random() * i), x = v[--i], v[i] = v[j], v[j] = x);
+    return v;
 };
 
 Scramble.prototype = {
@@ -157,6 +155,7 @@ Scramble.prototype = {
 			if (this.tiles[i] && this.tiles[i].letter == letter) {
 				var tile = this.tiles[i];
 				this.tiles[i] = undefined;
+				console.log("Builder took tile " + i);
 				return tile;
 			}
 		}
@@ -170,19 +169,44 @@ Scramble.prototype = {
 	},
 
 	shuffle: function() {
-		// Changes the order of the letters
-		this.tiles = shuffle(this.tiles);
+		// We need to skip tiles that have been moved to the builder
+		var mytiles = [];
 		for (var i = 0; i < this.tiles.length; ++i) {
-			var tile = this.tiles[i];
-			tile.moveTo(this.x + 10 + 60 * i, this.y + 10);
-			tile.saveLocation();
-			tile.scramblePos = i;
+			if (this.tiles[i]) {
+				mytiles.push(i);
+			}
+		}
+		console.log(mytiles);
+		mytiles = shuffle(mytiles);
+		
+		var tilescpy = this.tiles.slice(0);
+		
+		for (var i = 0, j = 0; i < this.tiles.length; ++i) {
+			// Move tile at position j to position i
+			if (this.tiles[i]) {
+				console.log("Moving tile " + mytiles[j] + " to " + i);
+				var tile = tilescpy[mytiles[j++]];
+				tile.moveTo(this.x + 10 + 60 * i, this.y + 10);
+				tile.saveLocation();
+				tile.scramblePos = i;
+				this.tiles[i] = tile;
+			}
 		}
 	}
 };
 
-function Builder(scramble) {
+function Builder(scramble, x, y, w) {
 	this.scramble = scramble;
+	this.x = x;
+	this.y = y;
+	this.word = "";
+	
+	var g = new createjs.Graphics();
+	g.beginFill("#000000").rect(0, 0, w, 2);
+	var s = new createjs.Shape(g);
+	s.x = this.x;
+	s.y = this.y + 70;
+	stage.addChild(s);
 }
 
 Builder.prototype = {
@@ -190,7 +214,9 @@ Builder.prototype = {
 		// Moves the tile
 		var tile = scramble.getTile(letter);
 		if (tile) {
-			tile.moveTo();
+			var i = this.word.length;
+			tile.moveTo(this.x + 10 + i * 60, this.y + 10);
+			this.word += tile.letter;
 		}
 	},
 
@@ -228,8 +254,6 @@ function init() {
 	                    {id:"letters", src:"assets/letters.png"}]);
 }
 
-var sprites = {};
-
 function loadComplete(event) {
 	stage.removeAllChildren();		// clear the loading message
 	
@@ -247,13 +271,14 @@ function loadComplete(event) {
 	stage.addChild(bmp);
 	
 	var g = new createjs.Graphics();
-	g.beginFill("#000000").rect(0, 15, 2, ch - 30);
+	g.beginFill("#000000").rect(0, 0, 2, ch - 30);
 	var divider = new createjs.Shape(g);
 	divider.x = lx;
-	divider.y = 0;
+	divider.y = 15;
 	stage.addChild(divider);
 	
 	scramble = new Scramble("ABCDEF", 50, 140, lx - 100);
+	builder = new Builder(scramble, 50, 240, lx - 100);
 	
 	createjs.Ticker.setFPS(30);
 	createjs.Ticker.addEventListener("tick", tick);
@@ -261,9 +286,11 @@ function loadComplete(event) {
 	placeDOMElements();
 	
 	var bShuffle = document.getElementById("btn:shuffle");
+	// REPORT: talk about why a function is needed here instead of assigning
+	// scramble.shuffle to onclick directly (like storing 'this' in a variable called 'that')
 	bShuffle.onclick = function() {
 		scramble.shuffle();
-	}
+	};
 	document.onkeydown = handleKeyDown;
 	window.onresize = placeDOMElements;
 }
@@ -298,9 +325,11 @@ function tick(event) {
 function handleKeyDown(e) {
 	// cross browser issues exist
 	if (!e) { e = window.event; }
+	if (e.keyCode >= 65 && e.keyCode <= 90) {
+		builder.takeTile(String.fromCharCode(e.keyCode));
+	}
 	switch (e.keyCode)
 	{
-	case 65: // A
 	case 32: // spacebar
 		scramble.shuffle();
 	}
