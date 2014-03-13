@@ -203,6 +203,31 @@ def generate_game(difficulty, size=6, num=1):
         if len(soln) > 3:
             return (scramble, soln)
 
+class OutputFormatter:
+    def beginOutput(self):
+        pass
+    
+    def output(self, scramble, words):
+        pass
+    
+    def endOutput(self):
+        pass
+
+class PlainFormatter(OutputFormatter):
+    def output(self, scramble, words):
+        print(scramble, *words)
+
+class JavaScriptFormatter(OutputFormatter):
+    def beginOutput(self):
+        print("games = [")
+    
+    def output(self, scramble, words):
+        print("{letters: '", scramble, "', words: ['", sep='', end='')
+        print(*words, sep="', '", end="']},\n")
+    
+    def endOutput(self):
+        print("];")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -222,8 +247,21 @@ if __name__ == "__main__":
             type=int,
             default=1,
             help="the number of games to generate")
+    parser.add_argument(
+            "-m", "--markup",
+            type=str,
+            choices=["plain", "JavaScript"],
+            default="plain",
+            help="the markup language to use for output")
     args = parser.parse_args()
+    formatter = OutputFormatter()
+    if args.markup == "plain":
+        formatter = PlainFormatter()
+    elif args.markup == "JavaScript":
+        formatter = JavaScriptFormatter()
+    formatter.beginOutput()
     for i in range(args.num):
         scramble, words = generate_game(args.difficulty, args.size)
-        print(scramble, *words)
+        formatter.output(scramble, words)
+    formatter.endOutput()
 
