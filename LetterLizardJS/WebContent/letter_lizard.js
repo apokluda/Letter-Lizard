@@ -27,12 +27,12 @@ function getTileFactory(scramble) {
 		         [210, 210, 38, 42], // R
 		         [248, 210, 33, 42], // S
 		         [281, 210, 30, 42], // T
-		         [311,], // U
-		         [], // V
-		         [], // W
-		         [], // X
-		         [], // Y
-		         [], // Z
+		         [311, 210, 37, 42], // U
+		         [348, 210, 41, 42], // V
+		         [0,   260, 50, 42], // W
+		         [50,  260, 42, 42], // X
+		         [96,  260, 37, 42], // Y
+		         [133, 260, 38, 42], // Z
 		]});
 	
 	var offsets = [{x:2,  y:2}, // A
@@ -55,12 +55,12 @@ function getTileFactory(scramble) {
 	               {x:5,  y:3}, // R
 	               {x:7,  y:3}, // S
 	               {x:9,  y:3}, // T
-	               {}, // U
-	               {}, // V
-	               {}, // W
-	               {}, // X
-	               {}, // Y
-	               {}, // Z
+	               {x:6,  y:3}, // U
+	               {x:5,  y:3}, // V
+	               {x:0,  y:3}, // W
+	               {x:4,  y:3}, // X
+	               {x:6,  y:3}, // Y
+	               {x:5,  y:2}, // Z
 	               ];
 	
 	return function(letter) {
@@ -126,13 +126,13 @@ function Scramble(letters, x, y, w) {
 //	tile.container.y = 150;
 //	stage.addChild(tile.container);
 //	
-	var tile = tileFactory("C");
-	tile.scramblePos = 3;
-	
-	tile.container.x = 60 * (tile.scramblePos + 1);
-	tile.container.y = 150;
-	stage.addChild(tile.container);
-	tiles.C = tile;
+//	var tile = tileFactory("C");
+//	tile.scramblePos = 3;
+//	
+//	tile.container.x = 60 * (tile.scramblePos + 1);
+//	tile.container.y = 150;
+//	stage.addChild(tile.container);
+//	tiles.C = tile;
 //	
 //	var tile = tileFactory("D");
 //	tile.scramblePos = 3;
@@ -169,13 +169,13 @@ function Scramble(letters, x, y, w) {
 //	tile.container.y = 150;
 //	stage.addChild(tile.container);
 //	
-	var tile = tileFactory("I");
-	tile.scramblePos = 2;
-	
-	tile.container.x = 60 * (tile.scramblePos + 1);
-	tile.container.y = 150;
-	stage.addChild(tile.container);
-	tiles.I = tile;
+//	var tile = tileFactory("I");
+//	tile.scramblePos = 2;
+//	
+//	tile.container.x = 60 * (tile.scramblePos + 1);
+//	tile.container.y = 150;
+//	stage.addChild(tile.container);
+//	tiles.I = tile;
 //	
 //	var tile = tileFactory("J");
 //	tile.scramblePos = 9;
@@ -219,13 +219,13 @@ function Scramble(letters, x, y, w) {
 //	tile.container.y = 150;
 //	stage.addChild(tile.container);
 //	
-	var tile = tileFactory("P");
-	tile.scramblePos = 1;
-	
-	tile.container.x = 60 * (tile.scramblePos + 1);
-	tile.container.y = 150;
-	stage.addChild(tile.container);
-	tiles.P = tile;
+//	var tile = tileFactory("P");
+//	tile.scramblePos = 1;
+//	
+//	tile.container.x = 60 * (tile.scramblePos + 1);
+//	tile.container.y = 150;
+//	stage.addChild(tile.container);
+//	tiles.P = tile;
 //	
 //	var tile = tileFactory("Q");
 //	tile.scramblePos = 6;
@@ -234,24 +234,72 @@ function Scramble(letters, x, y, w) {
 //	tile.container.y = 150;
 //	stage.addChild(tile.container);
 //	
-	var tile = tileFactory("R");
+//	var tile = tileFactory("R");
+//	tile.scramblePos = 0;
+//	
+//	tile.container.x = 60 * (tile.scramblePos + 1);
+//	tile.container.y = 150;
+//	stage.addChild(tile.container);
+//	tiles.R = tile;
+//	
+//	var tile = tileFactory("S");
+//	tile.scramblePos = 5;
+//	
+//	tile.container.x = 60 * (tile.scramblePos + 1);
+//	tile.container.y = 150;
+//	stage.addChild(tile.container);
+//	tiles.S = tile;
+//	
+//	var tile = tileFactory("T");
+//	tile.scramblePos = 4;
+//	
+//	tile.container.x = 60 * (tile.scramblePos + 1);
+//	tile.container.y = 150;
+//	stage.addChild(tile.container);
+//	tiles.T = tile;
+	
+	var tile = tileFactory("U");
 	tile.scramblePos = 0;
 	
 	tile.container.x = 60 * (tile.scramblePos + 1);
 	tile.container.y = 150;
 	stage.addChild(tile.container);
-	tiles.R = tile;
+	tiles.T = tile;
 	
-	var tile = tileFactory("S");
-	tile.scramblePos = 5;
+	var tile = tileFactory("V");
+	tile.scramblePos = 1;
 	
 	tile.container.x = 60 * (tile.scramblePos + 1);
 	tile.container.y = 150;
 	stage.addChild(tile.container);
-	tiles.S = tile;
+	tiles.T = tile;
 	
-	var tile = tileFactory("T");
+	var tile = tileFactory("W");
+	tile.scramblePos = 2;
+	
+	tile.container.x = 60 * (tile.scramblePos + 1);
+	tile.container.y = 150;
+	stage.addChild(tile.container);
+	tiles.T = tile;
+	
+	var tile = tileFactory("X");
+	tile.scramblePos = 3;
+	
+	tile.container.x = 60 * (tile.scramblePos + 1);
+	tile.container.y = 150;
+	stage.addChild(tile.container);
+	tiles.T = tile;
+	
+	var tile = tileFactory("Y");
 	tile.scramblePos = 4;
+	
+	tile.container.x = 60 * (tile.scramblePos + 1);
+	tile.container.y = 150;
+	stage.addChild(tile.container);
+	tiles.T = tile;
+	
+	var tile = tileFactory("Z");
+	tile.scramblePos = 5;
 	
 	tile.container.x = 60 * (tile.scramblePos + 1);
 	tile.container.y = 150;
