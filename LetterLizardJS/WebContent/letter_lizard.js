@@ -74,7 +74,7 @@ function getTileFactory(scramble) {
 		var s = new createjs.Shape(g);
 		
 		// REPORT: adding property to function
-		var tile = new Tile(letter, scramble);
+		var tile = new Tile(letter);
 		tile.container = new createjs.Container();
 		tile.container.addChild(s);
 		tile.container.addChild(sprite);
@@ -82,229 +82,56 @@ function getTileFactory(scramble) {
 	};
 }
 
-function Tile(letter, scramble) {
+function Tile(letter) {
 	this.letter = letter;
-	this.scramble = scramble;
 }
 
 Tile.prototype = {
+	placeAt: function(x, y) {
+		this.container.x = x;
+		this.container.y = y;
+	},
+	
 	moveTo: function(x, y) {
 		// Moves the tile to the specified x and y coordinates.
 		// This function is called by the Scramble and Builder classes
+		createjs.Tween.get(this.container).to({x:x, y:y}, 500);
+	},
+	
+	saveLocation: function() {
+		this.saved.x = this.container.x;
+		this.saved.y = this.container.y;
 	},
 	
 	reset: function() {
-		this.scramble.returnTile(this);
-	}
+		moveToXY(this.saved.x, this.saved.y);
+	},
 };
 
 // REPORT: Object oriented design using prototypes
 function Scramble(letters, x, y, w) {
 	this.letters = letters;
+	this.tiles = {};
+	this.x = x;
+	this.y = y;
 	
-	// Create a tile for each letter in the scramble and place them
-	// in their proper position in the row
 	var g = new createjs.Graphics();
 	g.beginStroke("#000000").drawRoundRect(0, 0, w, 70, 5);
 	var s = new createjs.Shape(g);
-	s.x = x;
-	s.y = y;
+	s.x = this.x;
+	s.y = this.y;
 	stage.addChild(s);
 
+	// Create a tile for each letter in the scramble and place them
+	// in their proper position in the row
 	var tileFactory = getTileFactory(this);
-//	var tile = tileFactory("A");
-//	tile.scramblePos = 0;
-//	
-//	tile.container.x = 60;
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("B");
-//	tile.scramblePos = 1;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("C");
-//	tile.scramblePos = 3;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	tiles.C = tile;
-//	
-//	var tile = tileFactory("D");
-//	tile.scramblePos = 3;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("E");
-//	tile.scramblePos = 4;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("F");
-//	tile.scramblePos = 5;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("G");
-//	tile.scramblePos = 6;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("H");
-//	tile.scramblePos = 7;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("I");
-//	tile.scramblePos = 2;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	tiles.I = tile;
-//	
-//	var tile = tileFactory("J");
-//	tile.scramblePos = 9;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("K");
-//	tile.scramblePos = 0;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("L");
-//	tile.scramblePos = 1;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("M");
-//	tile.scramblePos = 2;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("N");
-//	tile.scramblePos = 3;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("O");
-//	tile.scramblePos = 4;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("P");
-//	tile.scramblePos = 1;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	tiles.P = tile;
-//	
-//	var tile = tileFactory("Q");
-//	tile.scramblePos = 6;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	
-//	var tile = tileFactory("R");
-//	tile.scramblePos = 0;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	tiles.R = tile;
-//	
-//	var tile = tileFactory("S");
-//	tile.scramblePos = 5;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	tiles.S = tile;
-//	
-//	var tile = tileFactory("T");
-//	tile.scramblePos = 4;
-//	
-//	tile.container.x = 60 * (tile.scramblePos + 1);
-//	tile.container.y = 150;
-//	stage.addChild(tile.container);
-//	tiles.T = tile;
-	
-	var tile = tileFactory("U");
-	tile.scramblePos = 0;
-	
-	tile.container.x = 60 * (tile.scramblePos + 1);
-	tile.container.y = 150;
-	stage.addChild(tile.container);
-	tiles.T = tile;
-	
-	var tile = tileFactory("V");
-	tile.scramblePos = 1;
-	
-	tile.container.x = 60 * (tile.scramblePos + 1);
-	tile.container.y = 150;
-	stage.addChild(tile.container);
-	tiles.T = tile;
-	
-	var tile = tileFactory("W");
-	tile.scramblePos = 2;
-	
-	tile.container.x = 60 * (tile.scramblePos + 1);
-	tile.container.y = 150;
-	stage.addChild(tile.container);
-	tiles.T = tile;
-	
-	var tile = tileFactory("X");
-	tile.scramblePos = 3;
-	
-	tile.container.x = 60 * (tile.scramblePos + 1);
-	tile.container.y = 150;
-	stage.addChild(tile.container);
-	tiles.T = tile;
-	
-	var tile = tileFactory("Y");
-	tile.scramblePos = 4;
-	
-	tile.container.x = 60 * (tile.scramblePos + 1);
-	tile.container.y = 150;
-	stage.addChild(tile.container);
-	tiles.T = tile;
-	
-	var tile = tileFactory("Z");
-	tile.scramblePos = 5;
-	
-	tile.container.x = 60 * (tile.scramblePos + 1);
-	tile.container.y = 150;
-	stage.addChild(tile.container);
-	tiles.T = tile;
+	for (var i = 0; i < letters.length; ++i) {
+		var letter = letters.charAt(i);
+		var tile = tileFactory(letter);
+		tile.placeAt(this.x + 10 + 60 * i, this.y + 10);
+		stage.addChild(tile.container);
+		this.tiles[letter] = tile;
+	}
 }
 
 Scramble.prototype = {
@@ -395,7 +222,7 @@ function loadComplete(event) {
 	divider.y = 0;
 	stage.addChild(divider);
 	
-	var scramble = new Scramble("A", 50, 140, lx - 100);
+	var scramble = new Scramble("ABCDEF", 50, 140, lx - 100);
 	
 	createjs.Ticker.setFPS(30);
 	createjs.Ticker.addEventListener("tick", tick);
