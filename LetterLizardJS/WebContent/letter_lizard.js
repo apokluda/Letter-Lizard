@@ -4,19 +4,6 @@
 //var queue;
 //var scramble;
 
-games = [
-{letters: 'RSIPIV', words: ['RIP', 'RIPS', 'SIR', 'IRIS', 'PIS', 'SIP']},
-{letters: 'RTGOSO', words: ['GOT', 'ROOT', 'SORT', 'TOO', 'ROOTS', 'ROT', 'GOO', 'ROOST', 'ROTS', 'SOOT', 'TORSO']},
-{letters: 'CESALT', words: ['ACT', 'ACTS', 'ATE', 'CASE', 'CAT', 'EAST', 'EAT', 'EATS', 'LAST', 'LATE', 'LEAST', 'LET', 'LETS', 'SALE', 'SAT', 'SCALE', 'SET', 'STEAL', 'TEA', 'ACE', 'CAST', 'CASTLE', 'CATS', 'LEST', 'SALT', 'SEA', 'SEAL', 'SEAT', 'SECT', 'STALE', 'TALE', 'TALES', 'ACES', 'ALE', 'ALES', 'CASTE', 'CLEAT', 'CLEATS', 'LACE', 'LACES', 'SAC', 'SLAT', 'SLATE', 'TALC', 'TEAS']},
-{letters: 'SRDOTA', words: ['ART', 'ROAD', 'SAD', 'SAT', 'SORT', 'ARTS', 'DOT', 'DOTS', 'OAR', 'RAT', 'RATS', 'ROADS', 'ROD', 'ROT', 'SOD', 'STAR', 'TOAD', 'ADO', 'ADS', 'DART', 'DARTS', 'DOS', 'OARS', 'ROAST', 'RODS', 'ROTS', 'SOAR', 'SODA', 'SORTA', 'TAR', 'TARS', 'TOADS', 'TROD']},
-{letters: 'OGIHAR', words: ['AGO', 'AIR', 'HAIR', 'HOG', 'OAR', 'RAG', 'HAG', 'RIG']},
-{letters: 'NAINNO', words: ['ION', 'ANON', 'INN', 'NON']},
-{letters: 'SOOMNO', words: ['SON', 'SOON', 'MOON', 'MOONS', 'MOO', 'MOOS']},
-{letters: 'UPTEEI', words: ['PUT', 'TIE', 'PET', 'PIE', 'PIT', 'TIP', 'TEE']},
-{letters: 'UQRSOE', words: ['OUR', 'OURS', 'SURE', 'USE', 'USER', 'ROSE', 'SORE', 'SUE', 'ORE', 'ORES', 'ROE', 'ROES', 'ROUSE', 'RUE', 'RUES', 'RUSE', 'SOUR']},
-{letters: 'ESASSD', words: ['SAD', 'SEA', 'ADS', 'ASSES', 'SADES', 'SEAS']},
-];
-
 // REPORT: using closure to encapsulate private data
 function getTileFactory(scramble) {
 	
@@ -130,8 +117,6 @@ Tile.prototype = {
 // REPORT: Object oriented design using prototypes
 function Scramble(letters, x, y, w) {
 	this.letters = letters;
-	// We store the tiles in an array instead of a dictionary because
-	// there may be duplicate letters
 	this.tiles = [];
 	this.x = x;
 	this.y = y;
@@ -257,9 +242,9 @@ Builder.prototype = {
 };
 
 function Game() {
-	var i = parseInt(Math.random() * games.length);
-	this.letters = games[i].letters;
-	this.words = games[i].words;
+	//var i = parseInt(Math.random() * games.length);
+	this.letters = games.medium[1].letters;
+	this.words = games.medium[1].words;
 }
 
 Game.prototype = {
@@ -339,6 +324,9 @@ function loadComplete(event) {
 function placeDOMElements() {
 	var cx = stage.canvas.offsetLeft;
 	var cy = stage.canvas.offsetTop;
+	var cw = stage.canvas.width;	// The width of the canvas
+	var ch = stage.canvas.height;	// The height of the canvas
+	var lx = cw * 0.70;				// The x-coord of the start of the word list
 	
 	var bMainMenu = document.getElementById("btn:mainMenu");
 	bMainMenu.style.left = (cx + 250) + "px";
@@ -356,6 +344,15 @@ function placeDOMElements() {
 	bShuffle.style.left = (cx + 270 + 2*bMainMenu.offsetWidth) + "px";
 	bShuffle.style.top = (cy + 500) + "px";
 	bShuffle.style.display = "inline";
+	
+	// Chrome doesn't seem to respect the padding at the bottom of columns,
+	// so we have to make the list a bit shorter
+	var wordList = document.getElementById("wordlist");
+	wordList.style.width = (cw - lx) + "px";
+	wordList.style.height = (ch - 30) + "px";
+	wordList.style.left = (cx + lx) + "px";
+	wordList.style.top = cy + "px";
+	wordList.style.display = "inline";
 }
 
 function tick(event) {

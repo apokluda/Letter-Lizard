@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Letter Lizard!</title>
+<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
 <script src="createjs-2013.12.12.min.js" type="text/javascript"></script>
+<script src="games.js" type="text/javascript"></script>
 <script src="letter_lizard.js" type="text/javascript"></script>
 <style type="text/css">
 #llcanvas {
@@ -17,6 +19,31 @@
 	display: none;
 	font-size: large;
 }
+#wordlist {
+	position: absolute;
+	display: none;
+	padding: 15px;
+	-webkit-column-count:2; /* Chrome, Safari, Opera */
+	-moz-column-count:2; /* Firefox */
+	column-count:2;
+	column-gap: 10px;
+	font-family: 'Ubuntu Mono', sans-serif;
+}
+#wordlist .not-found-word {
+	background: #C0C0C0;
+}
+#wordlist .length3 {
+	color: #0000CC;
+}
+#wordlist .length4 {
+	color: #6600CC;
+}
+#wordlist .length5 {
+	color: #9900CC;
+}
+#wordlist .length6 {
+	color: #CC00CC;
+}
 </style>
 </head>
 <body onload="init()">
@@ -28,6 +55,52 @@
     <input type="button" value="Main Menu" id="btn:mainMenu" class="gameButton">
     <input type="button" value="Hint" id="btn:hint" class="gameButton">
     <input type="button" value="Shuffle" id="btn:shuffle" class="gameButton">
+    <div id="wordlist">
+    	<span class="placeholder length3"><!-- ALE -->---</span><br>
+    	<span class="not-found-word length3">ARE</span><br>
+    	<span class="found-word length3">EAR</span><br>
+    	<span class="found-word length3">ERA</span><br>
+    	<span class="found-word length3">LEA</span><br>
+    	<span class="found-word length3">OAR</span><br>
+    	<span class="found-word length3">ORE</span><br>
+    	<span class="found-word length3">ROE</span><br>
+    	<span class="found-word length3">SEA</span><br>
+    	<span class="found-word length3">SOL</span><br>
+    	<span class="placeholder length4"><!-- ALES -->----</span><br>
+    	<span class="found-word length4">ALOE</span><br>
+    	<span class="found-word length4">ALSO</span><br>
+    	<span class="found-word length4">ARES</span><br>
+    	<span class="found-word length4">ARSE</span><br>
+    	<span class="found-word length4">EARL</span><br>
+    	<span class="found-word length4">EARS</span><br>
+    	<span class="found-word length4">ERAS</span><br>
+    	<span class="found-word length4">LEAS</span><br>
+    	<span class="found-word length4">LORE</span><br>
+    	<span class="found-word length4">LOSE</span><br>
+    	<span class="found-word length4">OARS</span><br>
+    	<span class="found-word length4">ORAL</span><br>
+    	<span class="found-word length4">ORES</span><br>
+    	<span class="found-word length4">REAL</span><br>
+    	<span class="found-word length4">ROES</span><br>
+    	<span class="found-word length4">ROLE</span><br>
+    	<span class="found-word length4">ROSE</span><br>
+    	<span class="found-word length4">SALE</span><br>
+    	<span class="found-word length4">SEAL</span><br>
+    	<span class="found-word length4">SEAR</span><br>
+    	<span class="found-word length4">SLOE</span><br>
+    	<span class="found-word length4">SOAR</span><br>
+    	<span class="found-word length4">SOLE</span><br>
+    	<span class="found-word length4">SORE</span><br>
+    	<span class="found-word length5">ALOES</span><br>
+    	<span class="found-word length5">AROSE</span><br>
+    	<span class="found-word length5">EARLS</span><br>
+    	<span class="found-word length5">LASER</span><br>
+    	<span class="found-word length5">LOSER</span><br>
+    	<span class="found-word length5">ORALS</span><br>
+    	<span class="found-word length5">REALS</span><br>
+    	<span class="found-word length5">ROLES</span><br>
+    	<span class="found-word length5">SOLAR</span><br>
+    </div>
     </div>
 </body>
 </html>
