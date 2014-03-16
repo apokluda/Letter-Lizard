@@ -91,5 +91,3 @@ games.insane = [
 {letters: 'GENNOT', words: ['EGO', 'EON', 'GEO', 'GET', 'GOE', 'GON', 'GOT', 'GTE', 'NEO', 'NET', 'NNE', 'NOG', 'NON', 'NOT', 'ONE', 'ONT', 'TEG', 'TEN', 'TGN', 'TOE', 'TOG', 'TON', 'ENTO', 'ETON', 'GENT', 'GOEN', 'GONE', 'GOTE', 'NEON', 'NONE', 'NONG', 'NOTE', 'TENG', 'TOGE', 'TONE', 'TONG', 'TONN', 'GONNE', 'NONET', 'TENNO', 'TENON', 'TONNE']},
 {letters: 'LTOOSF', words: ['FLO', 'FOO', 'FOT', 'LOF', 'LOO', 'LOS', 'LOT', 'LST', 'OFO', 'OFT', 'OOF', 'OOS', 'OOT', 'OTO', 'SLT', 'SOL', 'SOT', 'TLO', 'TOL', 'TOO', 'TOS', 'FLOT', 'FOOL', 'FOOS', 'FOOT', 'FOTS', 'LOFT', 'LOOF', 'LOOS', 'LOOT', 'LOST', 'LOTO', 'LOTS', 'OOFS', 'OOTS', 'OSLO', 'SLOO', 'SLOT', 'SOFT', 'SOLO', 'SOOL', 'SOOT', 'STOF', 'TOOL', 'FLOTS', 'FOOLS', 'FOOTS', 'LOFTS', 'LOOFS', 'LOOTS', 'LOTOS', 'SFOOT', 'SLOOT', 'SOTOL', 'STOOF', 'STOOL', 'TOOLS']},
 ];
-
-console.log("games loaded");

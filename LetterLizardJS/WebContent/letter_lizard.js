@@ -303,6 +303,27 @@ Word.prototype = {
 	}
 };
 
+function showMessage(message)
+{
+	var cw = stage.canvas.width;
+	var ch = stage.canvas.height;
+	
+	var bmp = new createjs.Bitmap(queue.getResult(message));
+
+	if (message == "gameover")
+	{
+		bmp.x = (cw - bmp.image.width) / 2;
+		bmp.y = (ch - bmp.image.height) / 2;
+	}
+	
+	stage.addChild(bmp);
+}
+
+function hideMessage(handle)
+{
+	stage.removeChild(handle);
+}
+
 function Game() {
 	var i = parseInt(Math.random() * games.medium.length);
 	var game = games.medium[i];
@@ -312,7 +333,12 @@ function Game() {
 		var word = game.words[i];
 		this.words[word] = new Word(word);
 	}
-	this.score_val = 0;]
+	this.score_val = 0;
+	var timer = new Timer(120);
+	timer.ontimeup = function() {
+		gameover = true;
+		showMessage("gameover");
+	};
 }
 
 Game.prototype = {
@@ -340,6 +366,49 @@ Game.prototype = {
 	}
 };
 
+function Timer(duration) {
+	this.timeRemaining = duration;
+	this.ontimeup = function() {};
+	this.updateDisplay();
+	this.start();
+}
+
+Timer.prototype = {
+	start: function() {
+		var that = this;
+		this.handle = setInterval(function() {
+			that.elapsed(1);
+		}, 1000);
+	},
+	
+	stop: function() {
+		clearInterval(this.handle);
+	},
+	
+	elapsed: function(seconds) {
+		this.timeRemaining -= seconds;
+		this.updateDisplay();
+		if (this.timeRemaining == 0) {
+			this.stop();
+			this.ontimeup();
+		}
+	},
+	
+	updateDisplay: function() {
+		var timeStr = Math.floor(this.timeRemaining / 60) + ":";
+		var seconds = this.timeRemaining % 60;
+		if (seconds < 10) {
+			timeStr += "0";
+		}
+		timeStr += seconds;
+		var display = document.getElementById("timer");
+		display.innerHTML = timeStr;
+		if (this.timeRemaining == 59) {
+			display.style.color = "#FF0000";
+		}
+	}
+};
+
 function init() {
 	stage = new createjs.Stage("llcanvas");
 	
@@ -362,7 +431,8 @@ function init() {
 	queue.addEventListener("complete", loadComplete);
 	queue.loadManifest([{id:"title", src:"assets/letter_lizard.png"},
 	                    {id:"lizard", src:"assets/lizard.png"},
-	                    {id:"letters", src:"assets/letters.png"}]);
+	                    {id:"letters", src:"assets/letters.png"},
+	                    {id:"gameover", src:"assets/game_over.png"}]);
 }
 
 function loadComplete(event) {
@@ -401,7 +471,7 @@ function loadComplete(event) {
 	// REPORT: talk about why a function is needed here instead of assigning
 	// scramble.shuffle to onclick directly (like storing 'this' in a variable called 'that')
 	bShuffle.onclick = function() {
-		scramble.shuffle();
+		if (!gameover) scramble.shuffle();
 	};
 	document.onkeydown = handleKeyDown;
 	window.onresize = placeDOMElements;
@@ -452,21 +522,23 @@ function tick(event) {
 
 function handleKeyDown(e) {
 	// cross browser issues exist
-	if (!e) { e = window.event; }
-	if (e.keyCode >= 65 && e.keyCode <= 90) {
-		builder.takeTile(String.fromCharCode(e.keyCode));
-		return;
-	}
-	switch (e.keyCode)
-	{
-	case 8: // backspace
-		builder.returnTile();
-		break;
-	case 13: // enter
-		game.checkWord();
-		break;
-	case 32: // spacebar
-		scramble.shuffle();
-		break;
+	if (!gameover) {
+		if (!e) { e = window.event; }
+		if (e.keyCode >= 65 && e.keyCode <= 90) {
+			builder.takeTile(String.fromCharCode(e.keyCode));
+			return;
+		}
+		switch (e.keyCode)
+		{
+		case 8: // backspace
+			builder.returnTile();
+			break;
+		case 13: // enter
+			game.checkWord();
+			break;
+		case 32: // spacebar
+			scramble.shuffle();
+			break;
+		}
 	}
 }
