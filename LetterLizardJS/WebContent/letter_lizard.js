@@ -4,6 +4,35 @@
 //var queue;
 //var scramble;
 
+var letterpoints = {
+	'A': 3,
+	'B': 8,
+	'C': 6,
+	'D': 6,
+	'E': 1,
+	'F': 9,
+	'G': 7,
+	'H': 8,
+	'I': 2,
+	'J': 10,
+	'K': 9,
+	'L': 5,
+	'M': 7,
+	'N': 3,
+	'O': 4,
+	'P': 7,
+	'Q': 10,
+	'R': 3,
+	'S': 1,
+	'T': 3,
+	'U': 7,
+	'V': 9,
+	'W': 9,
+	'X': 10,
+	'Y': 9,
+	'Z': 10
+};
+
 // REPORT: using closure to encapsulate private data
 function getTileFactory(scramble) {
 	
@@ -241,15 +270,65 @@ Builder.prototype = {
 	}
 };
 
+function Word(word) {
+	this.word = word;
+	this.shown = false;
+	this.elem = document.createElement("span");
+	this.elem.className = "placeholder length" + word.length;
+	this.elem.innerHTML = Array(word.length + 1).join("-");
+
+	var wordlist = document.getElementById("wordlist");
+	wordlist.appendChild(this.elem);
+	wordlist.appendChild(document.createElement("br"));
+}
+
+Word.prototype = {
+	show: function(notfound) {
+		if (!this.shown) {
+			this.elem.innerHTML = this.word;
+			if (!notfound) {
+				this.elem.className = "found-word length" + this.word.length;
+			}
+			else {
+				this.elem.className = "not-found-word length" + this.word.length;
+			}
+			this.shown = true;
+			return true;
+		}
+		return false;
+	},
+
+	points: function() {
+		var points = 0;
+		for (var i = 0; i < this.word.length; ++i) {
+			points += letterpoints[this.word.charAt(i)];
+		}
+		return points;
+	}
+};
+
 function Game() {
-	//var i = parseInt(Math.random() * games.length);
-	this.letters = games.medium[1].letters;
-	this.words = games.medium[1].words;
+	var i = parseInt(Math.random() * games.medium.length);
+	var game = games.medium[i];
+	this.letters = game.letters;
+	this.words = {};
+	for (var i = 0; i < game.words.length; ++i) {
+		var word = game.words[i];
+		this.words[word] = new Word(word);
+	}
+	this.score = 0;
 }
 
 Game.prototype = {
 	checkWord: function() {
 		var word = builder.getWord();
+		if (word in this.words) {
+			if (this.words[word].show()) {
+				// Word was just found
+				this.score += this.words[word].points();
+				console.log("Score: " + this.score);
+			}
+		}
 		builder.reset();
 	}
 };
