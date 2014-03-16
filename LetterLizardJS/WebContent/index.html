@@ -19,6 +19,23 @@
 	display: none;
 	font-size: large;
 }
+#gamestatus {
+	position: absolute;
+	display: none;
+	font-family: 'Ubuntu Mono', sans-serif;
+	font-weight: bold;
+	font-size: 24px;
+	color: #00FF00;
+	text-shadow: 1px 1px 2px #000000;
+}
+#timer {
+	color: #0000FF;
+	text-shadow: none;
+}
+#score {
+	color: #0000FF;
+	text-shadow: none;
+}
 #wordlist {
 	position: absolute;
 	display: none;
@@ -57,6 +74,10 @@
     <input type="button" value="Main Menu" id="btn:mainMenu" class="gameButton">
     <input type="button" value="Hint" id="btn:hint" class="gameButton">
     <input type="button" value="Shuffle" id="btn:shuffle" class="gameButton">
+    <div id="gamestatus">
+    Time Remaining: <span id="timer">0:00</span><br>
+    Score: <span id="score">0</span>
+    </div>
     <div id="wordlist">
     </div>
     </div>

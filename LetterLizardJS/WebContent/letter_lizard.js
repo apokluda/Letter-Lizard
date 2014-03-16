@@ -129,7 +129,6 @@ Tile.prototype = {
 	moveTo: function(x, y, save) {
 		// Moves the tile to the specified x and y coordinates.
 		// This function is called by the Scramble and Builder classes
-		//console.log("tile moved to " + x + ", " + y);
 		createjs.Tween.get(this.container).to({x:x, y:y}, 500);
 		if (save) {
 			this.saved.x = x;
@@ -138,7 +137,6 @@ Tile.prototype = {
 	},
 	
 	reset: function() {
-		//console.log("resetting tile");
 		this.moveTo(this.saved.x, this.saved.y);
 	},
 };
@@ -194,7 +192,6 @@ Scramble.prototype = {
 		// in the scramble
 		this.tiles[tile.scramblePos] = tile;
 		tile.reset();
-		//console.log("reset tile");
 	},
 
 	shuffle: function() {
@@ -205,7 +202,6 @@ Scramble.prototype = {
 				mytiles.push(i);
 			}
 		}
-		//console.log(mytiles);
 		mytiles = shuffle(mytiles);
 		
 		var tilescpy = this.tiles.slice(0);
@@ -316,7 +312,7 @@ function Game() {
 		var word = game.words[i];
 		this.words[word] = new Word(word);
 	}
-	this.score = 0;
+	this.score_val = 0;]
 }
 
 Game.prototype = {
@@ -326,10 +322,21 @@ Game.prototype = {
 			if (this.words[word].show()) {
 				// Word was just found
 				this.score += this.words[word].points();
-				console.log("Score: " + this.score);
 			}
 		}
 		builder.reset();
+	},
+	
+	// REPORT: property setter
+	get score()
+	{
+		return this.score_val;
+	},
+	
+	set score(val) {
+		var elem = document.getElementById("score");
+		elem.innerHTML = val;
+		this.score_val = val;
 	}
 };
 
@@ -424,6 +431,11 @@ function placeDOMElements() {
 	bShuffle.style.top = (cy + 500) + "px";
 	bShuffle.style.display = "inline";
 	
+	var gameStatus = document.getElementById("gamestatus");
+	gameStatus.style.left = (cx + 250) + "px";
+	gameStatus.style.top = (cy + 375) + "px";
+	gameStatus.style.display = "inline";
+	
 	// Chrome doesn't seem to respect the padding at the bottom of columns,
 	// so we have to make the list a bit shorter
 	var wordList = document.getElementById("wordlist");
@@ -436,7 +448,6 @@ function placeDOMElements() {
 
 function tick(event) {
 	stage.update();
-	//console.log("updated stage");
 }
 
 function handleKeyDown(e) {
