@@ -391,11 +391,13 @@ function Game() {
 	}
 	this.score_val = 0;
 	this.timer = new Timer(config.timePerRound);
+	
+	var that = this;
 	this.timer.ontimeup = function() {
 		gameover = true;
 		showMessage("gameover");
-		for (var word in this.words) {
-			word.show(true);
+		for (var word in that.words) {
+			that.words[word].show(true);
 		}
 	};
 }
