@@ -510,7 +510,7 @@ function showMenuScreen() {
 	
 	var form = document.getElementById("menuform");
 	form.onsubmit = function() {
-		startGame;
+		startGame();
 		return false;
 	};
 	
