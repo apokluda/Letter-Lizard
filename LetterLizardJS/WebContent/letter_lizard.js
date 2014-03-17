@@ -348,13 +348,11 @@ Timer.prototype = {
 			that.elapsed(1);
 		}, 1000);
 		var display = document.getElementById("timer");
-		this.initialColor = display.style.color;
+		display.style.color = "#0000FF";
 	},
 	
 	stop: function() {
 		clearInterval(this.handle);
-		var display = document.getElementById("timer");
-		display.style.color = this.initialColor;
 	},
 	
 	elapsed: function(seconds) {
@@ -396,6 +394,9 @@ function Game() {
 	this.timer.ontimeup = function() {
 		gameover = true;
 		showMessage("gameover");
+		for (var word in this.words) {
+			word.show(true);
+		}
 	};
 }
 
@@ -614,6 +615,7 @@ function showGameScreen() {
 		if (!gameover) scramble.shuffle();
 	};
 
+	gameover = false;
 	window.onresize = placeGameDOMElements;
 	document.onkeydown = handleGameKeyDown;
 }
