@@ -14,6 +14,28 @@
 	margin-right: auto;
 	display: block;
 }
+#splashtext {
+	position: absolute;
+	display: none;
+	font-family: 'Ubuntu Mono', sans-serif;
+}
+#splashtext .subtitle {
+	font-weight: bold;
+	font-size: 20px;
+	color: #0000FF;
+}
+#splashtext .subsubtitle {
+	font-size: 18px;
+	color: #00FF00;
+	text-shadow: 1px 1px 2px #000000;
+}
+#splashtext .authors {
+	color: #FF0000;
+}
+#splashtext .instruction {
+	font-weight: bold;
+	font-size: 24px;
+}
 .gameButton {
 	position: absolute;
 	display: none;
@@ -71,6 +93,22 @@
         Sorry! Your browser does not support the Canvas element.<br>
         Please update your browser so that you can enjoy the <em>Letter Lizard</em> game.
     </canvas>
+    <div id="splashtext">
+    <p>
+    <span class="subtitle">A Game by CS 798 Team 4</span><br>
+    <span class="subsubtitle">Winter 2014</span>
+    </p>
+    <p>
+    <span class="authors">
+    Afiya Nusrat<br>
+    Alexander Pokluda<br>
+    Michael Wexler<br>
+    </span>
+    </p>
+    <p>
+    <span class="instruction">Press Space to Start</span>
+    </p>
+    </div>
     <input type="button" value="Main Menu" id="btn:mainMenu" class="gameButton">
     <input type="button" value="Hint" id="btn:hint" class="gameButton">
     <input type="button" value="Shuffle" id="btn:shuffle" class="gameButton">

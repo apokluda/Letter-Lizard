@@ -437,23 +437,64 @@ function init() {
 			stage.update();
 	}
 	);
-	queue.addEventListener("complete", showGameScreen);
-	queue.loadManifest([{id:"title", src:"assets/letter_lizard.png"},
+	queue.addEventListener("complete", showSplashScreen);
+	queue.loadManifest([{id:"title", src:"assets/letter_lizard_large.png"},
 	                    {id:"lizard", src:"assets/lizard.png"},
 	                    {id:"letters", src:"assets/letters.png"},
 	                    {id:"gameover", src:"assets/game_over.png"}]);
 }
 
-function showGameScreen() {
-	stage.removeAllChildren();		// clear the loading message
+function showSplashScreen() {
+	stage.removeAllChildren();		// Clear the loading message
 	
+	var cw = stage.canvas.width;	// The width of the canvas
+	var ch = stage.canvas.height;	// The height of the canvas
+	
+	var bmp = new createjs.Bitmap(queue.getResult("title"));
+	bmp.x = (cw - bmp.image.width) / 2;
+	bmp.y = ch * 0.1; 
+	stage.addChild(bmp);
+	
+	var bmp = new createjs.Bitmap(queue.getResult("lizard"));
+	bmp.setTransform(cw * 0.15, ch - bmp.image.height - ch * 0.1);
+	stage.addChild(bmp);
+	
+	placeSplashDOMElements();
+	
+	window.onresize = placeSplashDOMElements;
+	document.onkeydown = handleSplashKeyDown;
+	stage.update();
+}
+
+function hideSplashScreen() {
+	stage.removeAllChildren();
+	
+	var text = document.getElementById("splashtext");
+	text.style.display = "none";
+	
+	document.onkeydown = null;
+	window.onresize = null;
+}
+
+function placeSplashDOMElements() {
+	var cx = stage.canvas.offsetLeft;
+	var cy = stage.canvas.offsetTop;
+	//var cw = stage.canvas.width;	// The width of the canvas
+	//var ch = stage.canvas.height;	// The height of the canvas
+	
+	var text = document.getElementById("splashtext");
+	text.style.left = (cx + 500) + "px";
+	text.style.top = (cy + 250) + "px";
+	text.style.display = "inline";
+}
+
+function showGameScreen() {
 	var cw = stage.canvas.width;	// The width of the canvas
 	var ch = stage.canvas.height;	// The height of the canvas
 	var lx = cw * 0.70;				// The x-coord of the start of the word list
 	
 	var bmp = new createjs.Bitmap(queue.getResult("title"));
-	bmp.x = (cw - lx) / 2;
-	bmp.y = 0;
+	bmp.setTransform((cw - lx) / 2, 0, 0.8, 0.8);
 	stage.addChild(bmp);
 	
 	var bmp = new createjs.Bitmap(queue.getResult("lizard"));
@@ -472,7 +513,7 @@ function showGameScreen() {
 	builder = new Builder(scramble, 50, 240, lx - 100);
 	
 	createjs.Ticker.setFPS(30);
-	createjs.Ticker.addEventListener("tick", tick);
+	createjs.Ticker.addEventListener("tick", stage);
 	
 	placeGameDOMElements();
 	
@@ -483,14 +524,14 @@ function showGameScreen() {
 		if (!gameover) scramble.shuffle();
 	};
 
-	window.onresize = placeDOMElements;
+	window.onresize = placeGameDOMElements;
 	document.onkeydown = handleGameKeyDown;
 }
 
 function hideGameScreen() {
-	stage.removeAllChildren();
-	
+	createjs.Ticker.removeEventListener("tick", stage);
 	game.stop();
+	stage.removeAllChildren();
 	
 	var bMainMenu = document.getElementById("btn:mainMenu");
 	bMainMenu.style.display = "none";
@@ -509,7 +550,9 @@ function hideGameScreen() {
 	var wordList = document.getElementById("wordlist");
 	wordList.style.display = "none";
 	
+	document.onkeydown = null;
 	window.onresize = null;
+	stage.update();
 }
 
 function placeGameDOMElements() {
@@ -551,8 +594,12 @@ function placeGameDOMElements() {
 	wordList.style.display = "inline";
 }
 
-function tick(event) {
-	stage.update();
+function handleSplashKeyDown(e) {
+	if (!e) { e = window.event; }
+	if (e.keyCode == 32) {
+		hideSplashScreen();
+		showGameScreen();
+	}
 }
 
 function handleGameKeyDown(e) {
