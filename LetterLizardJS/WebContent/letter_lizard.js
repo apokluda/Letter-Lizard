@@ -347,10 +347,14 @@ Timer.prototype = {
 		this.handle = setInterval(function() {
 			that.elapsed(1);
 		}, 1000);
+		var display = document.getElementById("timer");
+		this.initialColor = display.style.color;
 	},
 	
 	stop: function() {
 		clearInterval(this.handle);
+		var display = document.getElementById("timer");
+		display.style.color = this.initialColor;
 	},
 	
 	elapsed: function(seconds) {
