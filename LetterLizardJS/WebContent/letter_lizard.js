@@ -5,6 +5,11 @@
 //var scramble;
 
 var gameover = false;
+var config = {
+	numRounds: 3,
+	timePerRound: 120,
+	difficulty: "medium"
+};
 
 var letterpoints = {
 	'A': 3,
@@ -488,6 +493,74 @@ function placeSplashDOMElements() {
 	text.style.display = "inline";
 }
 
+function showMenuScreen() {
+	var cw = stage.canvas.width;	// The width of the canvas
+	var ch = stage.canvas.height;	// The height of the canvas
+	
+	var bmp = new createjs.Bitmap(queue.getResult("title"));
+	bmp.x = (cw - bmp.image.width) / 2;
+	bmp.y = ch * 0.1; 
+	stage.addChild(bmp);
+	
+	var bmp = new createjs.Bitmap(queue.getResult("lizard"));
+	bmp.setTransform(cw * 0.15, ch - bmp.image.height - ch * 0.1);
+	stage.addChild(bmp);
+	
+	placeMenuDOMElements();
+	
+	var form = document.getElementById("menuform");
+	form.onsubmit = function() {
+		startGame;
+		return false;
+	};
+	
+	window.onresize = placeMenuDOMElements;
+	stage.update();
+}
+
+function hideMenuScreen() {
+	stage.removeAllChildren();
+	
+	var text = document.getElementById("menu");
+	text.style.display = "none";
+	
+	window.onresize = null;
+}
+
+function startGame() {
+	function parseVal(str, min, max, def) {
+		var val = parseInt(str);
+		if (isNaN(val)) {
+			return def;
+		} else if (val < min) {
+			return min;
+		} else if (val > max) {
+			return max;
+		}
+		return val;
+	}
+	
+	var form = document.getElementById("menuform");
+	config.numRounds = parseVal(form.numrounds.value);
+	config.timePerRound = parseVal(form.timeperround.value);
+	config.difficulty = form.difficulty.value;
+	
+	hideMenuScreen();
+	showGameScreen();
+}
+
+function placeMenuDOMElements() {
+	var cx = stage.canvas.offsetLeft;
+	var cy = stage.canvas.offsetTop;
+	//var cw = stage.canvas.width;	// The width of the canvas
+	//var ch = stage.canvas.height;	// The height of the canvas
+	
+	var text = document.getElementById("menu");
+	text.style.left = (cx + 500) + "px";
+	text.style.top = (cy + 250) + "px";
+	text.style.display = "inline";
+}
+
 function showGameScreen() {
 	var cw = stage.canvas.width;	// The width of the canvas
 	var ch = stage.canvas.height;	// The height of the canvas
@@ -598,7 +671,7 @@ function handleSplashKeyDown(e) {
 	if (!e) { e = window.event; }
 	if (e.keyCode == 32) {
 		hideSplashScreen();
-		showGameScreen();
+		showMenuScreen();
 	}
 }
 

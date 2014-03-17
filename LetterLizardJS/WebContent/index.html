@@ -14,27 +14,33 @@
 	margin-right: auto;
 	display: block;
 }
-#splashtext {
+#splashtext, #menu {
 	position: absolute;
 	display: none;
 	font-family: 'Ubuntu Mono', sans-serif;
 }
-#splashtext .subtitle {
+.subtitle {
 	font-weight: bold;
 	font-size: 20px;
 	color: #0000FF;
 }
-#splashtext .subsubtitle {
+.subsubtitle {
 	font-size: 18px;
 	color: #00FF00;
 	text-shadow: 1px 1px 2px #000000;
 }
-#splashtext .authors {
+.authors {
 	color: #FF0000;
 }
-#splashtext .instruction {
+.instruction {
 	font-weight: bold;
 	font-size: 24px;
+}
+.menuInput {
+	width: 50px;
+}
+.menuLabel {
+	font-weight: bold;
 }
 .gameButton {
 	position: absolute;
@@ -108,6 +114,22 @@
     <p>
     <span class="instruction">Press Space to Start</span>
     </p>
+    </div>
+    <div id="menu">
+    <p class="subtitle">
+    Main Menu
+    </p>
+    <form id="menuform" onsubmit="return false;">
+    <table>
+    <tr><td class="menuLabel">Number of Rounds:</td><td><input type="number" name="numrounds" min="1" max="5" value="3" class="menuInput"></td></tr>
+    <tr><td class="menuLabel">Time per Round:</td><td><input type="number" name="timeperround" min="10" max="300" value="120" class="menuInput"> seconds</td></tr>
+    <tr><td class="menuLabel">Difficulty:</td>
+    <td><input type="radio" name="difficulty" value="easy"> easy
+    <input type="radio" name="difficulty" value="medium" checked> normal
+    <input type="radio" name="difficulty" value="hard"> hard</td></tr>
+    <tr><td></td><td><input type="submit" value="Start" class="menuInput menuLabel"></td>
+    </table>
+    </form>
     </div>
     <input type="button" value="Main Menu" id="btn:mainMenu" class="gameButton">
     <input type="button" value="Hint" id="btn:hint" class="gameButton">
