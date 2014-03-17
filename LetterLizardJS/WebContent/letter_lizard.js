@@ -382,7 +382,7 @@ function Game() {
 		this.words[word] = new Word(word);
 	}
 	this.score_val = 0;
-	var timer = new Timer(120);
+	this.timer = new Timer(120);
 	timer.ontimeup = function() {
 		gameover = true;
 		showMessage("gameover");
@@ -411,6 +411,10 @@ Game.prototype = {
 		var elem = document.getElementById("score");
 		elem.innerHTML = val;
 		this.score_val = val;
+	},
+	
+	stop: function() {
+		this.timer.stop();
 	}
 };
 
@@ -485,6 +489,8 @@ function showGameScreen() {
 
 function hideGameScreen() {
 	stage.removeAllChildren();
+	
+	game.stop();
 	
 	var bMainMenu = document.getElementById("btn:mainMenu");
 	bMainMenu.style.display = "none";
