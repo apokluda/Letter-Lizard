@@ -432,14 +432,14 @@ function init() {
 			stage.update();
 	}
 	);
-	queue.addEventListener("complete", loadComplete);
+	queue.addEventListener("complete", showGameScreen);
 	queue.loadManifest([{id:"title", src:"assets/letter_lizard.png"},
 	                    {id:"lizard", src:"assets/lizard.png"},
 	                    {id:"letters", src:"assets/letters.png"},
 	                    {id:"gameover", src:"assets/game_over.png"}]);
 }
 
-function loadComplete(event) {
+function showGameScreen() {
 	stage.removeAllChildren();		// clear the loading message
 	
 	var cw = stage.canvas.width;	// The width of the canvas
@@ -469,7 +469,7 @@ function loadComplete(event) {
 	createjs.Ticker.setFPS(30);
 	createjs.Ticker.addEventListener("tick", tick);
 	
-	placeDOMElements();
+	placeGameDOMElements();
 	
 	var bShuffle = document.getElementById("btn:shuffle");
 	// REPORT: talk about why a function is needed here instead of assigning
@@ -477,11 +477,35 @@ function loadComplete(event) {
 	bShuffle.onclick = function() {
 		if (!gameover) scramble.shuffle();
 	};
-	document.onkeydown = handleKeyDown;
+
 	window.onresize = placeDOMElements;
+	document.onkeydown = handleGameKeyDown;
 }
 
-function placeDOMElements() {
+function hideGameScreen() {
+	stage.removeAllChildren();
+	
+	var bMainMenu = document.getElementById("btn:mainMenu");
+	bMainMenu.style.display = "none";
+	
+	var bHint = document.getElementById("btn:hint");
+	bHint.style.display = "none";
+	
+	var bShuffle = document.getElementById("btn:shuffle");
+	bShuffle.style.display = "none";
+	
+	var gameStatus = document.getElementById("gamestatus");
+	gameStatus.style.display = "none";
+	
+	// Chrome doesn't seem to respect the padding at the bottom of columns,
+	// so we have to make the list a bit shorter
+	var wordList = document.getElementById("wordlist");
+	wordList.style.display = "none";
+	
+	window.onresize = null;
+}
+
+function placeGameDOMElements() {
 	var cx = stage.canvas.offsetLeft;
 	var cy = stage.canvas.offsetTop;
 	var cw = stage.canvas.width;	// The width of the canvas
@@ -524,7 +548,7 @@ function tick(event) {
 	stage.update();
 }
 
-function handleKeyDown(e) {
+function handleGameKeyDown(e) {
 	// cross browser issues exist
 	if (!gameover) {
 		if (!e) { e = window.event; }
