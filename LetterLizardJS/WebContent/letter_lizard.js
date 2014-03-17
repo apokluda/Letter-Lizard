@@ -371,15 +371,16 @@ Timer.prototype = {
 		timeStr += seconds;
 		var display = document.getElementById("timer");
 		display.innerHTML = timeStr;
-		if (this.timeRemaining == 59) {
+		if (this.timeRemaining == 59 || this.timeRemaining == 9) {
 			display.style.color = "#FF0000";
 		}
 	}
 };
 
 function Game() {
-	var i = parseInt(Math.random() * games.medium.length);
-	var game = games.medium[i];
+	console.log("using difficulty: " + config.difficulty);
+	var i = parseInt(Math.random() * games[config.difficulty].length);
+	var game = games[config.difficulty][i];
 	this.letters = game.letters;
 	this.words = {};
 	for (var i = 0; i < game.words.length; ++i) {
@@ -387,7 +388,7 @@ function Game() {
 		this.words[word] = new Word(word);
 	}
 	this.score_val = 0;
-	this.timer = new Timer(2);
+	this.timer = new Timer(config.timePerRound);
 	this.timer.ontimeup = function() {
 		gameover = true;
 		showMessage("gameover");
@@ -539,11 +540,18 @@ function startGame() {
 		}
 		return val;
 	}
+	function getSelection(elems) {
+	    for (var i = 0; i < elems.length; ++i) {
+	            if (elems[i].checked==true) {
+	            return elems[i].value;
+	        }
+	    }
+	}
 	
 	var form = document.getElementById("menuform");
 	config.numRounds = parseVal(form.numrounds.value);
 	config.timePerRound = parseVal(form.timeperround.value);
-	config.difficulty = form.difficulty.value;
+	config.difficulty = getSelection(form.difficulty);
 	
 	hideMenuScreen();
 	showGameScreen();
@@ -590,6 +598,11 @@ function showGameScreen() {
 	
 	placeGameDOMElements();
 	
+	var bMainMenu = document.getElementById("btn:mainMenu");
+	bMainMenu.onclick = function() {
+		hideGameScreen();
+		showMenuScreen();
+	};
 	var bShuffle = document.getElementById("btn:shuffle");
 	// REPORT: talk about why a function is needed here instead of assigning
 	// scramble.shuffle to onclick directly (like storing 'this' in a variable called 'that')
@@ -621,6 +634,7 @@ function hideGameScreen() {
 	// Chrome doesn't seem to respect the padding at the bottom of columns,
 	// so we have to make the list a bit shorter
 	var wordList = document.getElementById("wordlist");
+	wordList.innerHTML = "";
 	wordList.style.display = "none";
 	
 	document.onkeydown = null;
