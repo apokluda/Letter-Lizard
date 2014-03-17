@@ -382,8 +382,8 @@ function Game() {
 		this.words[word] = new Word(word);
 	}
 	this.score_val = 0;
-	this.timer = new Timer(120);
-	timer.ontimeup = function() {
+	this.timer = new Timer(2);
+	this.timer.ontimeup = function() {
 		gameover = true;
 		showMessage("gameover");
 	};
