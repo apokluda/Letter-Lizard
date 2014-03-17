@@ -311,12 +311,13 @@ function showMessage(message)
 {
 	var cw = stage.canvas.width;
 	var ch = stage.canvas.height;
+	var lx = cw * 0.70;
 	
 	var bmp = new createjs.Bitmap(queue.getResult(message));
 
 	if (message == "gameover")
 	{
-		bmp.x = (cw - bmp.image.width) / 2;
+		bmp.x = (lx - bmp.image.width) / 2;
 		bmp.y = (ch - bmp.image.height) / 2;
 	}
 	
