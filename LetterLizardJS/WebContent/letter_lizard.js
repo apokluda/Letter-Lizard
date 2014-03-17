@@ -4,6 +4,8 @@
 //var queue;
 //var scramble;
 
+var gameover = false;
+
 var letterpoints = {
 	'A': 3,
 	'B': 8,
@@ -218,6 +220,43 @@ Scramble.prototype = {
 	}
 };
 
+function Word(word) {
+	this.word = word;
+	this.shown = false;
+	this.elem = document.createElement("span");
+	this.elem.className = "placeholder length" + word.length;
+	this.elem.innerHTML = Array(word.length + 1).join("-");
+
+	var wordlist = document.getElementById("wordlist");
+	wordlist.appendChild(this.elem);
+	wordlist.appendChild(document.createElement("br"));
+}
+
+Word.prototype = {
+	show: function(notfound) {
+		if (!this.shown) {
+			this.elem.innerHTML = this.word;
+			if (!notfound) {
+				this.elem.className = "found-word length" + this.word.length;
+			}
+			else {
+				this.elem.className = "not-found-word length" + this.word.length;
+			}
+			this.shown = true;
+			return true;
+		}
+		return false;
+	},
+
+	points: function() {
+		var points = 0;
+		for (var i = 0; i < this.word.length; ++i) {
+			points += letterpoints[this.word.charAt(i)];
+		}
+		return points;
+	}
+};
+
 function Builder(scramble, x, y, w) {
 	this.scramble = scramble;
 	this.x = x;
@@ -266,42 +305,7 @@ Builder.prototype = {
 	}
 };
 
-function Word(word) {
-	this.word = word;
-	this.shown = false;
-	this.elem = document.createElement("span");
-	this.elem.className = "placeholder length" + word.length;
-	this.elem.innerHTML = Array(word.length + 1).join("-");
 
-	var wordlist = document.getElementById("wordlist");
-	wordlist.appendChild(this.elem);
-	wordlist.appendChild(document.createElement("br"));
-}
-
-Word.prototype = {
-	show: function(notfound) {
-		if (!this.shown) {
-			this.elem.innerHTML = this.word;
-			if (!notfound) {
-				this.elem.className = "found-word length" + this.word.length;
-			}
-			else {
-				this.elem.className = "not-found-word length" + this.word.length;
-			}
-			this.shown = true;
-			return true;
-		}
-		return false;
-	},
-
-	points: function() {
-		var points = 0;
-		for (var i = 0; i < this.word.length; ++i) {
-			points += letterpoints[this.word.charAt(i)];
-		}
-		return points;
-	}
-};
 
 function showMessage(message)
 {
@@ -323,48 +327,6 @@ function hideMessage(handle)
 {
 	stage.removeChild(handle);
 }
-
-function Game() {
-	var i = parseInt(Math.random() * games.medium.length);
-	var game = games.medium[i];
-	this.letters = game.letters;
-	this.words = {};
-	for (var i = 0; i < game.words.length; ++i) {
-		var word = game.words[i];
-		this.words[word] = new Word(word);
-	}
-	this.score_val = 0;
-	var timer = new Timer(120);
-	timer.ontimeup = function() {
-		gameover = true;
-		showMessage("gameover");
-	};
-}
-
-Game.prototype = {
-	checkWord: function() {
-		var word = builder.getWord();
-		if (word in this.words) {
-			if (this.words[word].show()) {
-				// Word was just found
-				this.score += this.words[word].points();
-			}
-		}
-		builder.reset();
-	},
-	
-	// REPORT: property setter
-	get score()
-	{
-		return this.score_val;
-	},
-	
-	set score(val) {
-		var elem = document.getElementById("score");
-		elem.innerHTML = val;
-		this.score_val = val;
-	}
-};
 
 function Timer(duration) {
 	this.timeRemaining = duration;
@@ -406,6 +368,48 @@ Timer.prototype = {
 		if (this.timeRemaining == 59) {
 			display.style.color = "#FF0000";
 		}
+	}
+};
+
+function Game() {
+	var i = parseInt(Math.random() * games.medium.length);
+	var game = games.medium[i];
+	this.letters = game.letters;
+	this.words = {};
+	for (var i = 0; i < game.words.length; ++i) {
+		var word = game.words[i];
+		this.words[word] = new Word(word);
+	}
+	this.score_val = 0;
+	var timer = new Timer(120);
+	timer.ontimeup = function() {
+		gameover = true;
+		showMessage("gameover");
+	};
+}
+
+Game.prototype = {
+	checkWord: function() {
+		var word = builder.getWord();
+		if (word in this.words) {
+			if (this.words[word].show()) {
+				// Word was just found
+				this.score += this.words[word].points();
+			}
+		}
+		builder.reset();
+	},
+	
+	// REPORT: property setter
+	get score()
+	{
+		return this.score_val;
+	},
+	
+	set score(val) {
+		var elem = document.getElementById("score");
+		elem.innerHTML = val;
+		this.score_val = val;
 	}
 };
 
