@@ -428,7 +428,7 @@ function Game() {
 		for (var word in that.words) {
 			that.words[word].show(true);
 		}
-		this.nextRoundOrEnd();
+		that.nextRoundOrEnd();
 	};
 }
 
