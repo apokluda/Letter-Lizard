@@ -103,21 +103,26 @@ function getTileFactory(scramble) {
 	               {x:5,  y:2}, // Z
 	               ];
 	
-	return function(letter) {
-		var index = letter.charCodeAt(0) - 65;
-		var sprite = new createjs.Sprite(spriteSheet);
-		sprite.gotoAndStop(index);
-		sprite.setTransform(offsets[index].x, offsets[index].y);
-		
+	return function(letter, alpha) {
 		var g = new createjs.Graphics();
 		g.beginStroke("#000000").beginFill("#FFFFFF").drawRoundRect(0, 0, 50, 50, 5);
 		var s = new createjs.Shape(g);
+		if (alpha) s.alpha = alpha;
 		
 		// REPORT: adding property to function
 		var tile = new Tile(letter);
 		tile.container = new createjs.Container();
 		tile.container.addChild(s);
-		tile.container.addChild(sprite);
+		
+		if (letter != "_") {
+			var index = letter.charCodeAt(0) - 65;
+			var sprite = new createjs.Sprite(spriteSheet);
+			sprite.gotoAndStop(index);
+			sprite.setTransform(offsets[index].x, offsets[index].y);
+			if (alpha) sprite.alpha = alpha;
+			tile.container.addChild(sprite);
+		}
+		
 		return tile;
 	};
 }
@@ -269,6 +274,7 @@ function Builder(scramble, x, y, w) {
 	this.x = x;
 	this.y = y;
 	this.tiles = [];
+	this.hintTiles = [];
 	
 	var g = new createjs.Graphics();
 	g.beginFill("#000000").rect(0, 0, w, 2);
@@ -309,6 +315,28 @@ Builder.prototype = {
 		while (this.tiles.length) {
 			this.returnTile();
 		}
+		this.clearHint();
+	},
+	
+	showHint: function(hint) {
+		this.clearHint();
+		var tileFactory = getTileFactory();
+		for (var i = 0; i < hint.length; ++i) {
+			var letter = hint.charAt(i);
+			var tile = new tileFactory(letter, 0.5);
+			tile.placeAt(this.x + 10 + i * 60, this.y + 10);
+			stage.addChild(tile.container);
+			stage.setChildIndex(tile.container, 0);
+			this.hintTiles[i] = tile;
+		}
+	},
+	
+	clearHint: function() {
+		for (var i = 0; i < this.hintTiles.length; ++i) {
+			stage.removeChild(this.hintTiles[i].container);
+		}
+		stage.update();
+		this.hintTiles = [];
 	}
 };
 
@@ -423,6 +451,28 @@ Game.prototype = {
 		config.score += increment;
 		var elem = document.getElementById("score");
 		elem.innerHTML = config.score;
+	},
+	
+	showHint: function() {
+		var notFoundWords = [];
+		for (var word in this.words) {
+			if (!this.words[word].shown) {
+				notFoundWords.push(word);
+			}
+		}
+		var randWord = notFoundWords[Math.floor(Math.random() * notFoundWords.length)];
+		
+		if (randWord) {
+			var hint = "";
+			for (var i = 0; i < randWord.length; ++i) {
+				if (Math.random() >= 0.5) {
+					hint += randWord.charAt(i);
+				} else {
+					hint += "_";
+				}
+			}
+			builder.showHint(hint);
+		}
 	},
 	
 	stop: function() {
@@ -643,12 +693,19 @@ function showGameScreen() {
 		hideGameScreen();
 		showMenuScreen();
 	};
+	var bHint = document.getElementById("btn:hint");
+	bHint.onclick = function() {
+		if (!timeup) game.showHint();
+		bHint.blur();
+	};
+	
 	var bShuffle = document.getElementById("btn:shuffle");
 	// REPORT: talk about why a function is needed here instead of assigning
 	// scramble.shuffle to onclick directly (like storing 'this' in a variable called 'that')
 	bShuffle.onclick = function() {
 		if (!timeup) scramble.shuffle();
 	};
+	
 
 	timeup = false;
 	window.onresize = placeGameDOMElements;
@@ -671,6 +728,9 @@ function hideGameScreen() {
 	
 	var gameStatus = document.getElementById("gamestatus");
 	gameStatus.style.display = "none";
+	
+	var continueLink = document.getElementById("continuelink");
+	continueLink.style.display = "none";
 	
 	// Chrome doesn't seem to respect the padding at the bottom of columns,
 	// so we have to make the list a bit shorter
