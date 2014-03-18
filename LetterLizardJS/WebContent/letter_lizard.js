@@ -415,6 +415,7 @@ function Game() {
 		var word = game.words[i];
 		this.words[word] = new Word(word);
 	}
+	this.numWordsRemaining = game.words.length;
 	this.timer = new Timer(config.timePerRound);
 	this.updateScore(0);
 	
@@ -427,11 +428,7 @@ function Game() {
 		for (var word in that.words) {
 			that.words[word].show(true);
 		}
-		if (config.roundNum <= config.numRounds) {
-			startNextRound();
-		} else {
-			showMessage("gameover");
-		}
+		this.nextRoundOrEnd();
 	};
 }
 
@@ -442,6 +439,9 @@ Game.prototype = {
 			if (this.words[word].show()) {
 				// Word was just found
 				this.updateScore(this.words[word].points());
+				if (--this.numWordsRemaining == 0) {
+					this.nextRoundOrEnd();
+				}
 			}
 		}
 		builder.reset();
@@ -472,6 +472,15 @@ Game.prototype = {
 				}
 			}
 			builder.showHint(hint);
+		}
+	},
+	
+	nextRoundOrEnd: function() {
+		this.stop();
+		if (config.roundNum <= config.numRounds) {
+			startNextRound(this.numWordsRemaining);
+		} else {
+			showMessage("gameover");
 		}
 	},
 	
@@ -509,7 +518,8 @@ function init() {
 	                    {id:"round4", src:"assets/round_4.png"},
 	                    {id:"round5", src:"assets/round_5.png"},
 	                    {id:"timeup", src:"assets/time_up.png"},
-	                    {id:"gameover", src:"assets/game_over.png"}]);
+	                    {id:"gameover", src:"assets/game_over.png"},
+	                    {id:"goodjob", src:"assets/good_job.png"}]);
 }
 
 function showSplashScreen() {
@@ -634,14 +644,19 @@ function startGame() {
 	showMessage("round" + config.roundNum++, 1000);
 }
 
-function startNextRound() {
+function startNextRound(numWordsRemaining) {
 	timeup = true;
-	showMessage("timeup");
+	if (numWordsRemaining > 0) {
+		showMessage("timeup");
+	} else {
+		showMessage("goodjob");
+	}
 	
 	placeRoundDOMElements();
 	
 	var link = document.getElementById("continuelink");
-	link.href = "javascript:document.getElementById('continuelink').style.display = 'none'; hideGameScreen(); showGameScreen(); showMessage('round' + config.roundNum++, 1000);";
+	link.href = "javascript:document.getElementById('continuelink').style.display = 'none';" +
+	"hideGameScreen(); showGameScreen(); showMessage('round' + config.roundNum++, 1000);";
 	
 	window.onresize = placeRoundDOMElements;
 }
