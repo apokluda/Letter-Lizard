@@ -4,11 +4,13 @@
 //var queue;
 //var scramble;
 
-var gameover = false;
+var timeup = false;
 var config = {
 	numRounds: 3,
+	roundNum: 1,
 	timePerRound: 120,
-	difficulty: "medium"
+	difficulty: "medium",
+	score: 0
 };
 
 var letterpoints = {
@@ -312,26 +314,23 @@ Builder.prototype = {
 
 
 
-function showMessage(message)
-{
+function showMessage(message, duration) {
 	var cw = stage.canvas.width;
 	var ch = stage.canvas.height;
 	var lx = cw * 0.70;
 	
 	var bmp = new createjs.Bitmap(queue.getResult(message));
+	bmp.x = (lx - bmp.image.width) * 0.5;
+	bmp.y = (ch - bmp.image.height) * 0.47;
 
-	if (message == "gameover")
-	{
-		bmp.x = (lx - bmp.image.width) / 2;
-		bmp.y = (ch - bmp.image.height) / 2;
-	}
-	
 	stage.addChild(bmp);
-}
-
-function hideMessage(handle)
-{
-	stage.removeChild(handle);
+	
+	if (duration) {
+		// Hide the message after duration milliseconds
+		setTimeout(function() {
+			stage.removeChild(bmp);
+		}, duration);
+	}
 }
 
 function Timer(duration) {
@@ -380,7 +379,6 @@ Timer.prototype = {
 };
 
 function Game() {
-	console.log("using difficulty: " + config.difficulty);
 	var i = parseInt(Math.random() * games[config.difficulty].length);
 	var game = games[config.difficulty][i];
 	this.letters = game.letters;
@@ -389,15 +387,23 @@ function Game() {
 		var word = game.words[i];
 		this.words[word] = new Word(word);
 	}
-	this.score_val = 0;
 	this.timer = new Timer(config.timePerRound);
+	this.updateScore(0);
+	
+	var round = document.getElementById("round");
+	round.innerHTML = config.roundNum + " of " + config.numRounds;
 	
 	var that = this;
 	this.timer.ontimeup = function() {
-		gameover = true;
-		showMessage("gameover");
+		timeup = true;
 		for (var word in that.words) {
 			that.words[word].show(true);
+		}
+		console.log("roundNum: " + config.roundNum);
+		if (config.roundNum <= config.numRounds) {
+			startNextRound();
+		} else {
+			showMessage("gameover");
 		}
 	};
 }
@@ -408,22 +414,16 @@ Game.prototype = {
 		if (word in this.words) {
 			if (this.words[word].show()) {
 				// Word was just found
-				this.score += this.words[word].points();
+				this.updateScore(this.words[word].points());
 			}
 		}
 		builder.reset();
 	},
 	
-	// REPORT: property setter
-	get score()
-	{
-		return this.score_val;
-	},
-	
-	set score(val) {
+	updateScore: function(increment) {
+		config.score += increment;
 		var elem = document.getElementById("score");
-		elem.innerHTML = val;
-		this.score_val = val;
+		elem.innerHTML = config.score;
 	},
 	
 	stop: function() {
@@ -454,6 +454,12 @@ function init() {
 	queue.loadManifest([{id:"title", src:"assets/letter_lizard_large.png"},
 	                    {id:"lizard", src:"assets/lizard.png"},
 	                    {id:"letters", src:"assets/letters.png"},
+	                    {id:"round1", src:"assets/round_1.png"},
+	                    {id:"round2", src:"assets/round_2.png"},
+	                    {id:"round3", src:"assets/round_3.png"},
+	                    {id:"round4", src:"assets/round_4.png"},
+	                    {id:"round5", src:"assets/round_5.png"},
+	                    {id:"timeup", src:"assets/time_up.png"},
 	                    {id:"gameover", src:"assets/game_over.png"}]);
 }
 
@@ -535,6 +541,18 @@ function hideMenuScreen() {
 	window.onresize = null;
 }
 
+function placeMenuDOMElements() {
+	var cx = stage.canvas.offsetLeft;
+	var cy = stage.canvas.offsetTop;
+	//var cw = stage.canvas.width;	// The width of the canvas
+	//var ch = stage.canvas.height;	// The height of the canvas
+	
+	var text = document.getElementById("menu");
+	text.style.left = (cx + 500) + "px";
+	text.style.top = (cy + 250) + "px";
+	text.style.display = "inline";
+}
+
 function startGame() {
 	function parseVal(str, min, max, def) {
 		var val = parseInt(str);
@@ -559,21 +577,37 @@ function startGame() {
 	config.numRounds = parseVal(form.numrounds.value);
 	config.timePerRound = parseVal(form.timeperround.value);
 	config.difficulty = getSelection(form.difficulty);
+	config.roundNum = 1;
+	config.score = 0;
 	
 	hideMenuScreen();
 	showGameScreen();
+	showMessage("round" + config.roundNum++, 1000);
 }
 
-function placeMenuDOMElements() {
+function startNextRound() {
+	timeup = true;
+	showMessage("timeup");
+	
+	placeRoundDOMElements();
+	
+	var link = document.getElementById("continuelink");
+	link.href = "javascript:document.getElementById('continuelink').style.display = 'none'; hideGameScreen(); showGameScreen(); showMessage('round' + config.roundNum++, 1000);";
+	
+	window.onresize = placeRoundDOMElements;
+}
+
+function placeRoundDOMElements() {
 	var cx = stage.canvas.offsetLeft;
 	var cy = stage.canvas.offsetTop;
-	//var cw = stage.canvas.width;	// The width of the canvas
-	//var ch = stage.canvas.height;	// The height of the canvas
+	var cw = stage.canvas.width;	// The width of the canvas
+	var lx = cw * 0.70;
 	
-	var text = document.getElementById("menu");
-	text.style.left = (cx + 500) + "px";
-	text.style.top = (cy + 250) + "px";
-	text.style.display = "inline";
+	var link = document.getElementById("continuelink");
+
+	link.style.left = (cx + (lx - 70) / 2) + "px";
+	link.style.top = (cy + 330) + "px";
+	link.style.display = "inline";
 }
 
 function showGameScreen() {
@@ -614,10 +648,10 @@ function showGameScreen() {
 	// REPORT: talk about why a function is needed here instead of assigning
 	// scramble.shuffle to onclick directly (like storing 'this' in a variable called 'that')
 	bShuffle.onclick = function() {
-		if (!gameover) scramble.shuffle();
+		if (!timeup) scramble.shuffle();
 	};
 
-	gameover = false;
+	timeup = false;
 	window.onresize = placeGameDOMElements;
 	document.onkeydown = handleGameKeyDown;
 }
@@ -699,7 +733,7 @@ function handleSplashKeyDown(e) {
 
 function handleGameKeyDown(e) {
 	// cross browser issues exist
-	if (!gameover) {
+	if (!timeup) {
 		if (!e) { e = window.event; }
 		if (e.keyCode >= 65 && e.keyCode <= 90) {
 			builder.takeTile(String.fromCharCode(e.keyCode));
