@@ -399,7 +399,6 @@ function Game() {
 		for (var word in that.words) {
 			that.words[word].show(true);
 		}
-		console.log("roundNum: " + config.roundNum);
 		if (config.roundNum <= config.numRounds) {
 			startNextRound();
 		} else {

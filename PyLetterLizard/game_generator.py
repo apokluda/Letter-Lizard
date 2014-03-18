@@ -200,7 +200,7 @@ def generate_game(difficulty, size=6, num=1):
         for word in words:
             if can_make_word(letter_count, word):
                 soln.append(word)
-        if len(soln) > 3:
+        if len(soln) > 9:
             return (scramble, soln)
 
 def compare_words(word1, word2):
