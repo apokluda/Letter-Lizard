@@ -1,0 +1,81 @@
+Welcome to LuaLetterLizard!
+
+LetterLizard is a fun word game for the whole family!
+
+How to play: You will be presented with a set of letters
+and you must make as many words as you can from the set
+of letters before the timer runs out.
+
+Main Menu:
+ newgame: start a new game
+ options: set game options such as the level of difficulty
+
+> options
+
+Options Menu:
+ rounds:     set the number of rounds (default: 3)
+ time:       set the time per round (default: 120 seconds)
+ difficulty: set the defficulty (default: normal)
+ mainmenu:   return to the main menu
+ quit:       exit the game
+
+> rounds 2
+> time 300
+> difficulty easy
+> mainmenu
+
+Main Menu:
+ newgame: start a new game
+ options: set game options such as the level of difficulty
+
+> newgame
+
+Game Menu:
+
+> letters:   show the set of letters
+> word:      check the given word
+> status:    show the words found so far, time remaining and score
+> hint:      display a hint
+> time:      show the amount of time remaining
+> shuffle:   shuffle the set of letters
+> nextround: start the next round
+> mainmenu:  return to the main menu
+> quit:      exit the game
+
+I E M E W A B T
+
+> word time
+
+Good job!
+
+> word item
+
+Good job!
+
+> letters
+
+I E M E W A B T
+
+> words
+
+TIME ITEM
+
+Round: 1 of 2
+Time Remaining: 0:12
+Score: 13
+
+23 three letter words remaining
+22 four letter words remaining
+
+> 
+
+Time's Up!
+
+Words found: TIME ITEM
+Words not found: AIM ATE AWE BAT BEE ...
+
+> nextround
+
+S N N O L L V A
+
+> 
