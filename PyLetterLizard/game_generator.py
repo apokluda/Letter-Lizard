@@ -240,6 +240,17 @@ class JavaScriptFormatter(OutputFormatter):
     def endOutput(self):
         print("];")
 
+class LuaFormatter(OutputFormatter):
+    def beginOutput(self):
+        print("games = {")
+    
+    def output(self, scramble, words):
+        print("{letters = '", scramble, "', words = {'", sep='', end='')
+        print(*words, sep="', '", end="'}},\n")
+    
+    def endOutput(self):
+        print("}")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -262,7 +273,7 @@ if __name__ == "__main__":
     parser.add_argument(
             "-m", "--markup",
             type=str,
-            choices=["plain", "JavaScript"],
+            choices=["plain", "JavaScript", "Lua"],
             default="plain",
             help="the markup language to use for output")
     args = parser.parse_args()
@@ -271,6 +282,8 @@ if __name__ == "__main__":
         formatter = PlainFormatter()
     elif args.markup == "JavaScript":
         formatter = JavaScriptFormatter()
+    elif args.markup == "Lua":
+        formatter = LuaFormatter()
     formatter.beginOutput()
     for i in range(args.num):
         scramble, words = generate_game(args.difficulty, args.size)
