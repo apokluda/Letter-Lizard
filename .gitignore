@@ -4,3 +4,6 @@ LetterLizardJS/.project
 LetterLizardJS/.settings
 PyLetterLizard/.project
 PyLetterLizard/.pydevproject
+*.aux
+*.log
+report/main.pdf
