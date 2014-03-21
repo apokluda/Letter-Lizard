@@ -2,6 +2,7 @@
 *.log
 *.tex.bak
 *.lof
+*.lol
 *.out
 *.toc
 *.synctex.gz
