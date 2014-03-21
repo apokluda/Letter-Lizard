@@ -5,6 +5,9 @@
 *.lol
 *.out
 *.toc
+*.bbl
+*.blg
 *.synctex.gz
+main.dvi
 main.pdf
 
