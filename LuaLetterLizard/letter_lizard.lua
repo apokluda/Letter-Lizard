@@ -2,7 +2,15 @@
 
 games = dofile("games.lua")
 
-io.write("The letters for the first easy game are " .. games.easy[1].letters .. ".\n")
-io.write("These letters can form " .. #games.easy[1].words .. " words.\n")
-io.write("The first word is " .. games.easy[1].words[1] .. ". Can you find the rest?\n")
+menu = {"Start Game", "End Game"}
+
+io.write("Letter Lizard\n")
+io.write("Main Menu\n")
+for k,v in pairs(menu) do
+	print(k..":".." "..v)
+end
+io.write("Enter your option")
+
+
+
 
