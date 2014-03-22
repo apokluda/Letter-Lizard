@@ -61,3 +61,8 @@ function build_str_from_arr(arr)
     end
     return s
 end
+
+function get_arr_from_str(str)
+    arr = {}
+    for i
+end

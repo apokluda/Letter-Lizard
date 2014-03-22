@@ -1,8 +1,18 @@
 require("config")
 require("helper_functions")
+require("games")
 
-puzzle = {"R","A", "B", "L", "S", "T", "N", "E", "S"}
-solutions = {"STAB", "LAB", "BLARE", "TEN", "TAB"}
+game_i = 0
+
+function get_game()
+    game_i += 1
+    return games.easy[game_i]
+end
+
+game = get_game()
+puzzle = game.letters
+
+solutions = game.words
 letters_guessed = {}
 puzzle_letters_displayed = table.shallow_copy(puzzle)
 message = ""
@@ -10,6 +20,10 @@ score = 0
 words_guessed_correct = {}
 
 font = love.graphics.newFont(14)
+
+
+
+
 
 function love.load()
     bg = {0,153,76}
