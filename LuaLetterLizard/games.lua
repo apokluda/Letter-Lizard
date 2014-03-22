@@ -1,4 +1,4 @@
-local games = {}
+games = {}
 
 games.easy = {
 {letters = 'ISSTICSR', words = {'ITS', 'SIC', 'SIR', 'SIT', 'IRIS', 'SICS', 'SIRS', 'SITS', 'STIR', 'STIRS', 'CRISIS'}},

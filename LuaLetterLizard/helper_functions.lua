@@ -61,3 +61,9 @@ function build_str_from_arr(arr)
     end
     return s
 end
+
+function str_to_table(arr)
+    t={}
+    arr:gsub(".",function(c) table.insert(t,c) end)
+    return t
+end

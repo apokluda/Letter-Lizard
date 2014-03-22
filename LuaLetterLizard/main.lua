@@ -1,19 +1,27 @@
 require("config")
 require("helper_functions")
-
-puzzle = {"R","A", "B", "L", "S", "T", "N", "E", "S"}
-solutions = {"STAB", "LAB", "BLARE", "TEN", "TAB"}
+require("games")
+games_letters = {}
+games_letters = str_to_table(games.easy[1].letters)
+games_words = {}
+games_words = games.easy[1].words
+--puzzle = {"R","A", "B", "L", "S", "T", "N", "E", "S"}
+puzzle = table.shallow_copy(games_letters)
+--solutions = {"STAB", "LAB", "BLARE", "TEN", "TAB"}
+solutions = {}
+solutions = table.shallow_copy(games_words)
 letters_guessed = {}
 puzzle_letters_displayed = table.shallow_copy(puzzle)
 message = ""
 score = 0
 words_guessed_correct = {}
-
 font = love.graphics.newFont(14)
 
 function love.load()
+
     bg = {0,153,76}
     love.graphics.setBackgroundColor(bg)
+
 end
 
 function love.keypressed(key)
@@ -37,14 +45,11 @@ function love.keypressed(key)
         end
     end
 end
-
-function love.update(dt)
-
-end
-
 function love.draw()
     love.graphics.setColor(black)
     love.graphics.setFont(font)
+    love.graphics.line(700,0, 700, 500)
+
     for i, letter in ipairs(letters_guessed) do
         x = letters_guessed_left + i * square_width + i * spacing
         y = letters_guessed_top
@@ -58,8 +63,10 @@ function love.draw()
         love.graphics.print(letter, x + square_width/4, y + square_width/5)
     end
     for i, letter in ipairs(words_guessed_correct) do
-        x = solved_words_region_left
+        ht = love.graphics.getHeight()
+        x = solved_words_region_left 
         y = solved_words_region_top + i*(square_width + spacing)
         love.graphics.print(letter, x + square_width/4, y + square_width/5)
     end
 end
+
