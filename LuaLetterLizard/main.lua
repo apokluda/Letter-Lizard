@@ -1,20 +1,6 @@
 require("config")
 require("helper_functions")
 require("games")
-<<<<<<< HEAD
-
-game_i = 0
-
-function get_game()
-    game_i += 1
-    return games.easy[game_i]
-end
-
-game = get_game()
-puzzle = game.letters
-
-solutions = game.words
-=======
 games_letters = {}
 games_letters = str_to_table(games.easy[1].letters)
 games_words = {}
@@ -24,17 +10,12 @@ puzzle = table.shallow_copy(games_letters)
 --solutions = {"STAB", "LAB", "BLARE", "TEN", "TAB"}
 solutions = {}
 solutions = table.shallow_copy(games_words)
->>>>>>> added some more functionality
 letters_guessed = {}
 puzzle_letters_displayed = table.shallow_copy(puzzle)
 message = ""
 score = 0
 words_guessed_correct = {}
 font = love.graphics.newFont(14)
-
-
-
-
 
 function love.load()
 
@@ -83,8 +64,10 @@ function love.draw()
     end
     for i, letter in ipairs(words_guessed_correct) do
         ht = love.graphics.getHeight()
-        x = solved_words_region_left 
-        y = solved_words_region_top + i*(square_width + spacing)
+        --x = solved_words_region_left 
+        x = 720
+        --y = solved_words_region_top + i*(square_width + spacing)
+        y = i *puzzle_letters_top
         love.graphics.print(letter, x + square_width/4, y + square_width/5)
     end
 end
