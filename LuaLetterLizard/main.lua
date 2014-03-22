@@ -1,96 +1,65 @@
+require("config")
+require("helper_functions")
+
+puzzle = {"R","A", "B", "L", "S", "T", "N", "E", "S"}
+solutions = {"STAB", "LAB", "BLARE", "TEN", "TAB"}
+letters_guessed = {}
+puzzle_letters_displayed = table.shallow_copy(puzzle)
+message = ""
+score = 0
+words_guessed_correct = {}
+
+font = love.graphics.newFont(14)
+
 function love.load()
-  --preloading all game configurations and games
+    bg = {0,153,76}
+    love.graphics.setBackgroundColor(bg)
+end
 
-  require("Loveframes")
-  games = require("games")
-  --g = love.graphics
-  --easygames = love.filesystem.load(games.lua)
-  background = {0, 204, 102}
-  tile_width = 50
-  tile_height = 50
-  tile_x = 100
-  tile_y = 100
-  holder_length = 50
-  holder_x = 100
-  holder_y = 300
-  tiles = {}
-  holder = {}
-  love.graphics.setBackgroundColor(background)
+function love.keypressed(key)
+    if (isalpha_char(key)) then key = key:upper() end
 
-
-  
+    if (array_contains(puzzle_letters_displayed, key)) then
+        table.insert(letters_guessed, key)
+        remove_item(puzzle_letters_displayed, key)
+    elseif (key == "backspace") then
+        if (#letters_guessed >= 1) then
+            letter_to_delete = letters_guessed[#letters_guessed]
+            table.remove(letters_guessed, #letters_guessed)
+            table.insert(puzzle_letters_displayed, letter_to_delete)
+        end
+    elseif (key == "return") then
+        guess = build_str_from_arr(letters_guessed)
+        if (array_contains(solutions, guess) and (not array_contains(words_guessed_correct, guess))) then
+            table.insert(words_guessed_correct, guess)
+            puzzle_letters_displayed = table.shallow_copy(puzzle)
+            letters_guessed = {}
+        end
+    end
 end
 
 function love.update(dt)
- --updating tile positions here?
 
-  tile_x = tile_x*dt
-  tile_y = tile_y*dt
-
- 
-  loveframes.update(dt)
 end
 
 function love.draw()
-  --trying to generate tiles from the first easy game
-   for i = 1, string.len(games.easy[1].letters) do
-    tiles[i] = string.sub(games.easy[1].letters, i, i)
-  end
-  for k,v in pairs(tiles) do
-    love.graphics.print("v",100,100,10)
-    Button(v)
-  end
-
-  
-  
- 
-  loveframes.draw()
-end
-
-function love.mousepressed(x,y,button)
-  
-  loveframes.mousepressed(x,y,button)
-end
-
-function love.mousereleased(x,y,button)
-  
-  loveframes.mousereleased(x,y,button)
-end
-
-function love.keypressed(key,unicode)
-
-  loveframes.keypressed(key,unicode)
-
-end
-
-function love.keyreleased(key)
-  
-  loveframes.keyreleased(key)
-end
-
-function love.textinput(t)
-   
-
-    loveframes.textinput(text)
-end
-
-
-function Button(text)
-  --creating tiles using buttons from loveframes library
-  local button = loveframes.Create("button")
-  button.Draw = function(self)
-  button:SetSize(tile_width, tile_height):SetPos(tile_x , tile_y):SetText(text):Center()
-  end
-
-  button.OnMouseEnter = function(self)
-    
-  end
-
-  button.OnClick = function(self, x, y)
-    
-  end
-  button.OnMouseExit = function(self)
-    
-  end
-
+    love.graphics.setColor(black)
+    love.graphics.setFont(font)
+    for i, letter in ipairs(letters_guessed) do
+        x = letters_guessed_left + i * square_width + i * spacing
+        y = letters_guessed_top
+        love.graphics.rectangle("line", x, y ,square_width,square_width)
+        love.graphics.print(letter, x + square_width/4, y + square_width/5)
+    end
+    for i, letter in ipairs(puzzle_letters_displayed) do
+        x = puzzle_letters_left + i * square_width + i * spacing
+        y = puzzle_letters_top
+        love.graphics.rectangle("line", x, y ,square_width,square_width)
+        love.graphics.print(letter, x + square_width/4, y + square_width/5)
+    end
+    for i, letter in ipairs(words_guessed_correct) do
+        x = solved_words_region_left
+        y = solved_words_region_top + i*(square_width + spacing)
+        love.graphics.print(letter, x + square_width/4, y + square_width/5)
+    end
 end
