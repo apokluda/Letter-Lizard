@@ -62,14 +62,17 @@ function build_str_from_arr(arr)
     return s
 end
 
-<<<<<<< HEAD
-function get_arr_from_str(str)
-    arr = {}
-    for i
-=======
 function str_to_table(arr)
     t={}
     arr:gsub(".",function(c) table.insert(t,c) end)
     return t
->>>>>>> added some more functionality
+end
+
+function shuffled(tab)
+local n, order, res = #tab, {}, {}
+ 
+for i=1,n do order[i] = { rnd = math.random(), idx = i } end
+table.sort(order, function(a,b) return a.rnd < b.rnd end)
+for i=1,n do res[i] = tab[order[i].idx] end
+return res
 end

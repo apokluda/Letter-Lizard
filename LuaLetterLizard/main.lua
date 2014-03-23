@@ -19,7 +19,7 @@ score = 0
 words_guessed_correct = {}
 font = love.graphics.newFont(14)
 image = love.graphics.newImage( "good_job.png" )
---correct = false
+clicked = false
 
 function love.load()
 
@@ -55,6 +55,17 @@ function love.keypressed(key)
     end
 end
 
+function love.mousepressed(x, y, button)
+    if (button == 'l') and (x > 100) and (x < 100 + button_width) and (y > 400) and (y < 400 + button_height)  then
+        clicked = true
+    end
+      
+    loveframes.mousepressed(x, y, button)
+end
+
+function love.mousereleased(x , y, button)
+    loveframes.mousereleased(x , y, button)
+end
 function love.update(dt)
     if (correct) then
         dt = dt * dt
@@ -94,13 +105,20 @@ function love.draw()
         correct = false
     end
 
+    love.graphics.rectangle("line",100, 400, button_width, button_height)
+    --love.graphics.print("New Game", 100 + button_width/4, 400 + button_width/10)
     newgame_button = loveframes.Create("button")
     newgame_button:SetSize(button_width, button_height)
     newgame_button:SetPos(100, 400)
     newgame_button:SetText("New Game")
-    newgame_button.OnClick = function(self, x, y)
-        love.graphics.print("The button")
+    if clicked then
+        newgame_button:SetText("hi")
+        --clicked = false
     end
+
     loveframes.draw()
 end
 
+function newgame()
+
+end
