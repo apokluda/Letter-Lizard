@@ -18,11 +18,15 @@ message = ""
 score = 0
 words_guessed_correct = {}
 font = love.graphics.newFont(14)
+image = love.graphics.newImage( "good_job.png" )
+--correct = false
 
 function love.load()
 
     bg = {0,153,76}
     love.graphics.setBackgroundColor(bg)
+    initTime = love.timer.getTime()
+    correct = false
 
 end
 
@@ -43,12 +47,21 @@ function love.keypressed(key)
         if (array_contains(solutions, guess) and (not array_contains(words_guessed_correct, guess))) then
             table.insert(words_guessed_correct, guess)
             puzzle_letters_displayed = table.shallow_copy(puzzle)
+            correct = true
             letters_guessed = {}
         end
     elseif (key == " ") then
         puzzle_letters_displayed = shuffled(puzzle_letters_displayed)
     end
 end
+
+function love.update(dt)
+    if (correct) then
+        dt = dt * dt
+    end
+
+end
+
 function love.draw()
     love.graphics.setColor(black)
     love.graphics.setFont(font)
@@ -74,12 +87,19 @@ function love.draw()
         y = i *puzzle_letters_top
         love.graphics.print(letter, x + square_width/4, y + square_width/5)
     end
+
+    if (correct) then
+        love.graphics.setColor(255,255,255,255)
+        love.graphics.draw( image, goodjob_x, goodjob_y)
+        correct = false
+    end
+
     newgame_button = loveframes.Create("button")
     newgame_button:SetSize(button_width, button_height)
     newgame_button:SetPos(100, 400)
     newgame_button:SetText("New Game")
-    newgame_button.OnClick = function(self)
-        print("The button")
+    newgame_button.OnClick = function(self, x, y)
+        love.graphics.print("The button")
     end
     loveframes.draw()
 end
