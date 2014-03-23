@@ -19,8 +19,8 @@ white = [255,255,255]
 sky_blue = [  66,  136, 227]
 background_color = [0,153,76]
 square_background_color = white
-game_width = 1300
-game_height = 800
+game_width = 1023
+game_height = 576
 size = [game_width,game_height]
 left_margin = 20
 top_margin = 20
@@ -78,6 +78,27 @@ title_screen_options_left = int(0.3*game_width)
 title_screen_options_top = int(0.5*game_height)
 title_screen_options_width = 20
 
-GAME_STATES = Enum(['PLAYING', 'GAME_OVER', 'SPLASH_SCREEN'])
+splash_screen_img_name = "splash.png"
+splash_screen_img = pygame.image.load(splash_screen_img_name)
+
+options_screen_img_name = "options.png"
+options_screen_img = pygame.image.load(options_screen_img_name)
+#splash_screen_img = splash_screen_img.convert()
+
+GAME_STATES = Enum(['PLAYING', 'GAME_OVER', 'SPLASH_SCREEN', 'OPTIONS'])
 
 
+# def load_image(name, colorkey=None):
+#     fullname = os.path.join('data', name)
+#     try:
+#         image = pygame.image.load(fullname)
+#     except pygame.error, message:
+#         print 'Cannot load image:', name
+#         raise SystemExit, message
+#     image = image.convert()
+#     if colorkey is not None:
+#         if colorkey is -1:
+#             colorkey = image.get_at((0,0))
+#         image.set_colorkey(colorkey, RLEACCEL)
+#     return image, image.get_rect()
+           

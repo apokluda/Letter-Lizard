@@ -48,15 +48,9 @@ def main():
     all_buttons.append(button_main_menu)
     all_buttons.append(button_exit)
     all_buttons.append(button_new_game)
-
-    #title_screen_options = ['']
     title_screen_options = ['NEW GAME', 'HIGH SCORES', 'OPTIONS', 'EXIT']
-    #title_screen_options = Enum(title_screen_option_list)
     title_label = title_font.render("Letter Lizard!", 1, black)
     selected_option = 0 
-    #title_screen_option.NEW_GAME
-    #selected_option = title_screen_options.NEW_GAME
-    #new_game()
     while done == False:
         if (game_state == GAME_STATES.SPLASH_SCREEN):
             for event in pygame.event.get():
@@ -64,39 +58,27 @@ def main():
                     done = True
                 elif event.type == pygame.KEYDOWN:
                     if (event.key == pygame.K_SPACE):
-                        option = title_screen_options[selected_option]
-                        if (option == "NEW GAME"):
-                            game_state = GAME_STATES.PLAYING
-                            new_game()
-                        elif (option == 'EXIT'):
-                            doexit()
-                        pass
-                    elif (event.key == pygame.K_UP):
-                        if (selected_option > 0): 
-                            selected_option -= 1
-                    elif (event.key == pygame.K_DOWN):
-                        if (selected_option < len(title_screen_options) - 1):
-                            selected_option += 1
-                        #game.guess()
-                
-                screen.fill(background_color)
-                #title_screen_labels = []
-                #for i in title_screen_options:
-#                     if (x != selected_option):
-#                         label = title_screen_option_font.render(title_screen_options[selected_option], 1,black)
-#                         title_screen_labels.append(label)
-                for i in range(len(title_screen_options)):
-                    #label = title_screen_labels[i]
-                    color = black
-                    if (i == selected_option):
-                        color = white
-                    label = title_screen_option_font.render(title_screen_options[i], 1,color)
-                    left = title_screen_options_left
-                    top = title_screen_options_top + i * (title_screen_option_spacing + title_screen_options_width)
-                    screen.blit(label, (left, top))
-                
-                screen.blit(title_label, (title_screen_left, title_screen_top))
+                        # option = title_screen_options[selected_option]
+                        # if (option == "NEW GAME"):
+                        game_state = GAME_STATES.OPTIONS
+                        new_game()
+            screen.blit(splash_screen_img, (0, 0))
                 # game.draw(screen)
+        elif (game_state == GAME_STATES.OPTIONS):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                    done = True
+
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    print(pygame.mouse.get_pos())
+
+            screen.blit(options_screen_img, (0, 0))
+            num_rounds_lbl = default_font.render("Number of Rounds: ", 1, black)
+            time_per_round_lbl = default_font.render("Time per round: ", 1, black)
+            seconds_lbl = default_font.render("seconds", 1, black)
+            difficult_lbl = default_font.render("Difficulty: ", 1, black)
+            #screen.blit(num_rounds_lbl, )
+            #new_game()        
         elif (game_state == GAME_STATES.PLAYING):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -127,13 +109,9 @@ def main():
             time_remaining_str = convert_to_time_string(time_remaining_s)
             if (time_remaining_s <= 0):
                 game_state = GAME_STATES.GAME_OVER
-
             screen.fill(background_color)
-
             for b in all_buttons:
                 b.draw(screen)
-
-
             countdown_label = puzzle_letter_font.render(str(time_remaining_str), 1, black)
             screen.blit(countdown_label, (countdown_left, countdown_top))
 
@@ -149,23 +127,13 @@ def main():
                     new_game()
                 elif 'click' in button_main_menu.handleEvent(event):
                     game_state = GAME_STATES.SPLASH_SCREEN
-               
             screen.fill(background_color)
-            
             for b in all_buttons:
                 b.draw(screen)
-            
-            
             countdown_label = puzzle_letter_font.render(str(time_remaining_str), 1, black)
             screen.blit(countdown_label, (countdown_left, countdown_top))
-            
             game.draw(screen)
-            
-
         pygame.display.flip()
-                #clock.tick(20)
-
     pygame.quit ()
-
 if __name__ == "__main__":
     main()
