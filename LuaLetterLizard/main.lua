@@ -18,15 +18,19 @@ message = ""
 score = 0
 words_guessed_correct = {}
 font = love.graphics.newFont(14)
-image = love.graphics.newImage( "good_job.png" )
+goodjob = love.graphics.newImage( "good_job.png" )
+game_over_image = love.graphics.newImage("game_over.png")
 clicked = false
 
 function love.load()
 
     bg = {0,153,76}
     love.graphics.setBackgroundColor(bg)
-    initTime = love.timer.getTime()
+    remaining_time = 10
+    gameover = false
     correct = false
+    timer = 0
+    target = 5
 
 end
 
@@ -57,8 +61,8 @@ end
 
 function love.mousepressed(x, y, button)
     if (button == 'l') and (x > 100) and (x < 100 + button_width) and (y > 400) and (y < 400 + button_height)  then
-        --clicked = true
         newgame()
+        --gameover = false
     end
       
     loveframes.mousepressed(x, y, button)
@@ -68,8 +72,13 @@ function love.mousereleased(x , y, button)
     loveframes.mousereleased(x , y, button)
 end
 function love.update(dt)
-    if (correct) then
-        dt = dt * dt
+    -- updating display time for 'good_job!'
+    timer = timer + dt
+    --updating game time
+    remaining_time = remaining_time - dt 
+    if remaining_time <= 0 then
+        gameover = true
+        remaining_time = 0
     end
 
 end
@@ -99,28 +108,37 @@ function love.draw()
         y = i *puzzle_letters_top
         love.graphics.print(letter, x + square_width/4, y + square_width/5)
     end
-
-    if (correct) then
+    --display Good Job!
+    if correct and timer <= 2 then
         love.graphics.setColor(255,255,255,255)
-        love.graphics.draw( image, goodjob_x, goodjob_y)
+        love.graphics.draw( goodjob, goodjob_x, goodjob_y)
+    else
+        timer = 0
         correct = false
     end
 
+    --display Game Over!
+    if gameover then
+        love.graphics.setColor(255,255,255,255)
+        love.graphics.draw(game_over_image, goodjob_x, goodjob_y)
+    end
+
+    --display countdown timer
+    local minutes = math.floor( remaining_time / 60 ) -- calculate how many minutes are left
+    local seconds = math.floor( remaining_time % 60 ) -- calculate how many seconds are left
+    love.graphics.print( string.format("%02d:%02d",minutes,seconds), 900, 50 ) -- print it somewhere near the middle of the screen with proper formatting
     love.graphics.rectangle("line",100, 400, button_width, button_height)
     --love.graphics.print("New Game", 100 + button_width/4, 400 + button_width/10)
     newgame_button = loveframes.Create("button")
     newgame_button:SetSize(button_width, button_height)
     newgame_button:SetPos(100, 400)
     newgame_button:SetText("New Game")
-    if clicked then
-        newgame_button:SetText("hi")
-        --clicked = false
-    end
 
     loveframes.draw()
 end
 
 function newgame()
+
     new_generator = math.random(1,100)
     games_letters = {}
     games_letters = str_to_table(games.easy[new_generator].letters)
@@ -133,5 +151,7 @@ function newgame()
     solutions = table.shallow_copy(games_words)
     letters_guessed = {}
     puzzle_letters_displayed = table.shallow_copy(puzzle)
+    words_guessed_correct = {}
+    gameover = false
 
 end
