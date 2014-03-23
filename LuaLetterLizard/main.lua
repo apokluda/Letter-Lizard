@@ -1,6 +1,8 @@
 require("config")
 require("helper_functions")
 require("games")
+require("LoveFrames")
+math.randomseed(os.time())
 games_letters = {}
 games_letters = str_to_table(games.easy[1].letters)
 games_words = {}
@@ -43,6 +45,8 @@ function love.keypressed(key)
             puzzle_letters_displayed = table.shallow_copy(puzzle)
             letters_guessed = {}
         end
+    elseif (key == " ") then
+        puzzle_letters_displayed = shuffled(puzzle_letters_displayed)
     end
 end
 function love.draw()
@@ -65,10 +69,18 @@ function love.draw()
     for i, letter in ipairs(words_guessed_correct) do
         ht = love.graphics.getHeight()
         --x = solved_words_region_left 
-        x = 720
+        x = solved_words_col_margin
         --y = solved_words_region_top + i*(square_width + spacing)
         y = i *puzzle_letters_top
         love.graphics.print(letter, x + square_width/4, y + square_width/5)
     end
+    newgame_button = loveframes.Create("button")
+    newgame_button:SetSize(button_width, button_height)
+    newgame_button:SetPos(100, 400)
+    newgame_button:SetText("New Game")
+    newgame_button.OnClick = function(self)
+        print("The button")
+    end
+    loveframes.draw()
 end
 
