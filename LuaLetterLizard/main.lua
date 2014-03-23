@@ -153,5 +153,6 @@ function newgame()
     puzzle_letters_displayed = table.shallow_copy(puzzle)
     words_guessed_correct = {}
     gameover = false
+    remaining_time = 10
 
 end
