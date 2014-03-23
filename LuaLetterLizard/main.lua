@@ -57,7 +57,8 @@ end
 
 function love.mousepressed(x, y, button)
     if (button == 'l') and (x > 100) and (x < 100 + button_width) and (y > 400) and (y < 400 + button_height)  then
-        clicked = true
+        --clicked = true
+        newgame()
     end
       
     loveframes.mousepressed(x, y, button)
@@ -120,5 +121,17 @@ function love.draw()
 end
 
 function newgame()
+    new_generator = math.random(1,100)
+    games_letters = {}
+    games_letters = str_to_table(games.easy[new_generator].letters)
+    games_words = {}
+    games_words = games.easy[new_generator].words
+    --puzzle = {"R","A", "B", "L", "S", "T", "N", "E", "S"}
+    puzzle = table.shallow_copy(games_letters)
+    --solutions = {"STAB", "LAB", "BLARE", "TEN", "TAB"}
+    solutions = {}
+    solutions = table.shallow_copy(games_words)
+    letters_guessed = {}
+    puzzle_letters_displayed = table.shallow_copy(puzzle)
 
 end
