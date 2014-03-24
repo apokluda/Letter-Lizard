@@ -91,7 +91,12 @@ function game:mousepressed(x, y, button)
     if (button == 'l') and (x > 100) and (x < 100 + button_width) and (y > 400) and (y < 400 + button_height)  then
         game:newgame()
         --gameover = false
+    elseif (button == 'l') and (x > 300) and (x < 300 + button_width) and (y > 400) and (y < 400 + button_height)  then
+        puzzle_letters_displayed = shuffled(puzzle_letters_displayed)
+    elseif (button == 'l') and (x > 500) and (x < 500 + button_width) and (y > 400) and (y < 400 + button_height)  then
+        Gamestate.switch(options)
     end
+
       
     loveframes.mousepressed(x, y, button)
 end
@@ -149,6 +154,8 @@ function game:draw()
     love.graphics.setFont(number_fnt_40)
     love.graphics.print( string.format("%02d:%02d",minutes,seconds), 900, 20 ) -- print it somewhere near the middle of the screen with proper formatting
     love.graphics.rectangle("line",100, 400, button_width, button_height)
+    love.graphics.rectangle("line",300, 400, button_width, button_height)
+    love.graphics.rectangle("line",500, 400, button_width, button_height)
 
     --displaying the score
     love.graphics.setFont(number_fnt_40)
@@ -158,7 +165,16 @@ function game:draw()
     newgame_button = loveframes.Create("button")
     newgame_button:SetSize(button_width, button_height)
     newgame_button:SetPos(100, 400)
-    newgame_button:SetText("New Game")
+    newgame_button:SetText("NEW GAME")
+    shuffle_button = loveframes.Create("button")
+    shuffle_button:SetSize(button_width, button_height)
+    shuffle_button:SetPos(300, 400)
+    shuffle_button:SetText("SHUFFLE")
+    quit_button = loveframes.Create("button")
+    quit_button:SetSize(button_width, button_height)
+    quit_button:SetPos(500, 400)
+    quit_button:SetText("QUIT")
+
 
     --display Good Job!
     if correct and timer <= 2 then
@@ -200,8 +216,9 @@ function love.mousepressed(x, y, button)
 end
 
 function love.mousereleased(x , y, button)
-    loveframes.mousereleased(x , y, button)
+    
 end
+
 function love.update(dt)
     
 end
