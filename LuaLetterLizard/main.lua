@@ -2,52 +2,66 @@ require("config")
 require("helper_functions")
 require("games")
 require("LoveFrames")
---require("menu")
 Gamestate = require("gamestate")
-math.randomseed(os.time())
-games_letters = {}
-games_letters = str_to_table(games.easy[1].letters)
-games_words = {}
-games_words = games.easy[1].words
---puzzle = {"R","A", "B", "L", "S", "T", "N", "E", "S"}
-puzzle = table.shallow_copy(games_letters)
---solutions = {"STAB", "LAB", "BLARE", "TEN", "TAB"}
-solutions = {}
-solutions = table.shallow_copy(games_words)
-letters_guessed = {}
-puzzle_letters_displayed = table.shallow_copy(puzzle)
-message = ""
-score = 0
-words_guessed_correct = {}
-font = love.graphics.newFont(14)
-goodjob = love.graphics.newImage( "good_job.png" )
-game_over_image = love.graphics.newImage("game_over.png")
-number_fnt_40 = love.graphics.newFont( "funfont.ttf", 40)
-number_fnt_20 = love.graphics.newFont("funfont.ttf", 20)
-score = 0
+
 
 local menu = {}
+local game = {}
 function menu:init()
+
     splash = love.graphics.newImage("splash.png")
 end
 
 function menu:draw()
-    love.graphics.draw(splash, game_width, game_height)
+    love.graphics.setColor(255,255,255,255)
+    love.graphics.draw(splash, 0 ,0)
+end
+
+function menu:keypressed(key)
+    if key == ' ' then
+        Gamestate.switch(game)
+    end
 end
 
 function love.load()
     Gamestate.registerEvents()
     Gamestate.switch(menu)
-    bg = {0,153,76}
-    love.graphics.setBackgroundColor(bg)
+    --
+    
+end
+
+function game:init()
+    math.randomseed(os.time())
+    games_letters = {}
+    games_letters = str_to_table(games.easy[1].letters)
+    games_words = {}
+    games_words = games.easy[1].words
+    puzzle = table.shallow_copy(games_letters)
+    solutions = {}
+    solutions = table.shallow_copy(games_words)
+    letters_guessed = {}
+    puzzle_letters_displayed = table.shallow_copy(puzzle)
+    message = ""
+    score = 0
+    words_guessed_correct = {}
+    font = love.graphics.newFont(14)
+    goodjob = love.graphics.newImage( "good_job.png" )
+    game_over_image = love.graphics.newImage("game_over.png")
+    time_up = love.graphics.newImage("time_up.png")
+    number_fnt_40 = love.graphics.newFont( "funfont.ttf", 40)
+    number_fnt_20 = love.graphics.newFont("funfont.ttf", 20)
+    score = 0
     remaining_time = 120
     gameover = false
     correct = false
     timer = 0
     target = 5
+    bg = {0,153,76}
+    love.graphics.setBackgroundColor(bg)
+
 end
 
-function love.keypressed(key)
+function game:keypressed(key)
     if (isalpha_char(key)) then key = key:upper() end
 
     if (array_contains(puzzle_letters_displayed, key)) then
@@ -73,19 +87,16 @@ function love.keypressed(key)
     end
 end
 
-function love.mousepressed(x, y, button)
+function game:mousepressed(x, y, button)
     if (button == 'l') and (x > 100) and (x < 100 + button_width) and (y > 400) and (y < 400 + button_height)  then
-        newgame()
+        game:newgame()
         --gameover = false
     end
       
     loveframes.mousepressed(x, y, button)
 end
 
-function love.mousereleased(x , y, button)
-    loveframes.mousereleased(x , y, button)
-end
-function love.update(dt)
+function game:update(dt)
     -- updating display time for 'good_job!'
     timer = timer + dt
     --updating game time
@@ -94,10 +105,9 @@ function love.update(dt)
         gameover = true
         remaining_time = 0
     end
-
 end
 
-function love.draw()
+function game:draw()
     love.graphics.setColor(black)
     --love.graphics.setFont(number_fnt)
     love.graphics.line(700,0, 700, 500)
@@ -127,10 +137,10 @@ function love.draw()
 
     end
 
-    --display Game Over!
+    --display time up!
     if gameover then
         love.graphics.setColor(255,255,255,255)
-        love.graphics.draw(game_over_image, goodjob_x, goodjob_y)
+        love.graphics.draw(time_up, goodjob_x, goodjob_y)
     end
 
     --display countdown timer
@@ -162,8 +172,7 @@ function love.draw()
     loveframes.draw()
 end
 
-function newgame()
-
+function game:newgame()
     new_generator = math.random(1,100)
     games_letters = {}
     games_letters = str_to_table(games.easy[new_generator].letters)
@@ -179,5 +188,24 @@ function newgame()
     words_guessed_correct = {}
     gameover = false
     remaining_time = 120
+    score = 0
+end
 
+function love.keypressed(key)
+    
+end
+
+function love.mousepressed(x, y, button)
+    
+end
+
+function love.mousereleased(x , y, button)
+    loveframes.mousereleased(x , y, button)
+end
+function love.update(dt)
+    
+end
+
+function love.draw()
+    
 end
