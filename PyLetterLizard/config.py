@@ -16,6 +16,7 @@ class Enum(set):
 #SET CONFIGURATION VALUES
 black = [ 0, 0, 0]
 white = [255,255,255]
+red = [255,0,0]
 sky_blue = [  66,  136, 227]
 background_color = [0,153,76]
 square_background_color = white
@@ -83,6 +84,12 @@ splash_screen_img = pygame.image.load(splash_screen_img_name)
 
 options_screen_img_name = "options.png"
 options_screen_img = pygame.image.load(options_screen_img_name)
+num_rounds_left = 735
+num_rounds_top = 337
+time_per_round_left = 724
+time_per_round_top = 375
+difficulty_left = 662
+difficulty_top = 413
 #splash_screen_img = splash_screen_img.convert()
 
 GAME_STATES = Enum(['PLAYING', 'GAME_OVER', 'SPLASH_SCREEN', 'OPTIONS'])

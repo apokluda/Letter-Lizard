@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-# Import a library of functions called 'pygame'
 from config import *
 from game import *
-
 
 class LetterLizard:
     def __init__(self):
@@ -48,9 +46,14 @@ def main():
     all_buttons.append(button_main_menu)
     all_buttons.append(button_exit)
     all_buttons.append(button_new_game)
-    title_screen_options = ['NEW GAME', 'HIGH SCORES', 'OPTIONS', 'EXIT']
-    title_label = title_font.render("Letter Lizard!", 1, black)
-    selected_option = 0 
+    option_row = 0
+    NUM_OPTIONS = 3
+    NUM_VALUES_PER_OPTION = 3
+    #option_col = 0
+    option_choices = [[3,5,7], [60,90,120], ['EASY', 'MEDIUM', 'HARD']]
+    #option_response = []
+    selected_options = [0,0,0]
+    #print option_values
     while done == False:
         if (game_state == GAME_STATES.SPLASH_SCREEN):
             for event in pygame.event.get():
@@ -61,22 +64,56 @@ def main():
                         # option = title_screen_options[selected_option]
                         # if (option == "NEW GAME"):
                         game_state = GAME_STATES.OPTIONS
-                        new_game()
+                        #new_game()
             screen.blit(splash_screen_img, (0, 0))
                 # game.draw(screen)
         elif (game_state == GAME_STATES.OPTIONS):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                     done = True
-
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     print(pygame.mouse.get_pos())
-
+                elif event.type == pygame.KEYDOWN:
+                    if (event.key == pygame.K_SPACE):
+                        #print "here"
+                        game_state = GAME_STATES.PLAYING
+                        new_game()
+                    elif (event.key == pygame.K_DOWN):
+                        if (option_row < NUM_OPTIONS - 1):
+                            option_row += 1
+                    elif (event.key == pygame.K_UP):
+                        if (option_row > 0):
+                            option_row -= 1
+                    elif (event.key == pygame.K_RIGHT):
+                        if (selected_options[option_row] < NUM_VALUES_PER_OPTION - 1):
+                            selected_options[option_row] += 1
+                    elif (event.key == pygame.K_LEFT):
+                        if (selected_options[option_row] > 0):
+                            selected_options[option_row] -= 1
+                            
+            option_labels = []
+            for i in range(NUM_OPTIONS):
+                choice = selected_options[i]
+                row = []
+                for j in range(NUM_VALUES_PER_OPTION):
+                    s = str(option_choices[i][j])
+                    if (choice == j):
+                        row.append(default_font.render(s, 1, red))
+                    else:
+                        row.append(default_font.render(s, 1, black))
+                option_labels.append(row)
+            #option_labels[option_row][option_col] = default_font.render(str(option_values[option_row][option_col]), 1, red)
             screen.blit(options_screen_img, (0, 0))
-            num_rounds_lbl = default_font.render("Number of Rounds: ", 1, black)
-            time_per_round_lbl = default_font.render("Time per round: ", 1, black)
-            seconds_lbl = default_font.render("seconds", 1, black)
-            difficult_lbl = default_font.render("Difficulty: ", 1, black)
+            for i in range(3):
+                screen.blit(option_labels[0][i], (num_rounds_left + i * 30, num_rounds_top))
+            for i in range(3):
+                screen.blit(option_labels[1][i], (time_per_round_left + i * 30, time_per_round_top))
+            for i in range(3):
+                screen.blit(option_labels[2][i], (difficulty_left + i * 90, difficulty_top))
+            #num_rounds_lbl = default_font.render("Number of Rounds: ", 1, black)
+            #time_per_round_lbl = default_font.render("Time per round: ", 1, black)
+            #seconds_lbl = default_font.render("seconds", 1, black)
+            #difficult_lbl = default_font.render("Difficulty: ", 1, black)
             #screen.blit(num_rounds_lbl, )
             #new_game()        
         elif (game_state == GAME_STATES.PLAYING):
