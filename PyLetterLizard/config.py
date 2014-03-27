@@ -12,7 +12,6 @@ class Enum(set):
             return name
         raise AttributeError
 
-
 #SET CONFIGURATION VALUES
 black = [ 0, 0, 0]
 white = [255,255,255]
@@ -52,8 +51,6 @@ countdown_left = int(0.9 * game_width)
 countdown_top = int(0.05 * game_height) 
 score_left = int(0.9 * game_width)
 score_top = int(0.2 * game_height)
-#notification_left = int(0.5 * game_width)
-#notification_top = int(0.95 * game_height)
 
 title = "Letter Lizard"
 
@@ -65,9 +62,6 @@ default_font = pygame.font.SysFont("Arial", default_font_size, bold=True)
 
 time_allowed_s = 100
 
-
-
-#title screen
 title_font_size = 50
 title_font = pygame.font.SysFont("Arial", title_font_size, bold=True)
 title_screen_left = int(0.3*game_width)
@@ -90,22 +84,5 @@ time_per_round_left = 724
 time_per_round_top = 375
 difficulty_left = 662
 difficulty_top = 413
-#splash_screen_img = splash_screen_img.convert()
 
 GAME_STATES = Enum(['PLAYING', 'GAME_OVER', 'SPLASH_SCREEN', 'OPTIONS'])
-
-
-# def load_image(name, colorkey=None):
-#     fullname = os.path.join('data', name)
-#     try:
-#         image = pygame.image.load(fullname)
-#     except pygame.error, message:
-#         print 'Cannot load image:', name
-#         raise SystemExit, message
-#     image = image.convert()
-#     if colorkey is not None:
-#         if colorkey is -1:
-#             colorkey = image.get_at((0,0))
-#         image.set_colorkey(colorkey, RLEACCEL)
-#     return image, image.get_rect()
-           

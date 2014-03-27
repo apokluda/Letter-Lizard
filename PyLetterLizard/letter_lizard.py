@@ -2,10 +2,6 @@
 from config import *
 from game import *
 
-class LetterLizard:
-    def __init__(self):
-        pass
-
 def doexit():
     pygame.quit()
     sys.exit()
@@ -49,11 +45,8 @@ def main():
     option_row = 0
     NUM_OPTIONS = 3
     NUM_VALUES_PER_OPTION = 3
-    #option_col = 0
     option_choices = [[3,5,7], [60,90,120], ['EASY', 'MEDIUM', 'HARD']]
-    #option_response = []
     selected_options = [0,0,0]
-    #print option_values
     while done == False:
         if (game_state == GAME_STATES.SPLASH_SCREEN):
             for event in pygame.event.get():
@@ -61,12 +54,8 @@ def main():
                     done = True
                 elif event.type == pygame.KEYDOWN:
                     if (event.key == pygame.K_SPACE):
-                        # option = title_screen_options[selected_option]
-                        # if (option == "NEW GAME"):
                         game_state = GAME_STATES.OPTIONS
-                        #new_game()
             screen.blit(splash_screen_img, (0, 0))
-                # game.draw(screen)
         elif (game_state == GAME_STATES.OPTIONS):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -75,7 +64,6 @@ def main():
                     print(pygame.mouse.get_pos())
                 elif event.type == pygame.KEYDOWN:
                     if (event.key == pygame.K_SPACE):
-                        #print "here"
                         game_state = GAME_STATES.PLAYING
                         new_game()
                     elif (event.key == pygame.K_DOWN):
@@ -90,7 +78,6 @@ def main():
                     elif (event.key == pygame.K_LEFT):
                         if (selected_options[option_row] > 0):
                             selected_options[option_row] -= 1
-                            
             option_labels = []
             for i in range(NUM_OPTIONS):
                 choice = selected_options[i]
@@ -102,7 +89,6 @@ def main():
                     else:
                         row.append(default_font.render(s, 1, black))
                 option_labels.append(row)
-            #option_labels[option_row][option_col] = default_font.render(str(option_values[option_row][option_col]), 1, red)
             screen.blit(options_screen_img, (0, 0))
             for i in range(3):
                 screen.blit(option_labels[0][i], (num_rounds_left + i * 30, num_rounds_top))
@@ -110,12 +96,6 @@ def main():
                 screen.blit(option_labels[1][i], (time_per_round_left + i * 30, time_per_round_top))
             for i in range(3):
                 screen.blit(option_labels[2][i], (difficulty_left + i * 90, difficulty_top))
-            #num_rounds_lbl = default_font.render("Number of Rounds: ", 1, black)
-            #time_per_round_lbl = default_font.render("Time per round: ", 1, black)
-            #seconds_lbl = default_font.render("seconds", 1, black)
-            #difficult_lbl = default_font.render("Difficulty: ", 1, black)
-            #screen.blit(num_rounds_lbl, )
-            #new_game()        
         elif (game_state == GAME_STATES.PLAYING):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -139,7 +119,6 @@ def main():
                     elif event.type == pygame.MOUSEBUTTONDOWN:
                         pos = pygame.mouse.get_pos()
                         print pos
-                        
             elapsed_time_ms = time.get_ticks() - start_time_ms
             elapsed_time_s = elapsed_time_ms / 1000
             time_remaining_s = time_allowed_s - elapsed_time_s
@@ -151,9 +130,7 @@ def main():
                 b.draw(screen)
             countdown_label = puzzle_letter_font.render(str(time_remaining_str), 1, black)
             screen.blit(countdown_label, (countdown_left, countdown_top))
-
             game.draw(screen)
-        
         elif (game_state == GAME_STATES.GAME_OVER):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
