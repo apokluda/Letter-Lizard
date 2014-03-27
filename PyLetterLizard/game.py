@@ -43,14 +43,17 @@ class Game:
         return lengths_to_words
     
     def __find_length_counts(self, words):
-        lengths_to_counts = {}
-        for w in words:
-            n = len(w)
-            if n not in lengths_to_counts:
-                lengths_to_counts[n] = 1
-            else:
-                lengths_to_counts[n] += 1
-        return lengths_to_counts
+        word_lengths = [len(w) for w in words]
+        #word_lengths_set = set(word_lengths)
+        return dict([(length, word_lengths.count(length)) for length in set(word_lengths)])
+        
+#         lengths_to_counts = {}
+#         for length in word_lengths:
+#             if length not in lengths_to_counts:
+#                 lengths_to_counts[length] = 1
+#             else:
+#                 lengths_to_counts[length] += 1
+#         return lengths_to_counts
             
     def guess(self):
         self.__guess_word(''.join(self.letters_guessed))

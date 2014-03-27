@@ -1,3 +1,72 @@
+%\documentclass[11pt]{scrartcl}
+\documentclass[11pt]{article}
+%\usepackage[doublespacing]{setspace}
+\usepackage{courier}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{url}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\newcommand{\squeezeup}{\vspace{-2.5mm}}
+\lstset{%frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
+
+\bibliographystyle{plain}
+%\usepackage{doublespace}
+\usepackage{setspace}
+\usepackage{amsmath} 
+\usepackage{url}
+\usepackage[pdftex]{graphicx}
+%\usepackage{slashbox}
+\usepackage{caption}
+\usepackage[affil-it]{authblk}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{etoolbox}
+\makeatletter
+\pretocmd\start@align{%
+  \if@minipage\kern-\topskip\kern-\abovedisplayskip\fi
+}{}{}
+\makeatother
+
+
+%scrartcl
+%\textwidth185mm
+%\hoffset-20mm
+
+%thinarticle
+\textwidth160mm
+\hoffset-20mm
+
+%widearticle
+%\textwidth180mm
+%\hoffset-30mm
+
+%twocolumn
+%\textwidth180mm
+%\hoffset-10mm
+
+%\linespread{2}
+%\linespread{1.6}
+
+
+\begin{document}
 \subsection{PyLetterLizard: Python Letter Lizard Implementation}
 
 % Introduce langage
@@ -11,7 +80,42 @@
 %   - look at Wikipedia and language website for more information
 
 
+
 % talk about how this version is implemented (eg classes, etc)
 % show screenshots
 % talk about implementation: language features that were useful,
 % class diagrams, sequence diagrams, snippets of code, etc
+
+sources:
+%1. https://www.python.org/about/
+%2. http://python.about.com/od/gettingstarted/ss/whatispython_3.htm
+
+
+Python is a multipurpose, high-level programming language which is widely found in the software development world. Python is friendly and easy-to-learn \cite{about_python}, and supports object-oriented, structured, and functional programming (to a certain extent). It can be found in a variety of applications \cite{2}, such as Google, YouTube, applications by NASA, and the New York Stock Exchange. The friendly nature of Python makes it a very good tool to be used in an educational setting, and many find it useful as a first programming language to learn.
+	
+	%discuss pygame?
+	
+	In the Python version of Letter Lizard, we utilize three files, namely letter\_lizard.py, game.py, and config.py. These files all work in tandem to allow PyLetterLizard to operate correctly. To run the application, one can type "python letter\_lizard.py" at the command line. PyLetterLizard requires Python 2.7 to be installed, as well as the corresponding version of Pygame.  Upon launching, the function main() of letter\_lizard.py is called. Before this occurs, however, the files config.py and game.py are included. Config.py declares configuration values which affect the placement of various game objects, as well as declares a couple utility methods and objects. Game.py declares a class Game which stores the game state of a game in PyLetterLizard. We will discuss this module more in a later section.
+	When main() of letter\_lizard.py executes, Pygame objects are instantiated, and some screen buttons are created. Then, the game enters an "infinite" loop, which does three things over and over: process user inputs/events; update game states; redraw the screen. We use the notion of a "game state", which is a value which reflects several states that the game can be in. This allows us to know when to draw objects which represent normal gameplay, as opposed to drawing the splash screen, options screen, etc.
+	As mentioned previously, game.py contains the class Game, which stores the game state, and contains several methods which allow game state to be altered. The reason we decided to use a class to represent a game is because it allows for creation of new games quite easily, and separates the functionality of a Game into a discrete structure. This modularization greatly aids in our debugging process.
+	Game.py contains several methods, that letter\_lizard.py utilizes to update and process game states. The method "process\_letter" is called when a user types a letter, and we check to see if the letter exists in the puzzle word, and update the data structures correspondingly. Shuffle is called when a user hits the space bar, and this uses the random.shuffle function to randomly suffle teh puzzle word. This aids in the user's ability to find words in the puzzle. The method "draw" allows an instance of the class Game to draw itself onto the screen. The screen object is passed into the draw method as an argument. This methodology is good, since a game object can be in charge of drawing itself. This allows letter\_lizard.py to not have to concern itself with how to draw a game... it delegates this task to the game object.
+	
+Constructs of Python used:
+
+\begin{minipage}[t]{1\linewidth}
+%\centering
+\begin{lstlisting}[language=Python, %
+  title={Bash}, label=bash1]
+    def process_backspace(self):
+        self.message = ""
+        if (len(self.letters_guessed) >= 1):
+            letter_to_delete = self.letters_guessed[len(self.letters_guessed) - 1]
+            del self.letters_guessed[len(self.letters_guessed) - 1]
+            self.puzzle_letters_displayed[self.puzzle_letters_displayed.index('')] = letter_to_delete
+\end{lstlisting}
+\end{minipage}
+In the example above, we demonstrate several constructs of Python. We demonstrate the ability for a Python file to define a member function (method), where the function has "self" as its argument. We use the "del" command in Python to delete the last element of the array "letters\_guessed". This syntax for deleting array elements is a bit different than other programming languages.
+
+\bibliography{bibliography}
+
+\end{document}
