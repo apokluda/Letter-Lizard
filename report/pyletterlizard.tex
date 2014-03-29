@@ -1,49 +1,49 @@
 %\documentclass[11pt]{scrartcl}
-\documentclass[11pt]{article}
+%\documentclass[11pt]{article}
 %\usepackage[doublespacing]{setspace}
-\usepackage{courier}
-\usepackage{listings}
-\usepackage{color}
-\usepackage{url}
-\definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
-\newcommand{\squeezeup}{\vspace{-2.5mm}}
-\lstset{%frame=tb,
-  language=Java,
-  aboveskip=3mm,
-  belowskip=3mm,
-  showstringspaces=false,
-  columns=flexible,
-  basicstyle={\small\ttfamily},
-  numbers=none,
-  numberstyle=\tiny\color{gray},
-  keywordstyle=\color{blue},
-  commentstyle=\color{dkgreen},
-  stringstyle=\color{mauve},
-  breaklines=true,
-  breakatwhitespace=true
-  tabsize=3
-}
+%\usepackage{courier}
+%\usepackage{listings}
+%\usepackage{color}
+%\usepackage{url}
+%\definecolor{dkgreen}{rgb}{0,0.6,0}
+%\definecolor{gray}{rgb}{0.5,0.5,0.5}
+%\definecolor{mauve}{rgb}{0.58,0,0.82}
+%\newcommand{\squeezeup}{\vspace{-2.5mm}}
+%\lstset{%frame=tb,
+%  language=Java,
+%  aboveskip=3mm,
+%  belowskip=3mm,
+%  showstringspaces=false,
+%  columns=flexible,
+%  basicstyle={\small\ttfamily},
+%  numbers=none,
+%  numberstyle=\tiny\color{gray},
+%  keywordstyle=\color{blue},
+%  commentstyle=\color{dkgreen},
+%  stringstyle=\color{mauve},
+%  breaklines=true,
+%  breakatwhitespace=true
+%  tabsize=3
+%}
 
 
-\bibliographystyle{plain}
+%\bibliographystyle{plain}
 %\usepackage{doublespace}
-\usepackage{setspace}
-\usepackage{amsmath} 
-\usepackage{url}
-\usepackage[pdftex]{graphicx}
+%\usepackage{setspace}
+%\usepackage{amsmath} 
+%\usepackage{url}
+%\usepackage[pdftex]{graphicx}
 %\usepackage{slashbox}
-\usepackage{caption}
-\usepackage[affil-it]{authblk}
-\usepackage{amsmath}
-\usepackage{listings}
-\usepackage{etoolbox}
-\makeatletter
-\pretocmd\start@align{%
-  \if@minipage\kern-\topskip\kern-\abovedisplayskip\fi
-}{}{}
-\makeatother
+%\usepackage{caption}
+%\usepackage[affil-it]{authblk}
+%\usepackage{amsmath}
+%\usepackage{listings}
+%\usepackage{etoolbox}
+%\makeatletter
+%\pretocmd\start@align{%
+%  \if@minipage\kern-\topskip\kern-\abovedisplayskip\fi
+%}{}{}
+%\makeatother
 
 
 %scrartcl
@@ -51,8 +51,8 @@
 %\hoffset-20mm
 
 %thinarticle
-\textwidth160mm
-\hoffset-20mm
+%\textwidth160mm
+%\hoffset-20mm
 
 %widearticle
 %\textwidth180mm
@@ -66,7 +66,7 @@
 %\linespread{1.6}
 
 
-\begin{document}
+%\begin{document}
 \subsection{PyLetterLizard: Python Letter Lizard Implementation}
 
 % Introduce langage
@@ -109,7 +109,7 @@ Python is a multipurpose, high-level programming language which is used  in the 
 \begin{minipage}[t]{1\linewidth}
 %\centering
 \begin{lstlisting}[language=Python, %
-  title={}, label=bash1]
+  title={Process Backspace Method}, label=lst:process_backspace]
     def process_backspace(self):
         self.message = ""
         if (len(self.letters_guessed) >= 1):
@@ -123,7 +123,7 @@ In the example above, we demonstrate several constructs of Python. We demonstrat
 \begin{minipage}[t]{1\linewidth}
 %\centering
 \begin{lstlisting}[language=Python, %
-  title={Bash}, label=bash1]
+  title={Find Length Counts Private Method}, label=lst:find_length_counts]
     def __find_length_counts(self, words):
         word_lengths = [len(w) for w in words]
         return dict([(length, word_lengths.count(length)) for length in set(word_lengths)])
@@ -134,6 +134,6 @@ In the above example, we have a private method "\_\_find\_length\_counts", which
 	The above method is very useful for generating placeholders for the possible words that solve the puzzle.
 
 
-\bibliography{bibliography}
+%\bibliography{bibliography}
 
-\end{document}
+%\end{document}

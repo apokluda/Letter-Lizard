@@ -1,6 +1,6 @@
 *.aux
 *.log
-*.tex.bak
+*.bak
 *.lof
 *.lol
 *.out
