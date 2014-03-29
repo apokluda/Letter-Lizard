@@ -49,6 +49,7 @@ def main():
     NUM_VALUES_PER_OPTION = 3
     option_choices = [[3,5,7], [60,90,120], ['EASY', 'MEDIUM', 'HARD']]
     selected_options = [0,0,0]
+    num_games = 3
     while done == False:
         if (game_state == GAME_STATES.SPLASH_SCREEN):
             for event in pygame.event.get():
@@ -69,6 +70,7 @@ def main():
                         game_state = GAME_STATES.PLAYING
                         difficulty = option_choices[2][selected_options[2]]
                         time_s = int(option_choices[1][selected_options[1]])
+                        num_games = int(option_choices[0][selected_options[0]])
                         new_game(difficulty, time_s)
                     elif (event.key == pygame.K_DOWN):
                         if (option_row < NUM_OPTIONS - 1):
@@ -145,9 +147,15 @@ def main():
                 elif 'click' in button_exit.handleEvent(event):
                     doexit()
                 elif 'click' in button_new_game.handleEvent(event):
-                    new_game()
+                    game_state = GAME_STATES.PLAYING
+                    new_game(difficulty, time_s)
                 elif 'click' in button_main_menu.handleEvent(event):
                     game_state = GAME_STATES.SPLASH_SCREEN
+            if (num_games > 0):
+                num_games -= 1
+                game_state = GAME_STATES.PLAYING
+                new_game(difficulty, time_s)
+                
             screen.fill(background_color)
             for b in all_buttons:
                 b.draw(screen)

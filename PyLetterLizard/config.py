@@ -40,8 +40,8 @@ solved_words_region_top = letters_guessed_top + square_width + spacing
 solved_words_height = int(0.01 * game_width)
 solved_words_column_length = 15
 
-status_label_left = left_margin
-status_label_top = int(0.8 * game_height)
+status_label_left =  int(0.75 * game_width)
+status_label_top = int(0.9 * game_height)
 puzzle_letter_font_size = int(0.03*game_width)
 guessed_letter_font_size = int(0.02*game_width)
 font_size = int(0.02*game_width)
