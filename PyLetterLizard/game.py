@@ -3,8 +3,8 @@ import game_generator as gg
 from config import *
 
 class Game:
-    def __init__(self):
-        scramble, solutions = gg.generate_game('easy', 9)
+    def __init__(self, difficulty):
+        scramble, solutions = gg.generate_game(difficulty.lower())
         self.scramble = scramble
         self.solutions = solutions
         self.words_guessed_correct = []

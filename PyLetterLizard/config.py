@@ -5,6 +5,7 @@ from pygame.locals import *
 from pygame import time
 from pygame import font
 from pygame import mouse
+#import time
 
 class Enum(set):
     def __getattr__(self, name):
@@ -16,6 +17,7 @@ class Enum(set):
 black = [ 0, 0, 0]
 white = [255,255,255]
 red = [255,0,0]
+blue = [0,0,255]
 sky_blue = [  66,  136, 227]
 background_color = [0,153,76]
 square_background_color = white
@@ -78,10 +80,10 @@ splash_screen_img = pygame.image.load(splash_screen_img_name)
 
 options_screen_img_name = "options.png"
 options_screen_img = pygame.image.load(options_screen_img_name)
-num_rounds_left = 735
-num_rounds_top = 337
+num_rounds_left = 748
+num_rounds_top = 330
 time_per_round_left = 724
-time_per_round_top = 375
+time_per_round_top = 370
 difficulty_left = 662
 difficulty_top = 413
 

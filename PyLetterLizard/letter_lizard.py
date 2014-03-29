@@ -6,11 +6,13 @@ def doexit():
     pygame.quit()
     sys.exit()
 
-def new_game():
+def new_game(difficulty, time_s):
+    global time_allowed_s
+    time_allowed_s = time_s
     global game_state
     game_state = GAME_STATES.PLAYING
     global game
-    game = Game()
+    game = Game(difficulty)
     global time_remaining_s
     time_remaining_s = time_allowed_s
     global start_time_ms
@@ -65,7 +67,9 @@ def main():
                 elif event.type == pygame.KEYDOWN:
                     if (event.key == pygame.K_SPACE):
                         game_state = GAME_STATES.PLAYING
-                        new_game()
+                        difficulty = option_choices[2][selected_options[2]]
+                        time_s = int(option_choices[1][selected_options[1]])
+                        new_game(difficulty, time_s)
                     elif (event.key == pygame.K_DOWN):
                         if (option_row < NUM_OPTIONS - 1):
                             option_row += 1
@@ -85,17 +89,20 @@ def main():
                 for j in range(NUM_VALUES_PER_OPTION):
                     s = str(option_choices[i][j])
                     if (choice == j):
-                        row.append(default_font.render(s, 1, red))
+                        if (option_row == i):
+                            row.append(default_font.render(s, 1, blue))
+                        else:
+                            row.append(default_font.render(s, 1, red))
                     else:
                         row.append(default_font.render(s, 1, black))
                 option_labels.append(row)
             screen.blit(options_screen_img, (0, 0))
             for i in range(3):
-                screen.blit(option_labels[0][i], (num_rounds_left + i * 30, num_rounds_top))
+                screen.blit(option_labels[0][i], (num_rounds_left + i * 40, num_rounds_top))
             for i in range(3):
-                screen.blit(option_labels[1][i], (time_per_round_left + i * 30, time_per_round_top))
+                screen.blit(option_labels[1][i], (time_per_round_left + i * 40, time_per_round_top))
             for i in range(3):
-                screen.blit(option_labels[2][i], (difficulty_left + i * 90, difficulty_top))
+                screen.blit(option_labels[2][i], (difficulty_left + i * 120, difficulty_top))
         elif (game_state == GAME_STATES.PLAYING):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
