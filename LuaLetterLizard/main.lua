@@ -51,6 +51,7 @@ function game:init()
     number_fnt_40 = love.graphics.newFont( "funfont.ttf", 40)
     number_fnt_20 = love.graphics.newFont("funfont.ttf", 20)
     score = 0
+    quit_game = false
     remaining_time = 120
     gameover = false
     correct = false
@@ -94,7 +95,7 @@ function game:mousepressed(x, y, button)
     elseif (button == 'l') and (x > 300) and (x < 300 + button_width) and (y > 400) and (y < 400 + button_height)  then
         puzzle_letters_displayed = shuffled(puzzle_letters_displayed)
     elseif (button == 'l') and (x > 500) and (x < 500 + button_width) and (y > 400) and (y < 400 + button_height)  then
-        Gamestate.switch(options)
+        love.event.quit()
     end
 
       
@@ -207,22 +208,9 @@ function game:newgame()
     score = 0
 end
 
-function love.keypressed(key)
-    
-end
+function game:quit()
 
-function love.mousepressed(x, y, button)
-    
-end
+    love.graphics.setFont(number_fnt_40)
+    love.graphics.print("Thank You For Playing the Game!", goodjob_x, goodjob_y)
 
-function love.mousereleased(x , y, button)
-    
-end
-
-function love.update(dt)
-    
-end
-
-function love.draw()
-    
 end
