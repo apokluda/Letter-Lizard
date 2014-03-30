@@ -107,7 +107,7 @@ class Game:
             screen.blit(label, (left, top))
             
 def main():
-    game = Game()
+    game = Game("easy")
     print sorted(game.solutions, key = lambda w : len(w))
     print game.length_counts
 
