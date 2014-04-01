@@ -1,3 +1,4 @@
+\FloatBarrier
 \subsection{LetterLizardJS: JavaScript Letter Lizard Implementation}
 
 % Introduce Language
@@ -30,11 +31,14 @@
 %   oop features
 % - no distinction between func and method: caling convention
 
-\pagebreak[4]
-\global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 90}
-\begin{sidewaysfigure}
-	\includegraphics[scale=0.5]{../diagrams/LetterLizardJS-ClassDiagram.pdf}
-\end{sidewaysfigure}
+\begin{figure}
+    \centering
+	\includegraphics[scale=0.6]{../diagrams/LetterLizardJS-ClassDiagram.pdf}
+	\caption{A class diagram showing the classes that make up the JavaScript Letter
+	Lizard implementation. The event-driven, callback-based client-side scripting
+	environment naturally led to a modularized, class-based design for the game.}
+\end{figure}
+
 
 % talk about how this version is implemented (eg classes, etc)
 % show screenshots
