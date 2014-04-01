@@ -14,12 +14,12 @@ class Enum(set):
         raise AttributeError
 
 #SET CONFIGURATION VALUES
-black = [ 0, 0, 0]
-white = [255,255,255]
-red = [255,0,0]
-blue = [0,0,255]
-sky_blue = [  66,  136, 227]
-background_color = [0,153,76]
+black = (0, 0, 0)
+white = (255,255,255)
+red = (255,0,0)
+blue = (0,0,255)
+sky_blue = (  66,  136, 227)
+background_color = (0,153,76)
 square_background_color = white
 game_width = 1023
 game_height = 576
