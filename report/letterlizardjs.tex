@@ -98,16 +98,124 @@ JavaScript's dynamic nature. Most classical object-oriented features can be
 easily simulated in JavaScript. We discuss object-oriented programming
 in section~\ref{oop}.
 
-\begin{figure}
-    \centering
-	\includegraphics[scale=0.6]{../diagrams/LetterLizardJS-ClassDiagram.pdf}
-	\caption{A class diagram showing the classes that make up the JavaScript Letter
-	Lizard implementation. The event-driven, callback-based client-side scripting
-	environment naturally led to a modularized, class-based design for the game.}
-\end{figure}
-
-
 % talk about how this version is implemented (eg classes, etc)
 % show screenshots
 % talk about implementation: language features that were useful,
 % class diagrams, sequence diagrams, snippets of code, etc
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=0.9\textwidth]{../screenshots/LetterLizardJS-SplashScreen2.png}
+        \caption{Splash Screen}
+        \label{lljssplash}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=0.9\textwidth]{../screenshots/LetterLizardJS-MainMenu2.png}
+        \caption{Main Menu}
+        \label{lljsmm}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=0.9\textwidth]{../screenshots/LetterLizardJS-Round1.png}
+        \caption{Round Number message}
+        \label{lljsround}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=0.9\textwidth]{../screenshots/LetterLizardJS-Gameplay2.png}
+        \caption{Game Screen}
+        \label{lljsgame}
+    \end{subfigure}    
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=0.9\textwidth]{../screenshots/LetterLizardJS-Hint2.png}
+        \caption{Hint}
+        \label{lljshint}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=0.9\textwidth]{../screenshots/LetterLizardJS-GoodJob3.png}
+        \caption{Good Job message}
+        \label{lljsgoodjob}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=0.9\textwidth]{../screenshots/LetterLizardJS-TimesUp.png}
+        \caption{Time's Up message}
+        \label{lljstimeup}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=0.9\textwidth]{../screenshots/LetterLizardJS-GameOver2.png}
+        \caption{Game Over message}
+        \label{lljsgameover}
+    \end{subfigure}
+    \caption{Screenshots from the Letter Lizard JavaScript implementation showing
+    (a) the splash screen, (b) the main menu, (c) a round number message that is 
+    displayed at the start of each round, (d) the main game screen as a user plays
+    the game, (e) an in-game hint, (f) the ``Good Job!'' message that is displayed when
+    a player finds all of the words, (g) the ``Time's Up!'' message that is displayed
+    when the user does not find all of the words before the time runs out, and (h)
+    the ``Game Over!'' message displayed at the end of the game.}
+    \label{lljsscreenshots}
+\end{figure}
+
+Figure~\ref{lljsscreenshots} shows eight screenshots from LetterLizardJS. When the player
+opens the Letter Lizard game in their browser, they are shown the Splash Screen
+(Figure~\ref{lljssplash}) that provides information about the game and prompted to
+press the spacebar to continue. After pressing the spacebar, the player is presented
+with the Main Menu (Figure~\ref{lljsmm}) that allows them to set game options, namely
+the number of rounds, time per round and level of difficulty. Once the game starts,
+the player is presented with a set of letters represented as tiles on the game screen.
+The player can move the tiles to form words by typing on the keyboard (Figure~\ref{lljsgame}).
+At any time while playing the game, the player can shuffle the letters to help
+her additional words by pressing the spacebar or clicking the \textbf{Shuffle} button
+or request a hint by clicking the \textbf{Hint} button (Figure~\ref{lljshint}).
+A number of in-game message are displayed to the user while the game is being played,
+which are shown in Figures~\ref{lljsround} and \ref{lljsgoodjob}-\ref{lljsgameover}.
+
+\begin{figure}
+    \centering
+	\includegraphics[scale=0.6]{../diagrams/LetterLizardJS-ClassDiagram.pdf}
+	\caption{A class diagram showing the classes that make up the Letter
+	Lizard JavaScript implementation. The event-driven, callback-based client-side scripting
+	environment naturally led to a modularized, class-based design for this implementation.}
+	\label{lljsclasses}
+\end{figure}
+
+\begin{figure}
+    \centering
+	\includegraphics[width=\textwidth]{../screenshots/LetterLizardJS-Legend.png}
+	\caption{The on-screen representation of the Scramble, Builder, Tile and Word
+	classes.}
+	\label{lljslegend}
+\end{figure}
+
+One of the main differences that we first noticed between Python, Lua and 
+JavaScript had to do with the event-driven nature of the client-side scripting
+environment rather than the language itself: at the core of the the Python and
+Lua implementations is a game loop that processes events, whereas the JavaScript
+version does not have any such construct. Rather, the JavaScript version is
+entirely event driven. The game loop in Python and Lua naturally led to a
+procedural-based design, but the event-driven JavaScript environment
+naturally led to a more modular, object-oriented design. Most of the functionality
+of LetterLizardJS is implemented by the six classes shown in Figure~\ref{lljsclasses}.
+The Tile, Scrabmle, Builder and Word classes also draw themselves on the main
+game screen and their on-screen representation is shown in Figure~\ref{lljslegend}.
+The Scramble class is responsible for creating Tiles for the letters that
+will be shown to the user and initially places those tiles on itself on the
+game screen. It also provides a shuffle method to rearrange the tiles when requested.
+The Builder class moves the Tiles to form words when the user types on the keyboard
+and also displays hints. The Game class is responsible for creating Word objects
+to represent words to be found. It also gets the characters that the user has typed
+from the Builder class and checks to see if they are valid words. If so, it shows
+causes the corresponding Word object to show itself in the word list. The
+Game class also updates the player's score when they find a word and manages
+the game timer.
+
+The code for our JavaScript implementation can be found in our Github repository
+(uwaterloo-cs798scripting / group4) under the LetterLizardJS folder. To play the
+game, simply need to load the \texttt{index.html} file in your browser; however,
+due to the security policies of most Web browsers that restrict the functionality
+of scripts loaded as local files, you will likely have to run an
+HTTP server on your local machine and load the \texttt{index.html} file through
+your server in order to play the game. Alternatively, we invite you to play the
+game using a server that we have set up at using the following URL: 
+\url{http://dahu.in/static/LetterLizardJS/index.html}.
+
+% AT THE END: code can be found in github, we invite you to play at dahu.in...
