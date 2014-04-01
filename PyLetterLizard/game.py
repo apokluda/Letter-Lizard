@@ -55,6 +55,7 @@ class Game:
             letter_to_delete = self.letters_guessed[len(self.letters_guessed) - 1]
             del self.letters_guessed[len(self.letters_guessed) - 1]
             self.puzzle_letters_displayed[self.puzzle_letters_displayed.index('')] = letter_to_delete
+            
     def shuffle(self):
         self.message = ""
         random.shuffle(self.puzzle_letters_displayed)
