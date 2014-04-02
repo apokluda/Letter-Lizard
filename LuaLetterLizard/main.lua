@@ -1,26 +1,6 @@
 require("config")
 require("helper_functions")
 require("games")
-<<<<<<< HEAD
-games_letters = {}
-games_letters = str_to_table(games.easy[1].letters)
-games_words = {}
-games_words = games.easy[1].words
---puzzle = {"R","A", "B", "L", "S", "T", "N", "E", "S"}
-puzzle = table.shallow_copy(games_letters)
---solutions = {"STAB", "LAB", "BLARE", "TEN", "TAB"}
-solutions = {}
-solutions = table.shallow_copy(games_words)
-letters_guessed = {}
-puzzle_letters_displayed = table.shallow_copy(puzzle)
-message = ""
-score = 0
-words_guessed_correct = {}
-font = love.graphics.newFont(14)
-
-function love.load()
-
-=======
 require("LoveFrames")
 Gamestate = require("gamestate")
 
@@ -46,7 +26,6 @@ end
 function love.load()
     Gamestate.registerEvents()
     Gamestate.switch(menu)
-    --
     
 end
 
@@ -77,7 +56,6 @@ function game:init()
     correct = false
     timer = 0
     target = 5
->>>>>>> 3b123d07cae382e386c387160de2c70f236c0cd1
     bg = {0,153,76}
     love.graphics.setBackgroundColor(bg)
 
@@ -108,11 +86,6 @@ function game:keypressed(key)
         puzzle_letters_displayed = shuffled(puzzle_letters_displayed)
     end
 end
-<<<<<<< HEAD
-function love.draw()
-    love.graphics.setColor(black)
-    love.graphics.setFont(font)
-=======
 
 function game:mousepressed(x, y, button)
     if (button == 'l') and (x > 100) and (x < 100 + button_width) and (y > 400) and (y < 400 + button_height)  then
@@ -141,8 +114,6 @@ end
 
 function game:draw()
     love.graphics.setColor(black)
-    --love.graphics.setFont(number_fnt)
->>>>>>> 3b123d07cae382e386c387160de2c70f236c0cd1
     love.graphics.line(700,0, 700, 500)
 
     for i, letter in ipairs(letters_guessed) do
@@ -160,18 +131,9 @@ function game:draw()
         love.graphics.print(letter, x + square_width/4, y + square_width/5)
     end
     for i, letter in ipairs(words_guessed_correct) do
-<<<<<<< HEAD
-        ht = love.graphics.getHeight()
-        x = solved_words_region_left 
-        y = solved_words_region_top + i*(square_width + spacing)
-=======
-        --ht = love.graphics.getHeight()
-        --x = solved_words_region_left 
         x = solved_words_col_margin
-        --y = solved_words_region_top + i*(square_width + spacing)
         y = i * 60
         love.graphics.setFont(number_fnt_20)
->>>>>>> 3b123d07cae382e386c387160de2c70f236c0cd1
         love.graphics.print(letter, x + square_width/4, y + square_width/5)
 
     end
@@ -186,7 +148,7 @@ function game:draw()
     local minutes = math.floor( remaining_time / 60 ) -- calculate how many minutes are left
     local seconds = math.floor( remaining_time % 60 ) -- calculate how many seconds are left
     love.graphics.setFont(number_fnt_40)
-    love.graphics.print( string.format("%02d:%02d",minutes,seconds), 900, 20 ) -- print it somewhere near the middle of the screen with proper formatting
+    love.graphics.print( string.format("%02d:%02d",minutes,seconds), 900, 20 )
     love.graphics.rectangle("line",100, 400, button_width, button_height)
     love.graphics.rectangle("line",300, 400, button_width, button_height)
     love.graphics.rectangle("line",500, 400, button_width, button_height)
@@ -195,7 +157,6 @@ function game:draw()
     love.graphics.setFont(number_fnt_40)
     love.graphics.print("Score:", 710, 20)
     love.graphics.print(score, 840, 20 )
-    --love.graphics.print("New Game", 100 + button_width/4, 400 + button_width/10)
     newgame_button = loveframes.Create("button")
     newgame_button:SetSize(button_width, button_height)
     newgame_button:SetPos(100, 400)
@@ -218,10 +179,6 @@ function game:draw()
         timer = 0
         correct = false
     end
-<<<<<<< HEAD
-end
-
-=======
 
     loveframes.draw()
 end
@@ -232,9 +189,7 @@ function game:newgame()
     games_letters = str_to_table(games.easy[new_generator].letters)
     games_words = {}
     games_words = games.easy[new_generator].words
-    --puzzle = {"R","A", "B", "L", "S", "T", "N", "E", "S"}
     puzzle = table.shallow_copy(games_letters)
-    --solutions = {"STAB", "LAB", "BLARE", "TEN", "TAB"}
     solutions = {}
     solutions = table.shallow_copy(games_words)
     letters_guessed = {}
@@ -251,4 +206,3 @@ function game:quit()
     love.graphics.print("Thank You For Playing the Game!", goodjob_x, goodjob_y)
 
 end
->>>>>>> 3b123d07cae382e386c387160de2c70f236c0cd1

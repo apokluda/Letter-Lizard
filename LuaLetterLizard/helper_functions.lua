@@ -67,8 +67,6 @@ function str_to_table(arr)
     arr:gsub(".",function(c) table.insert(t,c) end)
     return t
 end
-<<<<<<< HEAD
-=======
 
 function shuffled(tab)
 local n, order, res = #tab, {}, {}
@@ -78,4 +76,3 @@ table.sort(order, function(a,b) return a.rnd < b.rnd end)
 for i=1,n do res[i] = tab[order[i].idx] end
 return res
 end
->>>>>>> 3b123d07cae382e386c387160de2c70f236c0cd1
