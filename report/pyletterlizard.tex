@@ -37,7 +37,7 @@ Python is a multipurpose, high-level programming language which is used  in the 
 	
 \subsubsection{Constructs of Python used}
 
-\begin{minipage}[t]{1\linewidth}
+\noindent\begin{minipage}[t]{\textwidth}
 %\centering
 \begin{lstlisting}[language=Python, %
   title={}, label=bash1]
@@ -51,7 +51,7 @@ Python is a multipurpose, high-level programming language which is used  in the 
 \end{minipage}
 In the example above, we demonstrate several constructs of Python. We demonstrate the ability for a Python file to define a member function (method), where the function has "self" as its argument. We use the "del" command in Python to delete the last element of the array "letters\_guessed". This syntax for deleting array elements is a bit different than other programming languages.
 
-\begin{minipage}[t]{1\linewidth}
+%\begin{minipage}[t]{1\linewidth}
 %\centering
 \begin{lstlisting}[language=Python, %
   title={Bash}, label=bash2]
@@ -59,7 +59,7 @@ In the example above, we demonstrate several constructs of Python. We demonstrat
         word_lengths = [len(w) for w in words]
         return dict([(length, word_lengths.count(length)) for length in set(word_lengths)])
 \end{lstlisting}
-\end{minipage}
+%\end{minipage}
 
 In the above example, we have a private method \texttt{\_\_find\_length\_counts}, which given an argument \texttt{words} (which is a list of words), it will return a mapping from the unique counts of letters for each word, to a count of how many words have that letter-count. For this method, we utilize some functional aspects of Python. We use list comprehensions to iterate over all the lengths of word\_lengths. We transform word\_lengths into a set, so that we only have the unique members. Then, we iterate over all the tuples in that set, and for each one, the tuple conists of a mapping from the length of the word to the count of how many words have that length. The \texttt{dict()} construct will transform this list of tuples into a dictionary.
 	The above method is very useful for generating placeholders for the possible words that solve the puzzle.

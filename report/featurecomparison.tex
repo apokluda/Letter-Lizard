@@ -31,7 +31,18 @@ each language, noting their strengths and weaknesses, using example code from ou
 implementations where possible. When coding the Letter Lizard game in each language,
 we tried to follow the same structure as much as possible, however, as was noted in section~\ref{lljs}
 the event-driven environment of client-side JavaScript naturally led to a different
-design for that implementation. 
+design for that implementation. Due to space constraints, we will skip over some of
+the differences that we noticed between the types, variables and values (including 
+the numeric, boolean and string types and the null, undefined and nil special values)
+offered by each language.
+We will, however, discuss the differences between the data structures offered by
+Python (i.e. lists, tuples and dictionaries), JavaScript (i.e. objects and arrays)
+and Lua (i.e. tables and arrays). We noted differences between the syntax and semantics
+of expressions and statements in each language, as well as the flow
+control constructs offered, which we will omit; however, we will discuss
+variable scope, functions, and closures. The first major difference that we
+noticed between the languages was non-function: each employed a different lexical
+structure, which we discuss next.
 
 \subsection{Lexical Structure}
 % LEXICAL STRUCTURE
@@ -42,7 +53,7 @@ design for that implementation.
 % - Chunks: Lua specific thing
 % COMMENTS
 
-% AUTHOR: ALEX OR VOLUNTEER?
+% AUTHOR: AFIYA
 
 \subsubsection{Data Structures}
 % - Arrays, Lists, Tuples, Dictionaries
@@ -50,7 +61,7 @@ design for that implementation.
 %     special properties (covered under Objects)
 %   - list comprehensions
 
-% AUTHOR (INTRO): ALEX OR VOLUNTEER?
+% AUTHOR (INTRO): AFIYA
 
 \paragraph{Python: Arrays, Lists, Tuples and Dictionaries}
 
@@ -58,7 +69,66 @@ design for that implementation.
 
 \paragraph{JavaScript: Objects}
 
-% AUTHOR: ALEX
+% Fundamental datatype: Object
+% - composite value, aggregates multiple values (primitive values (i.e. string, number, bool, 
+%   null, undefined) or other objects); unordered collection of properties
+% - even though strings, numbers, booleans are not objects, the behave like objects
+% - allows you to store and retrieve those objects by name
+% - maps strings to values: dictionary in Python (but used differently; not central to the lang)
+%   or tables in Lua (very similar usage, but more powerful)
+% - also inherits properties from prototype object
+% - "prototypal inheritance" is a key feature of JavaScript
+% - dynamic (props added / deleted at runtime) but can be used to simulate static (class-based)
+%   objects and structs
+% - GIVE CODE EXAMPLE
+% - can be used to represent sets of strings; other objects, not so easily
+
+JavaScript has one fundamental datatype: Object. Everything that is not either a
+primitive type, null or undefined is an object. (The primitive types in JavaScript are
+number, string and boolean. Although they are not objects, they behave like immutable
+objects). Objects are composite values that aggregate multiple values, which may be
+primitive types or other objects, and allow you to store and retrieve those values
+by name. Objects are similar to Python's dictionary and Lua's table data structure, but
+unlike Python's dictionary, Objects are a core feature of JavaScript. All variables are
+contained within objects and, as we will see later in section~\ref{functions}, even
+the scope of a variable is implemented in terms of a chain (or linked list) of objects.
+Lua's tables are very similar to JavaScript objects and play a similar role in the
+implementation of the language, but they are even more powerful.
+
+JavaScript objects are dynamic--rather than having a static type, properties can be added
+and removed at run-time and support ``duck typing.'' LetterLizardJS makes use of many
+user-defined objects. The following code defines an object \texttt{letterpoints} that
+maps letters (property names) to the number of points that the letter is worth
+(property values) when included in a word found by the player:
+
+\begin{lstlisting}[caption=A user-defined object in JavaScript.]
+var letterpoints = {
+	'A': 3,
+	'B': 8,
+	'C': 6,
+	...
+	'Z': 10
+};
+\end{lstlisting}
+
+Another example of a user-defined object in LetterLizardJS is shown below. This code
+snippet is from the Game constructor function. It adds a property called 
+\texttt{words} to the Game object being constructed and assigns an empty object
+to it on line 2. Then it iterates through a randomly chosen ``game'' (i.e. a
+randomly chosen set of letters and corresponding words to be found) and creates
+a Word object to represent each word to be found. Word objects draw themselves to the
+screen either as text or a placeholder when the word is yet to be found. The Word
+objects are assigned to the words object by dynamically creating properties mapping
+the text of each word to its corresponding Word object.
+
+\begin{lstlisting}[caption=A user-defined object demonstrating dynamic properties.]
+	var game = games[config.difficulty][i];
+	this.words = {};
+	for (var i = 0; i < game.words.length; ++i) {
+		var word = game.words[i];
+		this.words[word] = new Word(word);
+	}
+\end{lstlisting}
 
 \paragraph{Lua: Tables}
 
@@ -75,6 +145,7 @@ design for that implementation.
 % AUTHOR (PARAGRAPH ON PYTHON AND LUA TOGETHER): MIKE
 
 \subsection{Functions}
+\label{functions}
 % FUNCTIONS
 % - how are arguments passed? (Python: must number of arguments match? Doesn't have to 
 % in JavaScript and Lua)
@@ -83,7 +154,7 @@ design for that implementation.
 % - return value
 % - functions as values
 
-% AUTHOR (INTRO): ALEX OR VOLUNTEER?
+% AUTHOR (INTRO): ALEX
 
 \subsubsection{Closures}
 \label{closures}
@@ -105,5 +176,15 @@ design for that implementation.
 % - JavaScript: no distinction between func and method: caling convention (same with Lua)
 
 % AUTHOR (PARAGRAPH ON JAVASCRIPT): ALEX
+
+In addition to having their own set of properties (known as ``own properties'') every
+object is associated with and inherits properties from another object called its
+\emph{prototype} object. This ``prototypal inheritance'' is a key feature of JavaScript.
+Prototypal inheritance was chosen for JavaScript because it fits nicely with JavaScript's
+dynamic nature. Nevertheless, static class-based
+objects, structs and inheritance hierarchies can be simulated in JavaScript. 
+
+LetterLizardJS makes extensive use of objects and protoypes. The 
+
 % AUTHOR (PARAGRAPH ON PYTHON): MIKE
 % AUTHOR (PARAGRAPH ON LUA): AFIYA

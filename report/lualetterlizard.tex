@@ -65,8 +65,8 @@ The framework used for developing the Lua based implementation of Letter Lizard 
 	
 	The \texttt{main.lua} file contains the main game logic structured within callback functions.In this file, we declare two Lua table structures, menu and game. We implement metatables a powerful feature provided by Lua, to enable the concept of state within the game. Within the menu table we declare functions which are associated with the menu and are called only when menu is the current state of the game. Within the game structure, we declare functions which are called only when the we enter the gameplay mode.
 	The menu table contains function which are called when we start the game and the splash screen is loaded. The function \texttt{menu:init()}is called when the game is first loaded into memory and the splash screen is displayed. In order to actually draw the splash screen function \texttt{menu:draw()} is called. Within the \texttt{love.keypressed()} function we check if the player has hit the spacebar, and if true, the state of the game is switched to game and the associated callback functions are then called. All the game play logic is structured within game table. Lua is different from python in a way  that there is no infinite loop which keeps running. Rather, callbacks are called as and when required. Function \texttt{love.update()} is called every frame of the game and it is passed a parameter \texttt{dt} which is the time passed since the last time update was called.
-	
-\begin{minipage}[t]{1\linewidth}
+
+\noindent\begin{minipage}[t]{\textwidth}
 %\centering
 \begin{lstlisting}[language={[5.2]Lua}, %
   title={Splash Screen}, label=splash]
@@ -86,7 +86,7 @@ The framework used for developing the Lua based implementation of Letter Lizard 
 Once we enter into the game play mode, the corresponding callback functions defined in the game table are called. For instance in the following code snippet, function \texttt{game:draw()} is called to draw objects onto the screen while we are currently in the gameplay state i.e., the default \texttt{love.draw()} function is overridden. Hence, callbacks defined when in a particular state are called as and when required.
 
 
-\begin{minipage}[t]{1\linewidth}
+\noindent\begin{minipage}[t]{\textwidth}
 %\centering
 \begin{lstlisting}[language={[5.2]Lua}, %
   title={Game State}, label=game]
@@ -107,7 +107,7 @@ Once we enter into the game play mode, the corresponding callback functions defi
 In order to maintain state, we utilized an external Lua library, \texttt{hump}. This is a lightweight library with contains helper code for embedding a set of different functionality within our code. Since Lua is very low level, we had to code a lot of functionality ourselves, and using hump minimized a lot of extra work for us considering the time constraints. This was another advantage of using the Love framework, as Love has a very good online community and many of Lua's functionality have been implemented by other Lua game developers and can be utilized under the Open Source License.
 Another important part of the game logic is checking for events. For this, we utilized the callback functions defined by Love, \texttt{love.keypressed()} and \texttt{love.mousepressed()}. Within the former callback we check for events that fire when a keyboard key is pressed by the player and define logic for the corresponding action that needs to be taken whereas in the later we check for events when the player click a particular button which fire the corresponding actions. In the following code snippet,
 	
-\begin{minipage}[t]{1\linewidth}
+\noindent\begin{minipage}[t]{\textwidth}
 %\centering
 \begin{lstlisting}[language={[5.2]Lua}, %
   title={Keypressed Event}, label=keypressed]
@@ -116,7 +116,6 @@ Another important part of the game logic is checking for events. For this, we ut
         Gamestate.switch(game)
     end
 end
-
 \end{lstlisting}
 \end{minipage}
 we check if the 'space' key has been pressed by the player while we are in state 'menu' and switch game state to 'game' to begin playing the game.
