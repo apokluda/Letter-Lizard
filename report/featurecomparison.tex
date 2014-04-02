@@ -1,7 +1,7 @@
 \section{Scripting Language Feature Comparison}
 \label{comparison}
 
-% Compare language features. Show examples for one or more language implementatinos
+% Compare language features. Show examples for one or more language implementations
 % whenever possible. The structure of this section will be a feature-by-feature comparison
 % first, backed up by examples (or hypothetical examples) where possible.
 
@@ -17,65 +17,17 @@
 % - Chunks: Lua specific thing
 % COMMENTS
 
-\subsection{Types, Values and Variables}
-% TYPES, VALUES AND VARIABLES
-\subsubsection{Numeric and Boolean Types}
-% - number representation
-%   - are there integer types or only double/float types?
-%   - what is the behaviour of division? (eg: rounding, type of div by zero)
-
-\subsubsection{Strings}
-% - string representation
-%   - regular strings vs raw strings (mention Python doc strings)
-%   - "long strings"
-% - single vs double quotes
-% - Lua: length operator, JavaScript: length property
-
-\subsubsection{Arrays, Lists, Tuples and Dictionaries}
+\subsubsection{Data Structures}
 % - Arrays, Lists, Tuples, Dictionaries
 %   - only Python has all of these, Lua and JavaScript have tables/objects with 
 %     special properties (covered under Objects)
 %   - list comprehensions
 
-\subsubsection{Objects and Tables}
-% - object/table representation
+\paragraph{Python: Arrays, Lists, Tuples and Dictionaries}
 
-\subsubsection{Special Types}
-% Special Types
-% - nil, null, undefined
+\paragraph{JavaScript: Objects}
 
-\subsection{Expressions and Statements}
-\label{exprandstmt}
-% EXPRESSIONS AND STATEMENTS
-\subsubsection{Arithmetic, Relational and Logical Expressions}
-% - operator overview (give a table showing operators for each language)
-% - arithmetic, relational and logical expressions
-%   - falsy, truthy types; in Lua 0 is true; object conversions during comparison
-\subsubsection{String Concatenation}
-% - string concatenation operators
-% - Python join vs Lua concat
-\subsubsection{Object and Array Initializers}
-% - object and array initializers / creation
-\subsubsection{Function Definition and Invocation}
-% - function definition
-% - invocation expressions
-\subsubsection{Property Access}
-% - property access
-\subsubsection{Lua: Operator Overloading using Metatables}
-% Lua operator oveloading
-%   using Metatables
-
-\subsection{Flow Control}
-% FLOW CONTROL
-\subsubsection{\texttt{if} Statements}
-% - if statements
-\subsubsection{\texttt{for} Statements}
-% - for loops
-% - "for each" loops (i.e. JavaScript for ... in ...; same with Lua)
-\subsubsection{Assignment Statements}
-% - multiple assignment (Python and Lua have it, JavaScript may get it)
-\subsubsection{\texttt{break}, \texttt{return} and \texttt{goto} Statements}
-% - break, return, goto/labelled loops
+\paragraph{Lua: Tables}
 
 \subsection{Variable Scope}
 \label{varscope}
@@ -83,15 +35,6 @@
 % - local variables vs global variables
 % - block scope vs function scope
 % - Lua do blocks
-
-\subsection{Objects}
-\label{objects}
-% OBJECTS
-% - querying and setting properties
-% - deleting properites
-% - enumerating properties
-% - property getters and setters
-% - JavaScript and Lua arrays
 
 \subsection{Functions}
 % FUNCTIONS
@@ -108,15 +51,9 @@
 \subsection{Generators and Iterators}
 % GENERATORS, ITERATORS
 
-\subsection{Exception Handling}
-% EXCEPTION HANDLING
-
 \subsection{Object-Oriented Programming}
 \label{oop}
 % OBJECT ORIENTED PROGRAMMING
 % - class-based inheritance vs prototype based inheritance
 % - private data
 % - JavaScript: no distinction between func and method: caling convention (same with Lua)
-
-\subsection{Modules and Packages}
-% MODULES AND PACKAGES
