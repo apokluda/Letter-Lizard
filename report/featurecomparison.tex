@@ -53,6 +53,7 @@ structure, which we discuss next.
 % - Chunks: Lua specific thing
 % COMMENTS
 Since we implemented the game in three different languages we were able to examine the difference in lexical structure quite minutely. With regard to programming languages, the syntax of the language defines the set of symbols that are considered to be a correctly structured document in that particular language. Python is inherently designed to be a highly readable language and uses words of the English language instead of punctuation marks. As compared to other languages, Python uses white space indention rather than curly braces or keywords to delimit blocks. This is a strength of the language as good indention is enforced by the language itself and makes for highly readable, clean code. However, on the downside tabs and spaces can be easily mixed up leading bugs in the code. 
+
 JavaScript uses blocks delimited by curly braces which means that code can be 'minimized' for the Web. However, automatic semicolon insertion  can lead to errors and is generally not considered very good by JavaScript programmers. This is one of the controversial syntactic features of JavaScript. For instance, consider the following code snippet:
 \begin{lstlisting}[language={JavaScript}, %
   title={}, label=semicolon]
@@ -149,26 +150,26 @@ the text of each word to its corresponding Word object.
 \paragraph{Lua: Tables}
 
 % AUTHOR: AFIYA
-Lua offers a single, fundamental data structure: \texttt{Tables}. Tables are the only data structure in Lua. All the other structures that the language offers can be represented as Tables efficiently. In traditional languages like C and C++, most of the structures are represented with arrays and lists. However, in Lua, tables are more powerful that either. The algorithms used for implementing these structures in traditional languages are simplified with the use of tables. Tables offer direct access to any type. Tables are fundamentally associative arrays, i.e., they are key-value pairs in which the keys can be any legitimate value in Lua. Tables are quite similar to the 'Object' type of JavaScript, the difference being that in JavaScript objects, the keys can only be either strings or integers whereas in Lua tables, the keys can be any legitimate value in Lua except nil. We now describe the different structures in Lua that we defined using tables.
+Lua offers a single, fundamental data structure: \texttt{Tables}. Tables are the only data structure in Lua. All the other structures that the language offers can be represented as Tables efficiently. In traditional languages like C and C++, most of the structures are represented with arrays and lists. However, in Lua, tables are more powerful than either. The algorithms used for implementing these structures in traditional languages are simplified with the use of tables. Tables offer direct access to any type. Tables are fundamentally associative arrays, i.e., they are key-value pairs in which the keys can be any legitimate value in Lua. Tables are quite similar to the 'Object' type of JavaScript, the difference being that in JavaScript objects, the keys can be only either strings or integers, whereas in Lua tables, the keys can be any legitimate value in Lua except nil. We now describe the different structures in Lua that we defined using tables.
 Tables are very easy to create. An empty table can be assigned to any variable by specifying empty curly braces which denotes an empty table constructor. For instance, throughout our code, we have declared tables easily and efficiently as shown in the following code.
 
-\begin{lstlisting}[caption= Declaring tables in Letter lizard]
+\begin{lstlisting}[language={[5.2]Lua},caption= Declaring tables in Letter lizard]
 	  games_letters = {}
 	  letters_guessed = {}
 	  solutions = {}
 	  words_guessed_correct = {}
 \end{lstlisting}
 
-Arrays in Lua can be implemented efficiently using Lua tables by simply indexing the tables with integers. Hence, arrays do not finite size, instead they can grow in size as needed. The following code snippet is an example of an array implementation from Lua Letter Lizard. By convention, array indexing starts from 1 in Lua.
+Arrays in Lua can be implemented efficiently using Lua tables by simply indexing the tables with integers. Hence, arrays do not have a finite size, instead they can grow in size as needed. The following code snippet is an example of an array implementation from Lua Letter Lizard. By convention, array indexing starts from 1 in Lua.
 
-\begin{lstlisting}[caption= An array structure which holds pre-generated game puzzles easily accessed by indexing the table]
+\begin{lstlisting}[language={[5.2]Lua},caption= An array structure which holds pre-generated game puzzles easily accessed by indexing the table]
 	 games_words = {}
      games_words = games.easy[1].words
 \end{lstlisting}
 
 Metatables are a very powerful structure offered by Lua. Metatables allow us to change the behavior of a table. For instance, using metatables we can define how Lua computes the expression \texttt{a+b} where \texttt{a} and \texttt{b} are tables. In our code we have used metatables to declare action to be taken when we are in a particular state. In the following code, we declare two tables \texttt{menu} and \texttt{game} corresponding to the states 'menu' and 'game'. We define callback functions within these state tables which override the default callbacks provided by Love and are called when the game is in a particular state. Functions are declared within the two tables as easily as \texttt{function menu:init()} or \texttt{function game:keypressed()}.
 
-\begin{lstlisting}[caption= Declaring and initializing metatables in Lua]
+\begin{lstlisting}[language={[5.2]Lua},caption= Declaring and initializing metatables in Lua]
 local menu = {}
 function menu:init()
 
@@ -196,8 +197,88 @@ end
 % - block scope vs function scope
 % - Lua do blocks
 
-% AUTHOR (PARAGRAPH ON JAVASCRIPT): ALEX
-% AUTHOR (PARAGRAPH ON PYTHON AND LUA TOGETHER): MIKE
+% AUTHOR: ALEX
+
+% Scope: visibility of a name within a block
+
+% Python: 
+% - if variable is defined in a block, its scope includes that block
+% - if variable is defined in function block, scope extens to any blocks
+%   contained within the defining one, unless a contained block introduces a different
+%   binding for the name
+% - when a name is used in a code block, it is resolved using the nearest enclosing
+%   scope
+% - if a name binding occurs anywhere in a block, all uses of the name withith the
+%   block are treated as references to the current block (same thing as JavaScript)
+% - only means to create scope for variables is functions, classes and modules
+
+Overall, we discovered that Lua and JavaScript have many more similarities with
+each other than they do with Python; however, variable scope is one area
+where this differs. Both Python and JavaScript implement function scoping. The only
+means to create a scope for a variable in Python is a function, class or module and
+just a function in JavaScript. The official Python documentation states: 
+``If a name binding operation occurs anywhere within a code block, all uses of the 
+name within the block are treated as references to the current block~\cite{pyscope}.'' 
+This subtle point can lead to surprising results, especially for programmers not
+intimately familiar with the scoping rules in these languages. Consider the
+following example:
+
+\begin{lstlisting}[language=Python,caption=A demonstration of function scope in Python.]
+a = 42
+def f():
+	print(a)
+	if (True):
+		a = 43
+f()
+\end{lstlisting}
+
+Most programmers familiar with the block scoping rules of C, C++, and Java would expect
+this code to print 42; however, it results in an \texttt{UnboundLocalError} because
+the assignment on line 5 creates a new local variable called ``a'' that shadows the
+variable with the same name at the global scope and is visible throughout the
+entire function, but when line 3 is executed, this variable has not yet been assigned
+a value. Also, because Python lacks an explicit variable declaration statement,
+it is not clear whether the assignment on line 5 was intended to create a new
+local variable or change the value of the global variable. In fact, prior to Python 3,
+there is no way for code in an inner scope to assign a value to an enclosing scope
+that is not the global scope. (Python 3 fixes this with the introduction of the 
+\texttt{nonlocal} statement).
+
+JavaScript uses function scoping for variables, similar to Python, which means that all 
+variable declared in a function are visible throughout the entire body of the function.
+Unlike Python, though, JavaScript has an explicit variable declaration statement and
+this feature is known as ``hoisting:'' JavaScript code behaves as if all 
+variable declarations in a function are hoisted to the top of the function. In both
+languages, this feature can easily cause bugs that are hard to find when local variables
+shadow variables in an outer scope, and for this reason it is considered a negative 
+feature~\cite{goodparts}.
+
+% Lua:
+% - block: body of control structure, body of a function, or chuck (code treated as a 
+%   unit), or explicit block with do ... end
+% - local-variable declarations as statements
+% - can write local declaration anywhere that you can write a statement
+% - scope of declared variable begins after declaration and goes until the end of the 
+%   block
+
+On the other hand, Lua implements block scope similar to C, C++ and Java.
+The body of a control structure, body of a function, or chunk (a segment of
+code that is treated as a unit) all introduce new scopes. Additionally,
+new scopes can be created explicitly with the keywords \textbf{do} ... \textbf{end}.
+The scope of a declared variable begins after the declaration and goes until the
+end of the block. When written in Lua, as shown below, the previous example
+will print 42. 
+
+\begin{lstlisting}[language={[5.2]Lua},caption=A demonstration of block scope in Lua.]
+a = 42
+function f()
+	print(a)
+    if (true) then
+        local a = 43
+    end
+end
+f()
+\end{lstlisting}
 
 \subsection{Functions}
 \label{functions}
@@ -209,6 +290,8 @@ end
 % - return value
 % - functions as values
 
+% Be Very Brief!
+
 % AUTHOR (INTRO): ALEX
 
 \subsubsection{Closures}
@@ -217,14 +300,13 @@ end
 
 % AUTHOR (PARAGRAPH ON JAVASCRIPT): ALEX
 % AUTHOR (PARAGRAPH ON LUA): AFIYA
-\paragraph{Lua : Closures}
+\paragraph{Lua: Closures}
 Closures are a powerful tool offered by any programming language. Closures are basically functions written within functions such that they have access to the local variables from the enclosing function. Lua also supports closures. These act as a valuable tool in many contexts. In our implementation, closures were very useful for implementing callback functions in creating the GUI buttons. Each button has a callback function to be called when we create the button. For instance in the following code snippet, we utilize an external GUI library for Love called \texttt{LoveFrames} to create the 'New Game' button. LoveFrames uses closure function to 'create' the button, set its positions and define the button name.
-\begin{lstlisting}[caption= Declaring and initializing metatables in Lua]
+\begin{lstlisting}[language={[5.2]Lua},caption= Declaring and initializing metatables in Lua]
 newgame_button = loveframes.Create("button")
     newgame_button:SetSize(button_width, button_height)
     newgame_button:SetPos(100, 400)
     newgame_button:SetText("NEW GAME")
-    
 \end{lstlisting}
     
 
