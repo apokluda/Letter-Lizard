@@ -326,19 +326,26 @@ and this enables some important and powerful techniques that will be discussed n
 
 \subsubsection{Closures}
 \label{closures}
-% - closures, coroutines
+% AUTHORS: AFIYA AND ALEX
 
-% AUTHOR (PARAGRAPH ON JAVASCRIPT): ALEX
-% AUTHOR (PARAGRAPH ON LUA): AFIYA
-\paragraph{Lua: Closures}
-Closures are a powerful tool offered by any programming language. Closures are basically functions written within functions such that they have access to the local variables from the enclosing function. Lua also supports closures. These act as a valuable tool in many contexts. In our implementation, closures were very useful for implementing callback functions in creating the GUI buttons. Each button has a callback function to be called when we create the button. For instance in the following code snippet, we utilize an external GUI library for Love called \texttt{LoveFrames} to create the 'New Game' button. LoveFrames uses closure function to 'create' the button, set its positions and define the button name.
-\begin{lstlisting}[language={[5.2]Lua},caption= Declaring and initializing metatables in Lua]
+%Each JavaScript function also contain a reference to the scope chain that was
+%in effect when the function was defined, which is used to resolve variable
+%names to values when the function is executed. A function, together with a
+%reference to its scope chain is know as a \emph{closure} (we will cover closures
+%in section~\ref{closures}). 
+%JavaScript usually runs in event-driven environments, such as the client-side
+%environment of a Web browser, that make heavy use of closures and first-class 
+%functions for callbacks.
+
+Closures are a powerful tool offered by any programming language. Closures are basically functions written within functions such that they have access to the local variables from the enclosing function. All three languages support closures. These act as a valuable tool in many contexts. In our implementation, closures were very useful for implementing callback functions in creating the GUI buttons. Each button has a callback function to be called when we create the button. For instance in the following code snippet, we utilize an external GUI library for Love called \texttt{LoveFrames} to create the 'New Game' button. LoveFrames uses closure function to 'create' the button, set its positions and define the button name.
+\begin{lstlisting}[language={[5.2]Lua},caption=Declaring and initializing metatables in Lua]
 newgame_button = loveframes.Create("button")
     newgame_button:SetSize(button_width, button_height)
     newgame_button:SetPos(100, 400)
     newgame_button:SetText("NEW GAME")
 \end{lstlisting}
-    
+
+% All three implementations make use 
 
 \subsubsection{Generators and Iterators}
 % GENERATORS, ITERATORS
