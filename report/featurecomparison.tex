@@ -52,6 +52,22 @@ structure, which we discuss next.
 % LUA: CHUNKS
 % - Chunks: Lua specific thing
 % COMMENTS
+Since we implemented the game in three different languages we were able to examine the difference in lexical structure quite minutely. With regard to programming languages, the syntax of the language defines the set of symbols that are considered to be a correctly structured document in that particular language. Python is inherently designed to be a highly readable language and uses words of the English language instead of punctuation marks. As compared to other languages, Python uses white space indention rather than curly braces or keywords to delimit blocks. This is a strength of the language as good indention is enforced by the language itself and makes for highly readable, clean code. However, on the downside tabs and spaces can be easily mixed up leading bugs in the code. 
+JavaScript uses blocks delimited by curly braces which means that code can be 'minimized' for the Web. However, automatic semicolon insertion  can lead to errors and is generally not considered very good by JavaScript programmers. This is one of the controversial syntactic features of JavaScript. For instance, consider the following code snippet:
+\begin{lstlisting}[language={JavaScript}, %
+  title={}, label=semicolon]
+	a = b + c
+   (d + e).print()
+\end{lstlisting}
+
+In this, the code is not transformed by automatic semicolon insertion, because the parenthesized expression that begins the second line can be interpreted as an argument list for a function call:
+
+\begin{lstlisting}[language={JavaScript}, %
+  title={}, label=semicolon]
+	a = b + c(d + e).print()
+\end{lstlisting}
+
+In Lua the statements and blocks are delimited by newlines and keywords to begin and end constructs help in minimizing errors. But it can lead to extremely messy code unless indention conventions are strictly followed
 
 % AUTHOR: AFIYA
 
@@ -62,7 +78,7 @@ structure, which we discuss next.
 %   - list comprehensions
 
 % AUTHOR (INTRO): AFIYA
-
+Data structure is a particular way of storing and organizing data in a computer so that it can be used efficiently. There are different kinds of data structures available which are suited for performing different tasks. In our implementations of Letter Lizard, we extensively used the different data structures provided by each language for holding, structuring and manipulating our data efficiently. Almost all three of our implementations had data structures for holding the scrambled puzzle letters, letters guessed correctly, letters to be displayed on the screen and so on. We will now describe the data structures in all our three implementations.
 \paragraph{Python: Arrays, Lists, Tuples and Dictionaries}
 
 % AUTHOR: MIKE
@@ -133,6 +149,45 @@ the text of each word to its corresponding Word object.
 \paragraph{Lua: Tables}
 
 % AUTHOR: AFIYA
+Lua offers a single, fundamental data structure: \texttt{Tables}. Tables are the only data structure in Lua. All the other structures that the language offers can be represented as Tables efficiently. In traditional languages like C and C++, most of the structures are represented with arrays and lists. However, in Lua, tables are more powerful that either. The algorithms used for implementing these structures in traditional languages are simplified with the use of tables. Tables offer direct access to any type. Tables are fundamentally associative arrays, i.e., they are key-value pairs in which the keys can be any legitimate value in Lua. Tables are quite similar to the 'Object' type of JavaScript, the difference being that in JavaScript objects, the keys can only be either strings or integers whereas in Lua tables, the keys can be any legitimate value in Lua except nil. We now describe the different structures in Lua that we defined using tables.
+Tables are very easy to create. An empty table can be assigned to any variable by specifying empty curly braces which denotes an empty table constructor. For instance, throughout our code, we have declared tables easily and efficiently as shown in the following code.
+
+\begin{lstlisting}[caption= Declaring tables in Letter lizard]
+	  games_letters = {}
+	  letters_guessed = {}
+	  solutions = {}
+	  words_guessed_correct = {}
+\end{lstlisting}
+
+Arrays in Lua can be implemented efficiently using Lua tables by simply indexing the tables with integers. Hence, arrays do not finite size, instead they can grow in size as needed. The following code snippet is an example of an array implementation from Lua Letter Lizard. By convention, array indexing starts from 1 in Lua.
+
+\begin{lstlisting}[caption= An array structure which holds pre-generated game puzzles easily accessed by indexing the table]
+	 games_words = {}
+     games_words = games.easy[1].words
+\end{lstlisting}
+
+Metatables are a very powerful structure offered by Lua. Metatables allow us to change the behavior of a table. For instance, using metatables we can define how Lua computes the expression \texttt{a+b} where \texttt{a} and \texttt{b} are tables. In our code we have used metatables to declare action to be taken when we are in a particular state. In the following code, we declare two tables \texttt{menu} and \texttt{game} corresponding to the states 'menu' and 'game'. We define callback functions within these state tables which override the default callbacks provided by Love and are called when the game is in a particular state. Functions are declared within the two tables as easily as \texttt{function menu:init()} or \texttt{function game:keypressed()}.
+
+\begin{lstlisting}[caption= Declaring and initializing metatables in Lua]
+local menu = {}
+function menu:init()
+
+    splash = love.graphics.newImage("splash.png")
+end
+
+function menu:draw()
+    love.graphics.setColor(255,255,255,255)
+    love.graphics.draw(splash, 0 ,0)
+end
+
+function menu:keypressed(key)
+    if key == ' ' then
+        Gamestate.switch(game)
+    end
+end
+\end{lstlisting}
+
+
 
 \subsection{Variable Scope}
 \label{varscope}
@@ -162,6 +217,16 @@ the text of each word to its corresponding Word object.
 
 % AUTHOR (PARAGRAPH ON JAVASCRIPT): ALEX
 % AUTHOR (PARAGRAPH ON LUA): AFIYA
+\paragraph{Lua : Closures}
+Closures are a powerful tool offered by any programming language. Closures are basically functions written within functions such that they have access to the local variables from the enclosing function. Lua also supports closures. These act as a valuable tool in many contexts. In our implementation, closures were very useful for implementing callback functions in creating the GUI buttons. Each button has a callback function to be called when we create the button. For instance in the following code snippet, we utilize an external GUI library for Love called \texttt{LoveFrames} to create the 'New Game' button. LoveFrames uses closure function to 'create' the button, set its positions and define the button name.
+\begin{lstlisting}[caption= Declaring and initializing metatables in Lua]
+newgame_button = loveframes.Create("button")
+    newgame_button:SetSize(button_width, button_height)
+    newgame_button:SetPos(100, 400)
+    newgame_button:SetText("NEW GAME")
+    
+\end{lstlisting}
+    
 
 \subsubsection{Generators and Iterators}
 % GENERATORS, ITERATORS
@@ -179,7 +244,7 @@ the text of each word to its corresponding Word object.
 
 In addition to having their own set of properties (known as ``own properties'') every
 object is associated with and inherits properties from another object called its
-\emph{prototype} object. This ``prototypal inheritance'' is a key feature of JavaScript.
+\emph{prototype} object. This 'prototypal inheritance' is a key feature of JavaScript.
 Prototypal inheritance was chosen for JavaScript because it fits nicely with JavaScript's
 dynamic nature. Nevertheless, static class-based
 objects, structs and inheritance hierarchies can be simulated in JavaScript. 
@@ -188,3 +253,5 @@ LetterLizardJS makes extensive use of objects and protoypes. The
 
 % AUTHOR (PARAGRAPH ON PYTHON): MIKE
 % AUTHOR (PARAGRAPH ON LUA): AFIYA
+\paragraph{Lua}
+Lua does not support built in object oriented features but these can be simulated using Lua tables. Similar to objects, table have a state and identity independent of their values. Two tables with the same value are two different objects. We can store different values within a table field and access it using the dot operator. Lua tables also have support for the \texttt{self} parameter which tells the method on which object it has to operate on. With the use of the self parameter, the same method can be used to act on many objects. Lua adds a hidden self parameter with the colon operator. There is no notion of a 'class' but prototype based inheritance can be implemented using metatables which are similar to JavaScript objects but are more powerful. 
