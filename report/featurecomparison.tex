@@ -292,7 +292,37 @@ f()
 
 % Be Very Brief!
 
+% Python:
+% - function definition binds name to funciton object (wrapper around executable code
+%   for the function)
+% - functions can be assigned to different names
+
+% JavaScript: funcitions are abjects with associated behaviour
+% - first class: can be assigned to variables and returned from functions, passed to 
+%   functions; set properties on them and even invoke methods on them
+% - functions designed to initialize newly created objects are called constructors
+%   an will be covered in section on OOP
+% - can be nested and have access to scope where they are defined
+% - this means that JS objects are closures and enables important and powerful 
+%   techniquens
+
+% Lua:
+% - functions are first-class: can store in variables, pass as arugments to other
+%   functions, return functions as results
+% - great flexibility, redefine functions for flexibility, erase functions to make
+%   secure environment
+% - nested functions with lexical scoping
+
 % AUTHOR (INTRO): ALEX
+
+All three languages support first-class functions: functions can be stored
+in variable, passed as arguments to other functions and be returned
+from functions as results. First class functions give these languages
+great flexibility: functions can be redefined to change their behaviour,
+or even erased to create a secure environment for untrusted code. Perhaps
+most importantly, functions can be nested and have access to the scope where
+they were defined. This means that functions in these languages are \emph{closures}
+and this enables some important and powerful techniques that will be discussed next.
 
 \subsubsection{Closures}
 \label{closures}
