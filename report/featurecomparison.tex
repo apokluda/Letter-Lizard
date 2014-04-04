@@ -30,45 +30,29 @@ JavaScript uses blocks delimited by curly braces which means that code can be ``
 	a = b + c
    (d + e).print()
 \end{lstlisting}
-
-In this, the code is not transformed by automatic semicolon insertion, because the parenthesized expression that begins the second line can be interpreted as an argument list for a function call:
-
-\begin{lstlisting}[language={JavaScript}, %
-  title={}, label=semicolon]
+In this example, the code is not transformed by automatic semicolon insertion, because the parenthesized expression that begins the second line can be interpreted as an argument list for a function call:
+\begin{lstlisting}[language={JavaScript},caption=The interpretation of the previous example]
 	a = b + c(d + e).print()
 \end{lstlisting}
 
-In Lua the statements and blocks are delimited by newlines and keywords to begin and end constructs help in minimizing errors. But it can lead to extremely messy code unless indention conventions are strictly followed
+In Lua the statements and blocks are delimited by newlines and keywords to begin and end constructs which helps to minimize errors, but it can lead to extremely messy code unless indention conventions are strictly followed.
 
 % AUTHOR: AFIYA
 
 \subsubsection{Data Structures}
+
+% AUTHOR (INTRO): AFIYA
+A data structure is a particular way of storing and organizing data in a computer program so that it can be used efficiently. There are different kinds of data structures available which are suited for performing different tasks. In our implementations of Letter Lizard, we extensively used the different data structures provided by each language for holding, structuring and manipulating our data efficiently. All three of our implementations used data structures for holding the scrambled puzzle letters, letters guessed correctly, letters to be displayed on the screen and so on. We will now describe the data structures in all three of our implementations.
+
+\paragraph{Python: Arrays, Lists, Tuples and Dictionaries}
 % - Arrays, Lists, Tuples, Dictionaries
 %   - only Python has all of these, Lua and JavaScript have tables/objects with 
 %     special properties (covered under Objects)
 %   - list comprehensions
 
-% AUTHOR (INTRO): AFIYA
-Data structure is a particular way of storing and organizing data in a computer so that it can be used efficiently. There are different kinds of data structures available which are suited for performing different tasks. In our implementations of Letter Lizard, we extensively used the different data structures provided by each language for holding, structuring and manipulating our data efficiently. Almost all three of our implementations had data structures for holding the scrambled puzzle letters, letters guessed correctly, letters to be displayed on the screen and so on. We will now describe the data structures in all our three implementations.
-\paragraph{Python: Arrays, Lists, Tuples and Dictionaries}
-
 % AUTHOR: MIKE
 
 \paragraph{JavaScript: Objects}
-
-% Fundamental datatype: Object
-% - composite value, aggregates multiple values (primitive values (i.e. string, number, bool, 
-%   null, undefined) or other objects); unordered collection of properties
-% - even though strings, numbers, booleans are not objects, the behave like objects
-% - allows you to store and retrieve those objects by name
-% - maps strings to values: dictionary in Python (but used differently; not central to the lang)
-%   or tables in Lua (very similar usage, but more powerful)
-% - also inherits properties from prototype object
-% - "prototypal inheritance" is a key feature of JavaScript
-% - dynamic (props added / deleted at runtime) but can be used to simulate static (class-based)
-%   objects and structs
-% - GIVE CODE EXAMPLE
-% - can be used to represent sets of strings; other objects, not so easily
 
 JavaScript has one fundamental datatype: Object. Everything that is not either a
 primitive type, null or undefined is an object. (The primitive types in JavaScript are
@@ -88,7 +72,7 @@ user-defined objects. The following code defines an object \texttt{letterpoints}
 maps letters (property names) to the number of points that the letter is worth
 (property values) when included in a word found by the player:
 
-\begin{lstlisting}[caption=A user-defined object in JavaScript.]
+\begin{lstlisting}[caption=A user-defined object in JavaScript]
 var letterpoints = {
 	'A': 3,
 	'B': 8,
@@ -108,7 +92,7 @@ screen either as text or a placeholder when the word is yet to be found. The Wor
 objects are assigned to the words object by dynamically creating properties mapping
 the text of each word to its corresponding Word object.
 
-\begin{lstlisting}[caption=A user-defined object demonstrating dynamic properties.]
+\begin{lstlisting}[caption=A user-defined object demonstrating dynamic properties]
 	var game = games[config.difficulty][i];
 	this.words = {};
 	for (var i = 0; i < game.words.length; ++i) {
@@ -125,10 +109,10 @@ on the object that is automatically updated to reflect the number of elements in
 \paragraph{Lua: Tables}
 
 % AUTHOR: AFIYA
-Lua offers a single, fundamental data structure: \texttt{Tables}. Tables are the only data structure in Lua. All the other structures that the language offers can be represented as Tables efficiently. In traditional languages like C and C++, most of the structures are represented with arrays and lists. However, in Lua, tables are more powerful than either. The algorithms used for implementing these structures in traditional languages are simplified with the use of tables. Tables offer direct access to any type. Tables are fundamentally associative arrays, i.e., they are key-value pairs in which the keys can be any legitimate value in Lua. Tables are quite similar to the 'Object' type of JavaScript, the difference being that in JavaScript objects, the keys can be only either strings or integers, whereas in Lua tables, the keys can be any legitimate value in Lua except nil. We now describe the different structures in Lua that we defined using tables.
+Lua offers a single, fundamental data structure: \texttt{Table}. Tables are the only data structure in Lua. All the other structures that the language offers can be represented as Tables efficiently. In traditional languages like C and C++, most of the structures are represented with arrays and lists. However, in Lua, tables are more powerful than either. The algorithms used for implementing these structures in traditional languages are simplified with the use of tables. Tables offer direct access to any type. Tables are fundamentally associative arrays, i.e., they are key-value pairs in which the keys can be any legitimate value in Lua. Tables are quite similar to the Object type of JavaScript, the difference being that with JavaScript objects the keys can be only either strings or integers, whereas in Lua tables the keys can be any value in Lua except nil. We now describe the different structures in Lua that we defined using tables.
 Tables are very easy to create. An empty table can be assigned to any variable by specifying empty curly braces which denotes an empty table constructor. For instance, throughout our code, we have declared tables easily and efficiently as shown in the following code.
 
-\begin{lstlisting}[language={[5.2]Lua},caption= Declaring tables in Letter lizard]
+\begin{lstlisting}[language={[5.2]Lua},caption=Declaring tables in Letter lizard]
 	  games_letters = {}
 	  letters_guessed = {}
 	  solutions = {}
@@ -137,68 +121,48 @@ Tables are very easy to create. An empty table can be assigned to any variable b
 
 Arrays in Lua can be implemented efficiently using Lua tables by simply indexing the tables with integers. Hence, arrays do not have a finite size, instead they can grow in size as needed. The following code snippet is an example of an array implementation from Lua Letter Lizard. By convention, array indexing starts from 1 in Lua.
 
-\begin{lstlisting}[language={[5.2]Lua},caption= An array structure which holds pre-generated game puzzles easily accessed by indexing the table]
-	 games_words = {}
-     games_words = games.easy[1].words
+\begin{lstlisting}[language={[5.2]Lua},caption=An array structure, \texttt{games.easy}, that holds pre-generated game puzzles and is easily accessed by indexing into the table]
+     games_words = games.easy[i].words
 \end{lstlisting}
 
-Metatables are a very powerful structure offered by Lua. Metatables allow us to change the behavior of a table. For instance, using metatables we can define how Lua computes the expression \texttt{a+b} where \texttt{a} and \texttt{b} are tables. In our code we have used metatables to declare action to be taken when we are in a particular state. In the following code, we declare two tables \texttt{menu} and \texttt{game} corresponding to the states 'menu' and 'game'. We define callback functions within these state tables which override the default callbacks provided by Love and are called when the game is in a particular state. Functions are declared within the two tables as easily as \texttt{function menu:init()} or \texttt{function game:keypressed()}.
+Metatables are a very powerful feature offered by Lua. Metatables allow us to change the behaviour of a table. For instance, using metatables we can define how Lua computes the expression \texttt{a+b} where \texttt{a} and \texttt{b} are tables and establish prototype chains like we have in JavaScript. 
 
-\begin{lstlisting}[language={[5.2]Lua},caption= Declaring and initializing metatables in Lua]
-local menu = {}
-function menu:init()
-
-    splash = love.graphics.newImage("splash.png")
-end
-
-function menu:draw()
-    love.graphics.setColor(255,255,255,255)
-    love.graphics.draw(splash, 0 ,0)
-end
-
-function menu:keypressed(key)
-    if key == ' ' then
-        Gamestate.switch(game)
-    end
-end
-\end{lstlisting}
-
+% In our code we have used metatables to declare action to be taken when we are in a particular state. In the following code, we declare two tables \texttt{menu} and \texttt{game} corresponding to the states ``menu'' and ``game.'' We define callback functions within these state tables which override the default callbacks provided by L\"OVE and are called when the game is in a particular state. Functions are declared within the two tables as easily as \texttt{function menu:init()} or \texttt{function game:keypressed()}.
+%
+%\begin{lstlisting}[language={[5.2]Lua},caption= Declaring and initializing metatables in Lua]
+%local menu = {}
+%function menu:init()
+%    splash = love.graphics.newImage("splash.png")
+%end
+%
+%function menu:draw()
+%    love.graphics.setColor(255,255,255,255)
+%    love.graphics.draw(splash, 0 ,0)
+%end
+%
+%function menu:keypressed(key)
+%    if key == ' ' then
+%        Gamestate.switch(game)
+%    end
+%end
+%\end{lstlisting}
 
 
 \subsection{Variable Scope}
 \label{varscope}
-% VARIABLE SCOPE
-% - local variables vs global variables
-% - block scope vs function scope
-% - Lua do blocks
-
-% AUTHOR: ALEX
-
-% Scope: visibility of a name within a block
-
-% Python: 
-% - if variable is defined in a block, its scope includes that block
-% - if variable is defined in function block, scope extens to any blocks
-%   contained within the defining one, unless a contained block introduces a different
-%   binding for the name
-% - when a name is used in a code block, it is resolved using the nearest enclosing
-%   scope
-% - if a name binding occurs anywhere in a block, all uses of the name withith the
-%   block are treated as references to the current block (same thing as JavaScript)
-% - only means to create scope for variables is functions, classes and modules
 
 Overall, we discovered that Lua and JavaScript have many more similarities with
 each other than they do with Python; however, variable scope is one area
 where this differs. Both Python and JavaScript implement function scoping. The only
 means to create a scope for a variable in Python is a function, class or module and
-just a function in JavaScript. The official Python documentation states: 
+only a function in JavaScript. The official Python documentation states: 
 ``If a name binding operation occurs anywhere within a code block, all uses of the 
 name within the block are treated as references to the current block~\cite{pyscope}.'' 
 This subtle point can lead to surprising results, especially for programmers not
 intimately familiar with the scoping rules in these languages. Consider the
 following example:
 
-\begin{lstlisting}[language=Python,caption=A demonstration of function scope in Python.]
+\begin{lstlisting}[language=Python,caption=A demonstration of function scope in Python]
 a = 42
 def f():
 	print(a)
@@ -228,23 +192,15 @@ languages, this feature can easily cause bugs that are hard to find when local v
 shadow variables in an outer scope, and for this reason it is considered a negative 
 feature~\cite{goodparts}.
 
-% Lua:
-% - block: body of control structure, body of a function, or chuck (code treated as a 
-%   unit), or explicit block with do ... end
-% - local-variable declarations as statements
-% - can write local declaration anywhere that you can write a statement
-% - scope of declared variable begins after declaration and goes until the end of the 
-%   block
-
 On the other hand, Lua implements block scope similar to C, C++ and Java.
 The body of a control structure, body of a function, or chunk (a segment of
 code that is treated as a unit) all introduce new scopes. Additionally,
-new scopes can be created explicitly with the keywords \textbf{do} ... \textbf{end}.
+new scopes can be created explicitly with the keywords \texttt{do} ... \texttt{end}.
 The scope of a declared variable begins after the declaration and goes until the
 end of the block. When written in Lua, as shown below, the previous example
 will print 42. 
 
-\begin{lstlisting}[language={[5.2]Lua},caption=A demonstration of block scope in Lua.]
+\begin{lstlisting}[language={[5.2]Lua},caption=A demonstration of block scope in Lua]
 a = 42
 function f()
 	print(a)
@@ -257,41 +213,10 @@ f()
 
 \subsection{Functions}
 \label{functions}
-% FUNCTIONS
-% - how are arguments passed? (Python: must number of arguments match? Doesn't have to 
-% in JavaScript and Lua)
-% - Python's name-based arguments vs passing objects in JavaScript / Lua
-% - scope
-% - return value
-% - functions as values
-
-% Be Very Brief!
-
-% Python:
-% - function definition binds name to funciton object (wrapper around executable code
-%   for the function)
-% - functions can be assigned to different names
-
-% JavaScript: funcitions are abjects with associated behaviour
-% - first class: can be assigned to variables and returned from functions, passed to 
-%   functions; set properties on them and even invoke methods on them
-% - functions designed to initialize newly created objects are called constructors
-%   an will be covered in section on OOP
-% - can be nested and have access to scope where they are defined
-% - this means that JS objects are closures and enables important and powerful 
-%   techniquens
-
-% Lua:
-% - functions are first-class: can store in variables, pass as arugments to other
-%   functions, return functions as results
-% - great flexibility, redefine functions for flexibility, erase functions to make
-%   secure environment
-% - nested functions with lexical scoping
-
 % AUTHOR (INTRO): ALEX
 
 All three languages support first-class functions: functions can be stored
-in variable, passed as arguments to other functions and be returned
+in variables, passed as arguments to other functions, and be returned
 from functions as results. First class functions give these languages
 great flexibility: functions can be redefined to change their behaviour,
 or even erased to create a secure environment for untrusted code. Perhaps
@@ -315,7 +240,7 @@ In addition to first-class functions, all three languages also support closures.
 Every function also contain a reference to the scope chain that was
 in effect when the function was defined, which is used to resolve variable
 names to values when the function is executed. A function, together with a
-reference to its scope chain is know as a \emph{closure}.
+reference to its scope chain is known as a \emph{closure}.
 All three implementations make use of first-class functions and closures for 
 implementing callbacks, especially the JavaScript version due to the 
 event-driven nature of the client-side scripting environment in the Web browser.
@@ -325,7 +250,7 @@ for registering a set of callbacks to be called by the LOVE game library when
 certain events occur. The variable \texttt{registry} is defined in \texttt{registerEvents}
 but also accessed in an anonymous inner function, which is made possible by the closure.
 
-\begin{lstlisting}[language={[5.2]Lua},caption=A closure in Lua.]
+\begin{lstlisting}[language={[5.2]Lua},caption=A closure in Lua]
 function GS.registerEvents(callbacks)
 	local registry = {}
 	callbacks = callbacks or all_callbacks
@@ -346,7 +271,7 @@ inner function needs access to the Game objects, so we first store the value of 
 (which refers to the Game object) in a variable called \texttt{that}, which will be
 contained within the closure and accessible to the inner function.
 
-\begin{lstlisting}[caption=A closure in JavaScript.]
+\begin{lstlisting}[caption=A closure in JavaScript]
 	var that = this;
 	this.timer.ontimeup = function() {
 		timeup = true;
@@ -364,10 +289,6 @@ contained within the closure and accessible to the inner function.
 
 \subsection{Object-Oriented Programming}
 \label{oop}
-% OBJECT ORIENTED PROGRAMMING
-% - class-based inheritance vs prototype based inheritance
-% - private data
-% - JavaScript: no distinction between func and method: caling convention (same with Lua)
 
 % AUTHOR (PARAGRAPH ON JAVASCRIPT): ALEX
 
@@ -383,7 +304,7 @@ JavaScript supports object-oriented programming, but not in the classical
 sense. Rather than providing class-based inheritance, JavaScript provides
 \emph{prototype-based inheritance}. In addition to having their own set of 
 properties (known as ``own properties'') every object is associated with and
-inherits properties from another object called its \emph{prototype} object
+inherits properties from another object called its \emph{prototype}
 indicated by its prototype property (occasionally the value of the prototype
 property will be null, but this is rare). 
 
@@ -402,7 +323,7 @@ of the Tile constructor function and its prototype object. The constructor funct
 is used to create a \emph{class} of objects that have their own properties to
 hold their state, but share behaviour inherited from the prototype object:
 
-\begin{lstlisting}[caption=A class definition in JavaScript.]
+\begin{lstlisting}[caption=A class definition in JavaScript]
 function Tile(letter) {
 	this.letter = letter;
 	this.saved = {};
@@ -434,4 +355,4 @@ Tile.prototype = {
 
 \paragraph{Lua}
 % AUTHOR (PARAGRAPH ON LUA): AFIYA
-Lua does not support built in object oriented features but these can be simulated using Lua tables. Similar to objects, table have a state and identity independent of their values. Two tables with the same value are two different objects. We can store different values within a table field and access it using the dot operator. Lua tables also have support for the \texttt{self} parameter which tells the method on which object it has to operate on. With the use of the self parameter, the same method can be used to act on many objects. Lua adds a hidden self parameter with the colon operator. There is no notion of a 'class' but prototype based inheritance can be implemented using metatables which are similar to JavaScript objects but are more powerful. 
+Lua does not directly implement object-oriented features, but these can be simulated using tables. Similar to objects, tables have a state and identity independent of their values. Two tables with the same value are two different objects. We can store different values within a table field and access it using the dot operator. Lua tables also have support for the \texttt{self} parameter which tells the method on which object it has to operate on. With the use of the self parameter, the same method can be used to act on many objects. Lua adds a hidden self parameter with the colon operator. There is no notion of a 'class' but prototype based inheritance can be implemented using metatables which are similar to JavaScript objects but are more powerful. 
