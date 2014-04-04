@@ -180,8 +180,8 @@ a value. Also, because Python lacks an explicit variable declaration statement,
 it is not clear whether the assignment on line 5 was intended to create a new
 local variable or change the value of the global variable. In fact, prior to Python 3,
 there is no way for code in an inner scope to assign a value to an enclosing scope
-that is not the global scope. (Python 3 fixes this with the introduction of the 
-\texttt{nonlocal} statement).
+that is not the global scope. Some developers call this ``broken lexical scoping'' and 
+Python 3 fixes it with the introduction of the \texttt{nonlocal} statement.
 
 JavaScript uses function scoping for variables, similar to Python, which means that all 
 variable declared in a function are visible throughout the entire body of the function.
