@@ -1,7 +1,7 @@
 
 \subsection{PyLetterLizard: Python Letter Lizard Implementation}
 
-Python is a multipurpose, high-level programming language. Python has a friendly syntax, is easy-to-learn \cite{about_python}, and supports object-oriented, structured, and functional programming. It is used for a variety of applications \cite{whatis_python} by organizations such as Google, YouTube, NASA, and the New York Stock Exchange. The friendly nature of Python makes it a very good tool to be used in an educational setting, and many find it useful as a first programming language to learn.
+Python is a multipurpose, high-level programming language. Python has a friendly syntax, is easy-to-learn \cite{about_python}, and supports object-oriented, structured, and functional programming. It is used for a variety of applications by organizations such as Google, YouTube, NASA, and the New York Stock Exchange~\cite{whatis_python}. The friendly nature of Python makes it a very good tool to be used in an educational setting, and many find it useful as a first programming language to learn.
 		
 	In the Python version of Letter Lizard (PyLetterLizard), we utilize three files, namely \texttt{letter\_lizard.py}, \texttt{game.py}, and \texttt{config.py}. These files all work in tandem to allow PyLetterLizard to operate correctly. To run the application, one can type \texttt{python letter\_lizard.py} at the command line. PyLetterLizard requires Python 2.7 to be installed, as well as the corresponding version of Pygame.  Upon launching, the function \texttt{main()} of \texttt{letter\_lizard.py} is called. Before this occurs, however, the files \texttt{config.py} and \texttt{game.py} are included. \texttt{config.py} declares configuration values that affect the placement of various game objects, as well as declares a couple of utility methods and objects. \texttt{game.py} declares a class Game which stores the state of a game in PyLetterLizard. We will discuss this module more in a moment.
 	
@@ -16,7 +16,7 @@ Python is a multipurpose, high-level programming language. Python has a friendly
 %\noindent\begin{minipage}[t]{\textwidth}
 %\centering
 \begin{lstlisting}[language=Python, %
-  caption=Basic constructs of Python used.]
+  caption=Basic constructs of Python used]
     def process_backspace(self):
         self.message = ""
         if (len(self.letters_guessed) >= 1):
@@ -30,7 +30,7 @@ In the example above, we demonstrate several constructs of Python that we use in
 %\begin{minipage}[t]{1\linewidth}
 %\centering
 \begin{lstlisting}[language=Python, %
-  caption=Demonstration of functional programming constructs in Python.]
+  caption=Demonstration of functional programming constructs in Python]
     def __find_length_counts(self, words):
         word_lengths = [len(w) for w in words]
         return dict([(length, word_lengths.count(length)) for length in set(word_lengths)])

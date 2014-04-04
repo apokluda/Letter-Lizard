@@ -29,23 +29,23 @@ function are visible throughout the entire body of the function.
 JavaScript also contains a mechanism that tries to
 correct faulty programs by automatically inserting semicolons to complete statements, but quite
 often this masks more serious errors~\cite{goodparts} or results in unexpected behaviour.
-We explore these issues further in sections~\ref{varscope} and~\ref{lexstruct} respectively.
+We explore these issues further in Sections~\ref{varscope} and~\ref{lexstruct} respectively.
 
 JavaScript has a dynamic type system in which types are associated with values,
 not variables. A few primitive types are provided by the language, such
 as Number, String, Boolean, null and undefined. Aside from the primitive types,
 everything else is an Object. Objects are composite types
 that are comprised of properties: name-value pairs where the name is a String
-(or an integer for arrays, we will see more about this in section~\ref{objects})
+(or an integer for arrays, we will see more about this in Section~\ref{datastructs})
 and the value is one of the primitive types or another object. Even functions
 are objects (with associated behaviour), which means that functions are first-class
 entities that may be assigned to variables and returned from other functions.
 
-Each JavaScript function also contain a reference to the scope chain that was
+Each JavaScript function also contains a reference to the scope chain that was
 in effect when the function was defined, which is used to resolve variable
 names to values when the function is executed. A function, together with a
-reference to its scope chain is know as a \emph{closure} (we will cover closures
-in section~\ref{closures}). 
+reference to its scope chain is known as a \emph{closure} (we will cover closures
+in Section~\ref{closures}). 
 JavaScript usually runs in event-driven environments, such as the client-side
 environment of a Web browser, that make heavy use of closures and first-class 
 functions for callbacks.
@@ -53,7 +53,7 @@ functions for callbacks.
 JavaScript supports object-oriented programming, but not in the classical
 sense. Rather than providing class-based inheritance, JavaScript provides
 \emph{prototype-based inheritance}. We discuss object-oriented programming
-in section~\ref{oop}.
+in Section~\ref{oop}.
 
 \begin{figure}
     \centering
@@ -119,7 +119,7 @@ The player can move the tiles to form words by typing on the keyboard (Figure~\r
 At any time while playing the game, the player can get help to find additional words
 by pressing the space bar or clicking the \textbf{Shuffle} button to shuffle the letters,
 or by requesting a hint by clicking the \textbf{Hint} button (Figure~\ref{lljshint}).
-A number of in-game message are displayed to the user while the game is being played,
+A number of in-game messages are displayed to the user while the game is being played,
 which are shown in Figures~\ref{lljsround} and \ref{lljsgoodjob}-\ref{lljsgameover}.
 
 \begin{figure}

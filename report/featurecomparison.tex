@@ -5,7 +5,7 @@
 our Letter Lizard game, we will will compare and contrast the differences between
 each language, noting their strengths and weaknesses, using example code from our
 implementations where possible. When coding the Letter Lizard game in each language,
-we tried to follow the same structure as much as possible, however, as was noted in section~\ref{lljs}
+we tried to follow the same structure as much as possible, however, as was noted in Section~\ref{lljs}
 the event-driven environment of client-side JavaScript naturally led to a different
 design for that implementation. Due to space constraints, we will skip over some of
 the differences that we noticed between the types, variables and values (including 
@@ -23,12 +23,12 @@ structure, which we discuss next.
 \subsection{Lexical Structure}
 \label{lexstruct}
 
-Since we implemented the game in three different languages we were able to examine the difference in lexical structure quite minutely. With regard to programming languages, the syntax of the language defines the set of symbols that are considered to be a correctly structured document in that particular language. Python is inherently designed to be a highly readable language and uses words of the English language instead of punctuation marks. As compared to other languages, Python uses white space indention rather than curly braces or keywords to delimit blocks. This is a strength of the language as good indention is enforced by the language itself and makes for highly readable, clean code. However, on the downside, tabs and spaces can be easily mixed up leading bugs in the code. 
+Since we implemented the game in three different languages we were able to examine the difference in lexical structure quite minutely. The syntax of a programming language defines the set of symbols that are considered to be a correctly structured program in that language. Python is designed to be a highly readable language and prefers the use of English words instead of punctuation marks. As compared to other languages, Python uses white space indention rather than curly braces or keywords to delimit blocks. This is a strength of the language as good indention is enforced by the language itself and makes for highly readable, clean code. However, on the downside, tabs and spaces can be easily mixed up leading bugs in the code. 
 
 JavaScript uses blocks delimited by curly braces which means that code can be ``minimized'' for the Web. However, automatic semicolon insertion can lead to errors and is generally not considered very good by JavaScript programmers. This is one of the controversial syntactic features of JavaScript. For instance, consider the following code snippet:
 \begin{lstlisting}[language={JavaScript},caption=An example where automatic semicolon insertion in JavaScript may lead to unexpected results]
-	a = b + c
-   (d + e).print()
+a = b + c
+(d + e).print()
 \end{lstlisting}
 In this example, the code is not transformed by automatic semicolon insertion, because the parenthesized expression that begins the second line can be interpreted as an argument list for a function call:
 \begin{lstlisting}[language={JavaScript},caption=The interpretation of the previous example]
@@ -40,6 +40,7 @@ In Lua the statements and blocks are delimited by newlines and keywords to begin
 % AUTHOR: AFIYA
 
 \subsubsection{Data Structures}
+\label{datastructs}
 
 % AUTHOR (INTRO): AFIYA
 A data structure is a particular way of storing and organizing data in a computer program so that it can be used efficiently. There are different kinds of data structures available which are suited for performing different tasks. In our implementations of Letter Lizard, we extensively used the different data structures provided by each language for holding, structuring and manipulating our data efficiently. All three of our implementations used data structures for holding the scrambled puzzle letters, letters guessed correctly, letters to be displayed on the screen and so on. We will now describe the data structures in all three of our implementations.
@@ -61,7 +62,7 @@ objects). Objects are composite values that aggregate multiple values, which may
 primitive types or other objects, and allow you to store and retrieve those values
 by name. Objects are similar to Python's dictionary and Lua's table data structure, but
 unlike Python's dictionary, Objects are a core feature of JavaScript. All variables are
-contained within objects and, as we will see later in section~\ref{functions}, even
+contained within objects and, as we will see later in Section~\ref{functions}, even
 the scope of a variable is implemented in terms of a chain (or linked list) of objects.
 Lua's tables are very similar to JavaScript objects and play a similar role in the
 implementation of the language, but they are even more powerful.
@@ -109,10 +110,10 @@ on the object that is automatically updated to reflect the number of elements in
 \paragraph{Lua: Tables}
 
 % AUTHOR: AFIYA
-Lua offers a single, fundamental data structure: \texttt{Table}. Tables are the only data structure in Lua. All the other structures that the language offers can be represented as Tables efficiently. In traditional languages like C and C++, most of the structures are represented with arrays and lists. However, in Lua, tables are more powerful than either. The algorithms used for implementing these structures in traditional languages are simplified with the use of tables. Tables offer direct access to any type. Tables are fundamentally associative arrays, i.e., they are key-value pairs in which the keys can be any legitimate value in Lua. Tables are quite similar to the Object type of JavaScript, the difference being that with JavaScript objects the keys can be only either strings or integers, whereas in Lua tables the keys can be any value in Lua except nil. We now describe the different structures in Lua that we defined using tables.
+Lua offers a single, fundamental data structure: Table. Tables are the only data structure in Lua. All the other structures that the language offers can be represented as Tables efficiently. In traditional languages like C and C++, most of the structures are represented with arrays and lists. However, in Lua, tables are more powerful than either. The algorithms used for implementing these structures in traditional languages are simplified with the use of tables. Tables offer direct access to any type. Tables are fundamentally associative arrays, i.e., they are key-value pairs in which the keys can be any legitimate value in Lua. Tables are quite similar to the Object type of JavaScript, the difference being that with JavaScript objects the keys can be only either strings or integers, whereas in Lua tables the keys can be any value in Lua except nil. We now describe the different structures in Lua that we defined using tables.
 Tables are very easy to create. An empty table can be assigned to any variable by specifying empty curly braces which denotes an empty table constructor. For instance, throughout our code, we have declared tables easily and efficiently as shown in the following code.
 
-\begin{lstlisting}[language={[5.2]Lua},caption=Declaring tables in Letter lizard]
+\begin{lstlisting}[language={[5.2]Lua},caption=Declaring tables in LuaLetterlizard]
 	  games_letters = {}
 	  letters_guessed = {}
 	  solutions = {}
@@ -121,7 +122,7 @@ Tables are very easy to create. An empty table can be assigned to any variable b
 
 Arrays in Lua can be implemented efficiently using Lua tables by simply indexing the tables with integers. Hence, arrays do not have a finite size, instead they can grow in size as needed. The following code snippet is an example of an array implementation from Lua Letter Lizard. By convention, array indexing starts from 1 in Lua.
 
-\begin{lstlisting}[language={[5.2]Lua},caption={An array structure, \texttt{games.easy}, that holds pre-generated game puzzles and is easily accessed by indexing into the table}]
+\begin{lstlisting}[language={[5.2]Lua},caption={[An array in Lua]An array, \texttt{games.easy}, that holds pre-generated game puzzles and is easily accessed by indexing into the table}]
      games_words = games.easy[i].words
 \end{lstlisting}
 
@@ -184,7 +185,7 @@ that is not the global scope. Some developers call this ``broken lexical scoping
 Python 3 fixes it with the introduction of the \texttt{nonlocal} statement.
 
 JavaScript uses function scoping for variables, similar to Python, which means that all 
-variable declared in a function are visible throughout the entire body of the function.
+variables declared in a function are visible throughout the entire body of the function.
 Unlike Python, though, JavaScript has an explicit variable declaration statement and
 this feature is known as ``hoisting:'' JavaScript code behaves as if all 
 variable declarations in a function are hoisted to the top of the function. In both
@@ -246,7 +247,7 @@ implementing callbacks, especially the JavaScript version due to the
 event-driven nature of the client-side scripting environment in the Web browser.
 
 The following example from LuaLetterLizard demonstrates the use of a closure
-for registering a set of callbacks to be called by the LOVE game library when
+for registering a set of callbacks to be called by the L\"OVE game library when
 certain events occur. The variable \texttt{registry} is defined in \texttt{registerEvents}
 but also accessed in an anonymous inner function, which is made possible by the closure.
 
