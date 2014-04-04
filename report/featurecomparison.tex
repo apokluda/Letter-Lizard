@@ -328,24 +328,59 @@ and this enables some important and powerful techniques that will be discussed n
 \label{closures}
 % AUTHORS: AFIYA AND ALEX
 
-%Each JavaScript function also contain a reference to the scope chain that was
-%in effect when the function was defined, which is used to resolve variable
-%names to values when the function is executed. A function, together with a
-%reference to its scope chain is know as a \emph{closure} (we will cover closures
-%in section~\ref{closures}). 
-%JavaScript usually runs in event-driven environments, such as the client-side
-%environment of a Web browser, that make heavy use of closures and first-class 
-%functions for callbacks.
+%Closures are a powerful tool offered by any programming language. Closures are basically functions written within functions such that they have access to the local variables from the enclosing function. All three languages support closures. These act as a valuable tool in many contexts. In our implementation, closures were very useful for implementing callback functions in creating the GUI buttons. Each button has a callback function to be called when we create the button. For instance in the following code snippet, we utilize an external GUI library for Love called \texttt{LoveFrames} to create the 'New Game' button. LoveFrames uses closure function to 'create' the button, set its positions and define the button name.
+%\begin{lstlisting}[language={[5.2]Lua},caption=Declaring and initializing metatables in Lua]
+%newgame_button = loveframes.Create("button")
+%    newgame_button:SetSize(button_width, button_height)
+%    newgame_button:SetPos(100, 400)
+%    newgame_button:SetText("NEW GAME")
+%\end{lstlisting}
 
-Closures are a powerful tool offered by any programming language. Closures are basically functions written within functions such that they have access to the local variables from the enclosing function. All three languages support closures. These act as a valuable tool in many contexts. In our implementation, closures were very useful for implementing callback functions in creating the GUI buttons. Each button has a callback function to be called when we create the button. For instance in the following code snippet, we utilize an external GUI library for Love called \texttt{LoveFrames} to create the 'New Game' button. LoveFrames uses closure function to 'create' the button, set its positions and define the button name.
-\begin{lstlisting}[language={[5.2]Lua},caption=Declaring and initializing metatables in Lua]
-newgame_button = loveframes.Create("button")
-    newgame_button:SetSize(button_width, button_height)
-    newgame_button:SetPos(100, 400)
-    newgame_button:SetText("NEW GAME")
+In addition to first-class functions, all three languages also support closures.
+Every function also contain a reference to the scope chain that was
+in effect when the function was defined, which is used to resolve variable
+names to values when the function is executed. A function, together with a
+reference to its scope chain is know as a \emph{closure}.
+All three implementations make use of first-class functions and closures for 
+implementing callbacks, especially the JavaScript version due to the 
+event-driven nature of the client-side scripting environment in the Web browser.
+
+The following example from LuaLetterLizard demonstrates the use of a closure
+for registering a set of callbacks to be called by the LOVE game library when
+certain events occur. The variable \texttt{registry} is defined in \texttt{registerEvents}
+but also accessed in an anonymous inner function, which is made possible by the closure.
+
+\begin{lstlisting}[language={[5.2]Lua},caption=A closure in Lua.]
+function GS.registerEvents(callbacks)
+	local registry = {}
+	callbacks = callbacks or all_callbacks
+	for _, f in ipairs(callbacks) do
+		registry[f] = love[f] or __NULL__
+		love[f] = function(...)
+			registry[f](...)
+			return GS[f](...)
+		end
+	end
+end
 \end{lstlisting}
 
-% All three implementations make use 
+The next example is from LetterLizardJS. A callback function is assigned to the
+timer object's \texttt{ontimeup} property that is called when the time remaining
+reaches zero. This code snippet is contained within the Game constructor and the
+inner function needs access to the Game objects, so we first store the value of this
+(which refers to the Game object) in a variable called \texttt{that}, which will be
+contained within the closure and accessible to the inner function.
+
+\begin{lstlisting}[caption=A closure in JavaScript.]
+	var that = this;
+	this.timer.ontimeup = function() {
+		timeup = true;
+		for (var word in that.words) {
+			that.words[word].show(true);
+		}
+		that.nextRoundOrEnd();
+	};
+\end{lstlisting}
 
 \subsubsection{Generators and Iterators}
 % GENERATORS, ITERATORS
@@ -361,6 +396,9 @@ newgame_button = loveframes.Create("button")
 
 % AUTHOR (PARAGRAPH ON JAVASCRIPT): ALEX
 
+\paragraph{Python}
+
+\paragraph{JavaScript}
 In addition to having their own set of properties (known as ``own properties'') every
 object is associated with and inherits properties from another object called its
 \emph{prototype} object. This 'prototypal inheritance' is a key feature of JavaScript.
