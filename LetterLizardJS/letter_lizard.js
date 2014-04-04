@@ -1,8 +1,11 @@
-// REPORT: when assigned to in the functions below without the var keyword
-// these become properties of the global object
-//var stage;
-//var queue;
-//var scramble;
+// letter_lizard.js
+//
+// This file is part of Group 4's CS798 Scripting Languages project.
+//
+// For a detailed discussion of the design of this progam, please see Section 1.2
+// of our report, LetterLizardJS: JavaScript Letter Lizard implementation.
+//
+// Author: Alexander Pokluda (apokluda@uwaterloo.ca)
 
 var timeup = false;
 var config = {
@@ -42,7 +45,6 @@ var letterpoints = {
 	'Z': 10
 };
 
-// REPORT: using closure to encapsulate private data
 function getTileFactory(scramble) {
 	
 	var spriteSheet = new createjs.SpriteSheet({
@@ -109,7 +111,6 @@ function getTileFactory(scramble) {
 		var s = new createjs.Shape(g);
 		if (alpha) s.alpha = alpha;
 		
-		// REPORT: adding property to function
 		var tile = new Tile(letter);
 		tile.container = new createjs.Container();
 		tile.container.addChild(s);
@@ -155,7 +156,6 @@ Tile.prototype = {
 	},
 };
 
-// REPORT: Object oriented design using prototypes
 function Scramble(letters, x, y, w) {
 	this.letters = letters;
 	this.tiles = [];
@@ -501,7 +501,6 @@ function init() {
 	stage.update();
 	
 	queue = new createjs.LoadQueue();
-	// REPORT: inline function / closure
 	queue.addEventListener("progress",
 		function (event) {
 			loadingTxt.text = "Loading... " + (queue.progress*100|0) + "%";
@@ -557,8 +556,6 @@ function hideSplashScreen() {
 function placeSplashDOMElements() {
 	var cx = stage.canvas.offsetLeft;
 	var cy = stage.canvas.offsetTop;
-	//var cw = stage.canvas.width;	// The width of the canvas
-	//var ch = stage.canvas.height;	// The height of the canvas
 	
 	var text = document.getElementById("splashtext");
 	text.style.left = (cx + 500) + "px";
@@ -603,8 +600,6 @@ function hideMenuScreen() {
 function placeMenuDOMElements() {
 	var cx = stage.canvas.offsetLeft;
 	var cy = stage.canvas.offsetTop;
-	//var cw = stage.canvas.width;	// The width of the canvas
-	//var ch = stage.canvas.height;	// The height of the canvas
 	
 	var text = document.getElementById("menu");
 	text.style.left = (cx + 500) + "px";
@@ -715,8 +710,6 @@ function showGameScreen() {
 	};
 	
 	var bShuffle = document.getElementById("btn:shuffle");
-	// REPORT: talk about why a function is needed here instead of assigning
-	// scramble.shuffle to onclick directly (like storing 'this' in a variable called 'that')
 	bShuffle.onclick = function() {
 		if (!timeup) scramble.shuffle();
 	};
