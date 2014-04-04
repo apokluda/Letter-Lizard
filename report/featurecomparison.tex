@@ -396,19 +396,67 @@ contained within the closure and accessible to the inner function.
 
 % AUTHOR (PARAGRAPH ON JAVASCRIPT): ALEX
 
+All three languages take a different approach to object-oriented programming.
+Python supports a traditional class-base inheritance model, while JavaScript
+supports a protoype-based inheritance model. 
+
 \paragraph{Python}
+% AUTHOR (PARAGRAPH ON PYTHON): MIKE
 
 \paragraph{JavaScript}
-In addition to having their own set of properties (known as ``own properties'') every
-object is associated with and inherits properties from another object called its
-\emph{prototype} object. This 'prototypal inheritance' is a key feature of JavaScript.
-Prototypal inheritance was chosen for JavaScript because it fits nicely with JavaScript's
-dynamic nature. Nevertheless, static class-based
-objects, structs and inheritance hierarchies can be simulated in JavaScript. 
+JavaScript supports object-oriented programming, but not in the classical
+sense. Rather than providing class-based inheritance, JavaScript provides
+\emph{prototype-based inheritance}. In addition to having their own set of 
+properties (known as ``own properties'') every object is associated with and
+inherits properties from another object called its \emph{prototype} object
+indicated by its prototype property (occasionally the value of the prototype
+property will be null, but this is rare). 
 
-LetterLizardJS makes extensive use of objects and protoypes. The 
+Many programmers who are new to JavaScript who come from a
+C, C++, or Java background find JavaScript's prototype-based inheritance
+confusing at first; however, it is really quite simple and works nicely
+JavaScript's dynamic nature. If a requested property is not an own property
+of an object, then its prototype, its prototype's prototype, etc. are searched
+recursively until the property is found. Most classical object-oriented features
+including static class-based objects, structs and inheritance hierarchies can be
+easily simulated in JavaScript. 
 
-% AUTHOR (PARAGRAPH ON PYTHON): MIKE
-% AUTHOR (PARAGRAPH ON LUA): AFIYA
+Prototypal inheritance is a key feature of JavaScript and LetterLizardJS makes
+extensive use of objects and protoypes. The following shows the definition
+of the Tile constructor function and its prototype object. The constructor function
+is used to create a \emph{class} of objects that have their own properties to
+hold their state, but share behaviour inherited from the prototype object:
+
+\begin{lstlisting}[caption=A class definition in JavaScript.]
+function Tile(letter) {
+	this.letter = letter;
+	this.saved = {};
+}
+
+Tile.prototype = {
+	placeAt: function(x, y) {
+		this.container.x = x;
+		this.container.y = y;
+		this.saved.x = x;
+		this.saved.y = y;
+	},
+
+	moveTo: function(x, y, save) {
+		// Moves the tile to the specified x and y coordinates.
+		// This function is called by the Scramble and Builder classes
+		createjs.Tween.get(this.container).to({x:x, y:y}, 500);
+		if (save) {
+			this.saved.x = x;
+			this.saved.y = y;
+		}
+	},
+
+	reset: function() {
+		this.moveTo(this.saved.x, this.saved.y);
+	},
+};
+\end{lstlisting}
+
 \paragraph{Lua}
+% AUTHOR (PARAGRAPH ON LUA): AFIYA
 Lua does not support built in object oriented features but these can be simulated using Lua tables. Similar to objects, table have a state and identity independent of their values. Two tables with the same value are two different objects. We can store different values within a table field and access it using the dot operator. Lua tables also have support for the \texttt{self} parameter which tells the method on which object it has to operate on. With the use of the self parameter, the same method can be used to act on many objects. Lua adds a hidden self parameter with the colon operator. There is no notion of a 'class' but prototype based inheritance can be implemented using metatables which are similar to JavaScript objects but are more powerful. 
