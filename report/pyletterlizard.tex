@@ -1,46 +1,22 @@
 
 \subsection{PyLetterLizard: Python Letter Lizard Implementation}
 
-% Introduce langage
-% PYTHON
-%   - modern, doesn't include "unnecessary/redundant features" (such as += or ++), or
-%     features that novice programmers are likely to abuse (such as goto)
-%   - talk about history, popularity, insiprational languages, main features (eg
-%     more traditional object oriented class-based design)
-%   - talk about major projects using Python
-%   - chosen for its popularity
-%   - look at Wikipedia and language website for more information
-
-
-
-% talk about how this version is implemented (eg classes, etc)
-% show screenshots
-% talk about implementation: language features that were useful,
-% class diagrams, sequence diagrams, snippets of code, etc
-
-%1. https://www.python.org/about/
-%2. http://python.about.com/od/gettingstarted/ss/whatispython_3.htm
-
-
-Python is a multipurpose, high-level programming language which is used  in the software development world. Python is friendly and easy-to-learn \cite{about_python}, and supports object-oriented, structured, and functional programming (to a certain extent). It can be found in a variety of applications \cite{whatis_python}, such as Google, YouTube, applications by NASA, and the New York Stock Exchange. The friendly nature of Python makes it a very good tool to be used in an educational setting, and many find it useful as a first programming language to learn.
+Python is a multipurpose, high-level programming language. Python has a friendly syntax, is easy-to-learn \cite{about_python}, and supports object-oriented, structured, and functional programming. It is used for a variety of applications \cite{whatis_python} by organizations such as Google, YouTube, NASA, and the New York Stock Exchange. The friendly nature of Python makes it a very good tool to be used in an educational setting, and many find it useful as a first programming language to learn.
+		
+	In the Python version of Letter Lizard (PyLetterLizard), we utilize three files, namely \texttt{letter\_lizard.py}, \texttt{game.py}, and \texttt{config.py}. These files all work in tandem to allow PyLetterLizard to operate correctly. To run the application, one can type \texttt{python letter\_lizard.py} at the command line. PyLetterLizard requires Python 2.7 to be installed, as well as the corresponding version of Pygame.  Upon launching, the function \texttt{main()} of \texttt{letter\_lizard.py} is called. Before this occurs, however, the files \texttt{config.py} and \texttt{game.py} are included. \texttt{config.py} declares configuration values that affect the placement of various game objects, as well as declares a couple of utility methods and objects. \texttt{game.py} declares a class Game which stores the state of a game in PyLetterLizard. We will discuss this module more in a moment.
 	
-	%discuss pygame?
+	When \texttt{main()} of \texttt{letter\_lizard.py} executes, Pygame objects are instantiated, and some screen buttons are created. Then, the game enters an ``infinite'' loop, which does three things over and over: processes user input and events, updates the game state, and redraws the screen. We use the notion of a \emph{game state}, which is a value which reflects several states that the game can be in. This allows us to know when to draw objects that represent normal gameplay, as opposed to drawing the splash screen, menu screen, etc.
 	
-	In the Python version of Letter Lizard (PyLetterLizard), we utilize three files, namely \texttt{letter\_lizard.py}, \texttt{game.py}, and \texttt{config.py}. These files all work in tandem to allow PyLetterLizard to operate correctly. To run the application, one can type \texttt{python letter\_lizard.py} at the command line. PyLetterLizard requires Python 2.7 to be installed, as well as the corresponding version of Pygame.  Upon launching, the function \texttt{main()} of \texttt{letter\_lizard.py} is called. Before this occurs, however, the files \texttt{config.py} and \texttt{game.py} are included. \texttt{Config.py} declares configuration values which affect the placement of various game objects, as well as declares a couple utility methods and objects. \texttt{Game.py} declares a class Game which stores the game state of a game in PyLetterLizard. We will discuss this module more in a later section.
+	As mentioned previously, \texttt{game.py} contains the class Game, which stores the game state, and contains several methods which allow the game state to be altered. The reason we decided to use a class to represent a game is because it allows for the creation of new games quite easily, and separates the functionality of a Game into a discrete structure.
 	
-	When \texttt{main()} of \texttt{letter\_lizard.py} executes, Pygame objects are instantiated, and some screen buttons are created. Then, the game enters an "infinite" loop, which does three things over and over: process user inputs/events; update game states; redraw the screen. We use the notion of a \emph{game state}, which is a value which reflects several states that the game can be in. This allows us to know when to draw objects which represent normal gameplay, as opposed to drawing the splash screen, options screen, etc.
-	
-	As mentioned previously, \texttt{game.py} contains the class Game, which stores the game state, and contains several methods which allow game state to be altered. The reason we decided to use a class to represent a game is because it allows for creation of new games quite easily, and separates the functionality of a Game into a discrete structure. This modularization greatly aids in our debugging process.
-	
-	\texttt{Game.py} contains several methods, that \texttt{letter\_lizard.py} utilizes to update and process game states. The method \texttt{process\_letter} is called when a user types a letter, and we check to see if the letter exists in the puzzle word, and update the data structures correspondingly. Shuffle is called when a user hits the space bar, and this uses the random.shuffle function to randomly shuffle the puzzle word. This aids in the user's ability to find words in the puzzle. The method "draw" allows an instance of the class Game to draw itself onto the screen. The screen object is passed into the draw method as an argument. This methodology is good, since a game object can be in charge of drawing itself. This allows letter\_lizard.py to not have to concern itself with how to draw a game... it delegates this task to the game object.
-	
+	\texttt{game.py} contains several methods that \texttt{letter\_lizard.py} utilizes to update the game state and process input and events. The method \texttt{process\_letter} is called when a user types a letter, which checks to see if the letter exists in the set of letters, and updates the data structures correspondingly. \texttt{shuffle} is called when a user hits the space bar, which uses the \texttt{random.shuffle} function to randomly shuffle the puzzle word. This aids the in finding new words in the puzzle. The method \texttt{draw} allows an instance of the class Game to draw itself onto the screen. The screen object is passed into the draw method as an argument. By having the game object be in charge of drawing itself, we avoid having to include any drawing functionality in \texttt{letter\_lizard.py}, which gives the code tighter cohesion and looser coupling.
 	
 \subsubsection{Constructs of Python used}
 
-\noindent\begin{minipage}[t]{\textwidth}
+%\noindent\begin{minipage}[t]{\textwidth}
 %\centering
 \begin{lstlisting}[language=Python, %
-  title={}, label=bash1]
+  caption=Basic constructs of Python used.]
     def process_backspace(self):
         self.message = ""
         if (len(self.letters_guessed) >= 1):
@@ -48,19 +24,19 @@ Python is a multipurpose, high-level programming language which is used  in the 
             del self.letters_guessed[len(self.letters_guessed) - 1]
             self.puzzle_letters_displayed[self.puzzle_letters_displayed.index('')] = letter_to_delete
 \end{lstlisting}
-\end{minipage}
-In the example above, we demonstrate several constructs of Python. We demonstrate the ability for a Python file to define a member function (method), where the function has "self" as its argument. We use the "del" command in Python to delete the last element of the array "letters\_guessed". This syntax for deleting array elements is a bit different than other programming languages.
+%\end{minipage}
+In the example above, we demonstrate several constructs of Python that we use in the Letter Lizard implementation. We demonstrate the ability for a Python class to define a member function (method), where the function has \texttt{self} as its argument. We use the \texttt{del} command in Python to delete the last element of the array \texttt{letters\_guessed}. This syntax for deleting array elements is a bit different than in other programming languages.
 
 %\begin{minipage}[t]{1\linewidth}
 %\centering
 \begin{lstlisting}[language=Python, %
-  title={Bash}, label=bash2]
+  caption=Demonstration of functional programming constructs in Python.]
     def __find_length_counts(self, words):
         word_lengths = [len(w) for w in words]
         return dict([(length, word_lengths.count(length)) for length in set(word_lengths)])
 \end{lstlisting}
 %\end{minipage}
 
-In the above example, we have a private method \texttt{\_\_find\_length\_counts}, which given an argument \texttt{words} (which is a list of words), it will return a mapping from the unique counts of letters for each word, to a count of how many words have that letter-count. For this method, we utilize some functional aspects of Python. We use list comprehensions to iterate over all the lengths of word\_lengths. We transform word\_lengths into a set, so that we only have the unique members. Then, we iterate over all the tuples in that set, and for each one, the tuple conists of a mapping from the length of the word to the count of how many words have that length. The \texttt{dict()} construct will transform this list of tuples into a dictionary.
-	The above method is very useful for generating placeholders for the possible words that solve the puzzle.
+In the above example, we have a private method \texttt{\_\_find\_length\_counts}, which when given an argument \texttt{words} (a list of words), will return a mapping from the unique counts of letters for each word to a count of how many words have that number of letters. For this method we utilize some functional aspects of Python. We use list comprehensions to iterate over all the lengths of \texttt{word\_lengths}. We transform \texttt{word\_lengths} into a set so that we only have the unique members. Then, we iterate over all the elements in that set, and for each one, create a tuple consisting of a mapping from the length of the word to the count of how many words have that length. The \texttt{dict()} construct transforms this list of tuples into a dictionary.
+The above method is used for generating placeholders for the words to be found in a game.
 

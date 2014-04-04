@@ -1,19 +1,4 @@
 \section{Introduction}
-% Outline:
-% - What is a scripting language? How do they compare to other languages?
-%   - usually interpreted, or compiled on-the-fly to intermediate byte-code
-%   - environments that can be automated through scripts: shells and Web browsers (perhaps the two best 
-%     known examples), other general purpose examples exist such as Python; extension language: Lua
-%   - "Lua is a language designed and widely used as an extension language. Python is a general-purpose 
-%     language that is also commonly used as an extension language, while ECMAScript is still primarily a 
-%     scripting language for web browsers, but is also used as a general-purpose language."
-% - Why are they useful?
-%   - "glue", cross-platform (web), rapid application development, extending application behaviour
-% - Characteristics
-%   - very high-level languages, high level of abstraction, dynamic
-%   - dynamic: dynamically typed; interpreted; can execute code loaded over the network in the current
-%     environment using an exec() method or something similar
-%   - flexible type system; automatic memory managment
 
 \lettrine[nindent=0em,lines=3]{S}{cripting} languages is an increasingly popular and important
 category of programming languages. Programs written in scripting languages are often written for
@@ -23,7 +8,7 @@ JavaScript and Lua are examples of the former. JavaScript is used to extend the 
 of Web pages displayed in a Web browser, while Lua is an extension language that is used in many 
 commercial and free applications and is widely used in scripting video game engines. Lua is
 often chosen for this task because it is designed to be very fast and easy to embed.
-However, general-purpose scripting languages also exist and perhaps the most well-known one is Python.
+General-purpose scripting languages also exist and perhaps the most well-known one is Python.
 Python is a widely-used, general-purpose high-level programming language that emphasizes code
 readability and its syntax allows programmers to express concepts in fewer lines of code than would be 
 possible in a language like C, enabling them to develop applications quicker. 
@@ -46,8 +31,10 @@ before the timer runs out. In order to make the game
 more engaging and enjoyable, we implemented a number of features that enable the user to customize
 their gameplay experience by providing options to set the number of rounds, the time per round, 
 and the level of difficulty for each
-game. Although wanted to create a game that is fun and enjoyable, our primary objective is to
-compare and contrast the features of each programming language. Where possible, adhered to the same
+game.
+%Although wanted to create a game that is fun and enjoyable, our primary objective was to
+%compare and contrast the features of each programming language. 
+We adhered to the same
 design for each implementation while also using the idiomatic features of each language as much as 
 possible. The game proceeds as follows:
 
@@ -55,15 +42,15 @@ possible. The game proceeds as follows:
     \item On beginning the game, a welcome screen or a ``Splash Screen'' is displayed
     to the user. The user must hit the spacebar to proceed to the Main Menu screen.
     \item The Main Menu screen allows the user to configure game options, such as the
-    number of rounds, time per round and level of difficulty. After setting the options, the
+    number of rounds, time per round and level of difficulty. After setting these options, the
     user clicks \textbf{Start} to begin a new game and is taken to the main Game screen.
     \item The Game screen displays the set of letters to the user and allows them to type
     words that can be formed from the letters. It also shows the round number, the amount of
-    time remaining, the user's score and placeholders for all of the dictionary words that
+    time remaining, the user's score, and placeholders for all of the dictionary words that
     can be formed from the set of letters. After typing a word, the user hits
     enter and the game engine checks to see that the word is a valid dictionary word, and, if so,
     reveals the word in the list of placeholders. The Game screen also has options to shuffle
-    the set of letters and return to the main menu.
+    the set of letters, generate a hint for a word yet to be found, and return to the main menu.
 \end{itemize}
 
 \begin{figure}
@@ -78,33 +65,27 @@ possible. The game proceeds as follows:
         \caption{Gameplay mockup}
         \label{gameplaymockup}
     \end{subfigure}
-    \caption{Two mockups from our design document demonstrating the proposed Letter Lizard game
+    \caption[Two mockups from our design document demonstrating the proposed Letter Lizard game]
+    {Two mockups from our design document demonstrating the proposed Letter Lizard game
     showing (a) the main game screen and (b) the gameplay.}
     \label{mockups}
 \end{figure}
 
-The Python and JavaScript implementations of Letter Lizard provide graphical user interfaces
+The all three implementations of Letter Lizard provide graphical user interfaces
 that are modelled after the mockups presented in our design document. The mockups showing the
-main game screen and gameplay are shown in Figure~\ref{mockups}. The Lua implementation provides
-a text-based user interface\footnotemark,
-but the user interaction parallels that of the other two versions.
-Furthermore, the internal data structures and algorithms representing the game state and game play
-are similar to the other two implementations.
-
-\footnotetext{A ``screen'' in the text-based user interface is represented by several
-lines of descriptive text printed to the console. The interface for the Lua implementation
-of the game is discussed further in Section~\ref{luaimpl}.}
+main game screen and gameplay are shown in Figure~\ref{mockups}. Additionally, the internal 
+data structures and algorithms representing the game state and game play are similar 
+in all three implementations.
 
 The set of letters and collection of dictionary words can can be formed from the set of letters
 is generated by a Python script called the \emph{game generator} that can be run as a standalone,
 command line program or be imported as a module. The game generator works by loading a set
 of dictionaries, generating a set of scrambled letters, and then finding dictionary words that can
 be formed by the set of scrambled letters. When run as a stand alone program, the default output of the
-tool is a plain text file where each line consists of the set of scrambled letters followed by all of the 
+tool is plain text where each line consists of the set of scrambled letters followed by all of the 
 dictionary words that can be formed from those letters. Alternatively, the game generator can be provided
 with command line parameters that cause it to output the list of letters and words as JavaScript or Lua 
 source code that initializes an object or table with the letters and words.
-
 The game generator accepts parameters that configure the
 number of scrambled letters in each game, the number of games to generate, and the difficulty
 of each game. The dictionary that we used (Spell Checking Oriented Word Lists by Kevin

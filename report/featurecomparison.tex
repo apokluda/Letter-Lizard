@@ -1,30 +1,6 @@
 \section{Scripting Language Feature Comparison}
 \label{comparison}
 
-% Compare language features. Show examples for one or more language implementations
-% whenever possible. The structure of this section will be a feature-by-feature comparison
-% first, backed up by examples (or hypothetical examples) where possible.
-
-% comparing the most major differences that we noticed using examples from our three implementations (when possible)
-% don't have space to go into all the details
-% First difference noted already: environments/frameworks led to different design
-
-% NOT COVERED:
-% Many differences: Types, Variables, Values (including Numeric and Boolean types, Strings)
-% Special Types such as (nil, null and undefined)
-
-% COVERED:
-% Data Structures: arrays, lists, tuples, dictionaries (Python); Objects (JavaScript); Tables (Lua)
-
-% NOT COVERED:
-% Expressions and Statements, Flow Control
-
-% COVERED: Variable Scope
-
-% COVERED: Functions, closures, coroutines, generators, iterators
-
-% NOT COVERED: Exception Handling, Modules and Packages
-
 \lettrine[nindent=0em,lines=3]{N}{ow} that we have introduced the three implementations of
 our Letter Lizard game, we will will compare and contrast the differences between
 each language, noting their strengths and weaknesses, using example code from our
@@ -41,22 +17,16 @@ and Lua (i.e. tables and arrays). We noted differences between the syntax and se
 of expressions and statements in each language, as well as the flow
 control constructs offered, which we will omit; however, we will discuss
 variable scope, functions, and closures. The first major difference that we
-noticed between the languages was non-function: each employed a different lexical
+noticed between the languages was non-functional: each employed a different lexical
 structure, which we discuss next.
 
 \subsection{Lexical Structure}
-% LEXICAL STRUCTURE
-% STATEMENTS
-% - Python: intentation sensitive; JavaScript: automatic semicolon insertion; 
-%   Lua neither
-% LUA: CHUNKS
-% - Chunks: Lua specific thing
-% COMMENTS
-Since we implemented the game in three different languages we were able to examine the difference in lexical structure quite minutely. With regard to programming languages, the syntax of the language defines the set of symbols that are considered to be a correctly structured document in that particular language. Python is inherently designed to be a highly readable language and uses words of the English language instead of punctuation marks. As compared to other languages, Python uses white space indention rather than curly braces or keywords to delimit blocks. This is a strength of the language as good indention is enforced by the language itself and makes for highly readable, clean code. However, on the downside tabs and spaces can be easily mixed up leading bugs in the code. 
+\label{lexstruct}
 
-JavaScript uses blocks delimited by curly braces which means that code can be 'minimized' for the Web. However, automatic semicolon insertion  can lead to errors and is generally not considered very good by JavaScript programmers. This is one of the controversial syntactic features of JavaScript. For instance, consider the following code snippet:
-\begin{lstlisting}[language={JavaScript}, %
-  title={}, label=semicolon]
+Since we implemented the game in three different languages we were able to examine the difference in lexical structure quite minutely. With regard to programming languages, the syntax of the language defines the set of symbols that are considered to be a correctly structured document in that particular language. Python is inherently designed to be a highly readable language and uses words of the English language instead of punctuation marks. As compared to other languages, Python uses white space indention rather than curly braces or keywords to delimit blocks. This is a strength of the language as good indention is enforced by the language itself and makes for highly readable, clean code. However, on the downside, tabs and spaces can be easily mixed up leading bugs in the code. 
+
+JavaScript uses blocks delimited by curly braces which means that code can be ``minimized'' for the Web. However, automatic semicolon insertion can lead to errors and is generally not considered very good by JavaScript programmers. This is one of the controversial syntactic features of JavaScript. For instance, consider the following code snippet:
+\begin{lstlisting}[language={JavaScript},caption=An example where automatic semicolon insertion in JavaScript may lead to unexpected results]
 	a = b + c
    (d + e).print()
 \end{lstlisting}
@@ -146,6 +116,11 @@ the text of each word to its corresponding Word object.
 		this.words[word] = new Word(word);
 	}
 \end{lstlisting}
+
+JavaScript also provides special support for using Objects as Arrays. When an Object 
+is created using the array literal syntax [] or Array constructor, \texttt{Array()}
+and property names are integer values, the language provides a \texttt{length} property
+on the object that is automatically updated to reflect the number of elements in the array.
 
 \paragraph{Lua: Tables}
 

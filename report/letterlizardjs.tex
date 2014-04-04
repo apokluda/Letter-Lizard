@@ -2,19 +2,6 @@
 \subsection{LetterLizardJS: JavaScript Letter Lizard Implementation}
 \label{lljs}
 
-% Introduce Language
-% JAVASCRIPT
-% - "language of the Web", implemented in Web browsers to allow client 
-%   side scripts to interact with the user, control browser, preform 
-%   asynchrous communication with server, alter docmuent that is displayed
-% - also server-side programming, desktop and mobile applications
-% - dynamic, prototype based
-% - first class functions
-% - syntax influenced by C, Java, but very different
-% - key design principles takes from Self, Scheme
-% - multi-paradigm: oop, imperative, functional
-% - first introduced by Netscape, formalized as ECMAScript 
-
 JavaScript is the ``language of the Web'' and has become an indispensable 
 tool for Web developers. Client-side JavaScript scripts executed in Web
 browsers are able to bring life to Web pages by interacting with the user,
@@ -29,39 +16,20 @@ JavaScript in its Navigator browser, it submitted the language to Ecma Internati
 and it is now standardized as ECMA-262 and known as ECMAScript.
 There are several well-known implementations of the language that conform to the standard.
 
-% - supports structured programming like C
-% - exeption: function scoping instead of block scoping
-% - many think that this was not a good idea (cite Definitive guide?)
-% - automatic semicolon insertion (also not a good idea) (cite def guide?)
-% - dynamic typing: types associated vith values, not variables
-% - object based: objections are associative arrays with String or int
-%   property names (special langauge support for arrays)
-% - aside from a few primitive types, everything is an object, including
-%   funcions (which means that funcitons are first-class enitiies - they
-%   can be assigned to variables and even returned from other functions
-% - event driven; 1st class funcs used a lot in event-driven browser/
-%   run-time environment
-% - closures (give an example or refer to later section)
-% - objects augmented with prototypes; can be used to simulate "classical"
-%   oop features
-% - no distinction between func and method: caling convention
-
-
-JavaScript is a dynamic, prototype-based object oriented language with first-class
+JavaScript is a dynamic, prototype-based object-oriented language with first-class
 functions. Much of its syntax has been influenced by C, C++ and Java, but
-the languages are actually very different. JavaScript borrows key design principles
+its semantics are actually very different. JavaScript borrows key design principles
 from Self and Scheme. JavaScript supports several different programming
-paradigms including object-oriented, imperative and functional. JavaScript supports
+paradigms including object-oriented, imperative, and functional. JavaScript supports
 structured programming similar to C with many of the same flow-control statements
 such as \texttt{if}, \texttt{for}, \texttt{while}, etc. One notable difference,
 however, is the lack of block scoping for variables. Instead, JavaScript 
-uses function scoping
-for variables, which means that all variable declared in a function are
-visible throughout the entire body of the function. 
+uses function scoping for variables, which means that all variable declared in a
+function are visible throughout the entire body of the function. 
 JavaScript also contains a mechanism that tries to
 correct faulty programs by automatically inserting semicolons to complete statements, but quite
 often this masks more serious errors~\cite{goodparts} or results in unexpected behaviour.
-We explore these issues further in sections~\ref{varscope} and~\ref{exprandstmt} respectively.
+We explore these issues further in sections~\ref{varscope} and~\ref{lexstruct} respectively.
 
 JavaScript has a dynamic type system in which types are associated with values,
 not variables. A few primitive types are provided by the language, such
@@ -86,11 +54,6 @@ JavaScript supports object-oriented programming, but not in the classical
 sense. Rather than providing class-based inheritance, JavaScript provides
 \emph{prototype-based inheritance}. We discuss object-oriented programming
 in section~\ref{oop}.
-
-% talk about how this version is implemented (eg classes, etc)
-% show screenshots
-% talk about implementation: language features that were useful,
-% class diagrams, sequence diagrams, snippets of code, etc
 
 \begin{figure}
     \centering
@@ -134,7 +97,8 @@ in section~\ref{oop}.
         \caption{Game Over message}
         \label{lljsgameover}
     \end{subfigure}
-    \caption{Screenshots from the Letter Lizard JavaScript implementation showing
+    \caption[Screenshots from the Letter Lizard JavaScript implementation]
+    {Screenshots from the Letter Lizard JavaScript implementation showing
     (a) the splash screen, (b) the main menu, (c) a round number message that is 
     displayed at the start of each round, (d) the main game screen as a user plays
     the game, (e) an in-game hint, (f) the ``Good Job!'' message that is displayed when
@@ -147,21 +111,21 @@ in section~\ref{oop}.
 Figure~\ref{lljsscreenshots} shows eight screenshots from LetterLizardJS. When the player
 opens the Letter Lizard game in their browser, they are shown the Splash Screen
 (Figure~\ref{lljssplash}) that provides information about the game and prompted to
-press the spacebar to continue. After pressing the spacebar, the player is presented
-with the Main Menu (Figure~\ref{lljsmm}) that allows them to set game options, namely
+press the space bar to continue. After pressing the space bar, the player is presented
+with the Main Menu (Figure~\ref{lljsmm}) that allows them to set the game options, namely
 the number of rounds, time per round and level of difficulty. Once the game starts,
 the player is presented with a set of letters represented as tiles on the game screen.
 The player can move the tiles to form words by typing on the keyboard (Figure~\ref{lljsgame}).
-At any time while playing the game, the player can shuffle the letters to help
-her additional words by pressing the spacebar or clicking the \textbf{Shuffle} button
-or request a hint by clicking the \textbf{Hint} button (Figure~\ref{lljshint}).
+At any time while playing the game, the player can get help to find additional words
+by pressing the space bar or clicking the \textbf{Shuffle} button to shuffle the letters,
+or by requesting a hint by clicking the \textbf{Hint} button (Figure~\ref{lljshint}).
 A number of in-game message are displayed to the user while the game is being played,
 which are shown in Figures~\ref{lljsround} and \ref{lljsgoodjob}-\ref{lljsgameover}.
 
 \begin{figure}
     \centering
 	\includegraphics[scale=0.6]{../diagrams/LetterLizardJS-ClassDiagram.pdf}
-	\caption{A class diagram showing the classes that make up the Letter
+	\caption[A class diagram for LetterLizardJS]{A class diagram showing the classes that make up the Letter
 	Lizard JavaScript implementation. The event-driven, callback-based client-side scripting
 	environment naturally led to a modularized, class-based design for this implementation.}
 	\label{lljsclasses}
@@ -177,11 +141,13 @@ which are shown in Figures~\ref{lljsround} and \ref{lljsgoodjob}-\ref{lljsgameov
 
 One of the main differences that we first noticed between Python, Lua and 
 JavaScript had to do with the event-driven nature of the client-side scripting
-environment rather than the language itself: at the core of the the Python and
-Lua implementations is a game loop that processes events, whereas the JavaScript
-version does not have any such construct. Rather, the JavaScript version is
-entirely event driven. The game loop in Python and Lua naturally led to a
-procedural-based design, but the event-driven JavaScript environment
+environment rather than the language itself: at the core of the the Python implementation
+is a game loop that processes events and redraws the screen. The Lua implementation does 
+not have a game loop like Python, but it still has an update function that draws every
+frame of the game to the screen, whereas the JavaScript version does not have any such 
+construct. Rather, the JavaScript version is entirely event driven. 
+The game loop and update functions Python and Lua naturally led to a
+more procedural-based design, but the event-driven JavaScript environment
 naturally led to a more modular, object-oriented design. Most of the functionality
 of LetterLizardJS is implemented by the six classes shown in Figure~\ref{lljsclasses}.
 The Tile, Scrabmle, Builder and Word classes also draw themselves on the main
@@ -192,19 +158,17 @@ game screen. It also provides a shuffle method to rearrange the tiles when reque
 The Builder class moves the Tiles to form words when the user types on the keyboard
 and also displays hints. The Game class is responsible for creating Word objects
 to represent words to be found. It also gets the characters that the user has typed
-from the Builder class and checks to see if they are valid words. If so, it shows
-causes the corresponding Word object to show itself in the word list. The
+from the Builder class and checks to see if they are valid words. If so, it causes
+the corresponding Word object to show itself in the word list. The
 Game class also updates the player's score when they find a word and manages
 the game timer.
 
 The code for our JavaScript implementation can be found in our Github repository
 (\texttt{uwaterloo-cs798scripting / group4}) under the LetterLizardJS folder. To play the
-game, simply need to load the \texttt{index.html} file in your browser; however,
+game, you simply need to load the \texttt{index.html} file in your browser; however,
 due to the security policies of most Web browsers that restrict the functionality
 of scripts loaded as local files, you will likely have to run an
 HTTP server on your local machine and load the \texttt{index.html} file through
 your server in order to play the game. Alternatively, we invite you to play the
 game using a server that we have set up at using the following URL: 
 \url{http://dahu.in/static/LetterLizardJS/index.html}.
-
-% AT THE END: code can be found in github, we invite you to play at dahu.in...
