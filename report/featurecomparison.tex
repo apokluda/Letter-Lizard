@@ -294,6 +294,12 @@ supports a protoype-based inheritance model.
 \paragraph{Python}
 % AUTHOR (PARAGRAPH ON PYTHON): MIKE
 
+Python utilizes object-oriented programming in a fairly typical sense. It utilizes the \texttt{class} keyword in order to declare a class. It combines OOP constructs from C++ and Modula-3. In Python, one can utilize multiple base classes. Also, derived classes are able to override any methods of its base classes. Also, methods can call methods of base classes with the same name. In Python, to set a variable \texttt{x} to be equal to a new instance of a class \texttt{Person}, one can simply write \texttt{x = Person()}. Python does not use the \texttt{new} operator. \cite{python_oop}
+
+Python utilizes the convention that the variable \texttt{self} as the first argument of instance methods of a class, will essentially act as the \texttt{this} keyword often found in other languages. The \texttt{self} keyword can be replaced with any word of one's choosing. Some may find this construct a bit clumsy, as one has to repeatedly type the same variable over and over again in the beginning of the argument list of each method.
+
+Unlike languages such as Java or C++, Python does not have any true concept of private variables. Rather, Python encourages a culture where programmers are "trusted" to not access variables they are not privy to. A convention that has been established is to use underscores at the beginning of a variable name to denote that it is a private variable.
+
 \paragraph{JavaScript}
 JavaScript supports object-oriented programming, but not in the classical
 sense. Rather than providing class-based inheritance, JavaScript provides
