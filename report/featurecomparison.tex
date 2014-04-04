@@ -51,7 +51,25 @@ A data structure is a particular way of storing and organizing data in a compute
 %     special properties (covered under Objects)
 %   - list comprehensions
 
-% AUTHOR: MIKE
+Unlike JavaScript and Lua which each provide only one data structure, Python
+provide a rich set of built-in data structures. The primary data structures
+used by Python programs are:
+
+\begin{description}
+ \item[list] mutable sequences of items of arbitrary type
+ \item[tuple] immutable sequence of items of arbitrary type
+ \item[range] immutable sequence commonly used for looping
+ \item[set] mutable container of items of arbitrary type
+ \item[dictionary] mutable mapping of keys to corresponding values
+\end{description}
+
+Python provides a concise way to create lists, sets and dictionaries called
+``comprehensions.'' These are commonly used to initialize new data structures
+where each element is the result of some operations applied to each member of
+another sequence or iterable object, or meets some sort of filter condition.
+We previously gave an example in Section~\ref{pyconstructs} where we had used
+set and dictionary comprehensions to initialize a set and dictionary.
+List comprehensions also facilitate functional programming in Python.
 
 \paragraph{JavaScript: Objects}
 
