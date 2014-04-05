@@ -10,15 +10,15 @@ commercial and free applications and is widely used in scripting video game engi
 often chosen for this task because it is designed to be very fast and easy to embed.
 General-purpose scripting languages also exist and perhaps the most well-known one is Python.
 Python is a widely-used, general-purpose high-level programming language that emphasizes code
-readability and its syntax allows programmers to express concepts in fewer lines of code than would be 
+readability whose syntax allows programmers to express concepts in fewer lines of code than would be 
 possible in a language like C, enabling them to develop applications quicker. 
 Scripting languages typically have a low barrier to entry and are easier for programers to 
 get started with and provide a number of features that make them an important tool for increasing 
-programmer productivity and distinguish them from programming languages such as C, C++ and Java. 
+programmer productivity, and distinguish them from programming languages such as C, C++ and Java. 
 For example, scripting languages are generally very high-level languages that provide a high level of 
 abstraction. They are usually dynamically typed and provide automatic memory management. Many
 scripting languages can load and execute code dynamically in the context of the running program
-by passing string consisting of program statements to an \texttt{exec()} function or something
+by passing a string consisting of program statements to an \texttt{exec()} function or something
 similar.
 
 In this report, we study and compare three different scripting languages, Python,
@@ -71,10 +71,10 @@ possible. The game proceeds as follows:
     \label{mockups}
 \end{figure}
 
-The all three implementations of Letter Lizard provide graphical user interfaces
+All three implementations of Letter Lizard provide graphical user interfaces
 that are modelled after the mockups presented in our design document. The mockups showing the
 main game screen and gameplay are shown in Figure~\ref{mockups}. Additionally, the internal 
-data structures and algorithms representing the game state and game play are similar 
+data structures and algorithms representing the game state and gameplay are similar 
 in all three implementations.
 
 The set of letters and collection of dictionary words can can be formed from the set of letters
@@ -96,7 +96,7 @@ When generating the set of scrambled letters, the game generator picks each lett
 probability corresponding to the frequency that it appears in the dictionary (which we
 precomputed ahead of time). In order to find the dictionary words that can be formed, the game generator
 iterates through the dictionary and checks to see if each dictionary word can be formed from the set of 
-scrambled letters, and if so, it add it to the list of words for the set of scrambled letters.
+scrambled letters, and if so, it adds it to the list of words for the set of scrambled letters.
 
 The next three sections introduce each language and discuss the Letter Lizard implementation in
 that language. Section~\ref{comparison} compares the different features offered by each language using
